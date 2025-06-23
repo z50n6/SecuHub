@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Java命令编码工具 - 支持多种编码格式的命令转换">
+    <title>Java命令编码工具</title>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- <div class="tab-bar">
+        <button id="tab-shell">反弹shell生成</button>
+        <button id="tab-java" class="active">Java_Exec_Encode</button>
+        <button id="tab-memo">备忘录</button>
+    </div> -->
+    <div class="main-vertical-layout">
+        <div class="card input-card">
+            <div class="input-group">
+                <div class="input-row">
+                    <label for="cmdType">命令类型</label>
+                    <select id="cmdType"></select>
+                    <label for="encodeType" style="margin-left:18px;">编码类型</label>
+                    <select id="encodeType">
+                        <option value="none">无</option>
+                        <option value="url">URL编码</option>
+                        <option value="base64">Base64编码</option>
+                        <option value="double_url">双URL编码</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <label for="inputCmd">输入命令</label>
+                    <textarea id="inputCmd" placeholder="请输入要编码的命令，例如：whoami"></textarea>
+                </div>
+                <div class="btn-group">
+                    <button id="copyBtn" class="btn copy-btn">复制编码结果</button>
+                </div>
+            </div>
+        </div>
+        <div class="card output-card">
+            <div class="output-group">
+                <div class="input-row">
+                    <label for="outputCmd">输出命令</label>
+                    <textarea id="outputCmd" readonly></textarea>
+                </div>
+                <div class="input-row">
+                    <label for="finalCmd">编码结果</label>
+                    <textarea id="finalCmd" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="status-bar" id="statusBar">已连接到应用 0 字符</div>
+    <script src="js/script.js"></script>
+    <script>
+    // 展开/收起说明区
+    const tip = document.getElementById('payloadTip');
+    const btn = document.getElementById('toggleTipBtn');
+    btn.addEventListener('click', function() {
+        if (tip.classList.contains('payload-tip-collapsed')) {
+            tip.classList.remove('payload-tip-collapsed');
+            btn.textContent = '收起';
+        } else {
+            tip.classList.add('payload-tip-collapsed');
+            btn.textContent = '展开';
+        }
+    });
+    </script>
+</body>
+</html> 

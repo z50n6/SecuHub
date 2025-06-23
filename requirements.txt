@@ -1,0 +1,8 @@
+PyQt6>=6.2
+PyQt6-WebEngine>=6.2
+PyQt6-Qt6>=6.4.0
+PyQt6-sip>=13.4.0
+pywin32
+Pillow
+# Python 3.8 及以上
+# 其它依赖如os、json、subprocess为标准库 

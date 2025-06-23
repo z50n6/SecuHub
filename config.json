@@ -1,0 +1,218 @@
+{
+  "tools": [
+    {
+      "args": "",
+      "category": "流量代理/抓包工具",
+      "color": "#000000",
+      "description": "网络抓包分析工具",
+      "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/Fiddler/App.ico",
+      "last_launch": "2025-06-21T17:06:46.914112",
+      "launch_count": 4,
+      "name": "Fiddler",
+      "path": "E:/Penetration/RedTeam/TrafficProxyTools/Fiddler/Fiddler.exe",
+      "subcategory": "",
+      "tool_type": "exe"
+    },
+    {
+      "name": "yakit",
+      "path": "D:/SoftWare/Yakit/Yakit/Yakit.exe",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "常用利器",
+      "icon_path": "D:/SoftWare/Yakit/Yakit/uninstallerIcon.ico",
+      "color": "#000000",
+      "launch_count": 0,
+      "last_launch": null,
+      "args": ""
+    },
+    {
+      "args": "",
+      "category": "流量代理/抓包工具",
+      "color": "#000000",
+      "description": "www",
+      "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/WiresharkPortable64/App/AppInfo/appicon.ico",
+      "last_launch": null,
+      "launch_count": 0,
+      "name": "Wireshark",
+      "path": "E:/Penetration/RedTeam/TrafficProxyTools/WiresharkPortable64/WiresharkPortable64.exe",
+      "subcategory": "",
+      "tool_type": "exe"
+    },
+    {
+      "name": "Charles",
+      "path": "D:/SoftWare/Charles/Charles.exe",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "茶杯",
+      "icon_path": "D:/SoftWare/Charles/charles.ico",
+      "color": "#000000",
+      "launch_count": 3,
+      "last_launch": null,
+      "args": ""
+    },
+    {
+      "name": "Reqable",
+      "path": "D:/SoftWare/Reqable/Reqable.exe",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "小黄鸟",
+      "icon_path": "D:/SoftWare/Reqable/data/flutter_assets/assets/images/common/app_icon.ico",
+      "color": "#000000",
+      "launch_count": 4,
+      "last_launch": null,
+      "args": ""
+    },
+    {
+      "name": "StarCodeSecurity",
+      "path": "E:/Penetration/RedTeam/Code_Audit/StarCodeSecurity/StarCodeSecurity.jar",
+      "category": "代码审计/综合工具",
+      "subcategory": "",
+      "tool_type": "java8",
+      "description": "",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 5,
+      "last_launch": "2025-06-21T14:30:31.279303",
+      "args": "-javaagent:StarCodeSecurity.jar  -Dfile.encoding=utf-8 -jar StarCodeSecurity.jar"
+    },
+    {
+      "name": "DeepSeekSelfTool",
+      "path": "E:/Penetration/RedTeam/ComprehensiveTools/DeepSeekSelfTool/DeepSeekSelfTool.py",
+      "category": "R/综合工具",
+      "subcategory": "",
+      "tool_type": "python",
+      "description": "py GUI",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 9,
+      "last_launch": "2025-06-21T17:08:20.483343",
+      "args": ""
+    },
+    {
+      "name": "BlueTeamToolsV2.16",
+      "path": "E:/Penetration/BlueTeam/AssistiveTools/BlueTeamToolsV2.16/BlueTeamToolsV2.16.jar",
+      "category": "B/综合工具",
+      "subcategory": "",
+      "tool_type": "java8_gui",
+      "description": "",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 5,
+      "last_launch": "2025-06-21T17:43:35.189901",
+      "args": ""
+    },
+    {
+      "name": "Cobalt_Strike_4.7",
+      "path": "E:/Penetration/RedTeam/Post-Exploition/C2/Cobalt_Strike_4.7/cobaltstrike-client.jar",
+      "category": "R/后渗透/C2",
+      "subcategory": "",
+      "tool_type": "java8",
+      "description": "",
+      "icon_path": "E:/Penetration/RedTeam/Post-Exploition/C2/Cobalt_Strike_4.7/favicon.ico",
+      "color": "#000000",
+      "launch_count": 5,
+      "last_launch": "2025-06-21T17:43:41.181213",
+      "args": "-Dfile.encoding=UTF-8 -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -Duser.language=en -jar cobaltstrike-client.jar %*"
+    },
+    {
+      "name": "impacket-0.11.0",
+      "path": "E:/Penetration/RedTeam/Post-Exploition/Lateral_Movement/impacket-0.11.0",
+      "category": "R/后渗透/横向移动",
+      "subcategory": "",
+      "tool_type": "folder",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Icon/impacket.png",
+      "color": "#000000",
+      "launch_count": 5,
+      "last_launch": "2025-06-21T17:43:41.949566",
+      "args": ""
+    },
+    {
+      "name": "AnotherRedisDesktopManager",
+      "path": "E:/Penetration/RedTeam/AuxiliaryTools/database-connect/AnotherRedisDesktopManager/AnotherRedisDesktopManager.exe",
+      "category": "辅助工具/数据库连接",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Icon/Url/reddit.com.png",
+      "color": "#000000",
+      "launch_count": 2,
+      "last_launch": "2025-06-22T14:18:23.949893",
+      "args": ""
+    },
+    {
+      "name": "AntSword",
+      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/AntSword/AntSword-Loader-v4.0.3-win32-x64/AntSword.exe",
+      "category": "R/WebShell管理器",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/AntSword/antSword-2.1.15/static/imgs/logo.png",
+      "color": "#000000",
+      "launch_count": 0,
+      "last_launch": null,
+      "args": ""
+    },
+    {
+      "name": "navicat",
+      "path": "E:/Penetration/RedTeam/AuxiliaryTools/database-connect/Navicat_Premium_17.0.13_Green/navicat.exe",
+      "category": "辅助工具/数据库连接",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Icon/DataabaseTools.png",
+      "color": "#000000",
+      "launch_count": 0,
+      "last_launch": null,
+      "args": ""
+    }
+  ],
+  "theme": "modern_light",
+  "view_mode": "grid",
+  "recent_tools": [
+    "AnotherRedisDesktopManager",
+    "Reqable",
+    "dbeaver",
+    "Charles",
+    "impacket-0.11.0",
+    "Cobalt_Strike_4.7",
+    "BlueTeamToolsV2.16",
+    "DeepSeekSelfTool",
+    "Fiddler",
+    "StarCodeSecurity"
+  ],
+  "show_status_bar": "true",
+  "auto_refresh": "true",
+  "search_history": [
+    "工具名称: Wireshark\n类型: exe\n分类: 流量代理/抓包工具\n描述: www\n路径: E:/Penetration/RedTeam/TrafficProxyTools/WiresharkPortable64/WiresharkPortable64.exe\n启动次数: 0\n最后启动: 从未启动",
+    "wire",
+    "wir",
+    "E:/Penetration/RedTeam/TrafficProxyTools/WiresharkPortable64/WiresharkPortable64.exe",
+    "yak",
+    "wiresh",
+    "wires",
+    "test14",
+    "test13",
+    "test12"
+  ],
+  "navigation_items": [
+    {
+      "id": "safe",
+      "name": "安全工具",
+      "icon": "🛡️"
+    },
+    {
+      "id": "code",
+      "name": "编码与解码",
+      "icon": "🔧"
+    },
+    {
+      "id": "assist",
+      "name": "辅助工具",
+      "icon": "🛠️"
+    }
+  ]
+}
