@@ -7,7 +7,7 @@ import logging
 from datetime import datetime
 from functools import partial
 import re
-from PyQt6.QtWidgets import (
+from PyQt6.QtWidgets import ( 
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QTreeWidget, QTreeWidgetItem, QLabel, QPushButton, QLineEdit,
     QComboBox, QTextEdit, QFileDialog, QMessageBox, QDialog,
@@ -1696,6 +1696,9 @@ class MainWindow(QMainWindow):
         # 初始化导航状态，默认选中第一个
         if self.config.navigation_items:
             first_nav_id = self.config.navigation_items[0]['id']
+            # 如果默认就是安全工具，先排序
+            if first_nav_id == 'safe':
+                self.config.tools.sort(key=lambda x: x.get('launch_count', 0), reverse=True)
             self.switch_nav(first_nav_id)
         else:
             # 处理没有导航项的极端情况
@@ -1806,7 +1809,7 @@ class MainWindow(QMainWindow):
 
             # 左侧目录大纲
             self.outline_tree = QTreeWidget()
-            self.outline_tree.setHeaderHidden(True)  # 隐藏标题栏
+            self.outline_tree.setHeaderHidden(True)
             self.outline_tree.itemClicked.connect(self.on_outline_clicked)
             self.outline_tree.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
             self.outline_tree.setIndentation(10)  # 控制缩进，为折叠图标留出空间
@@ -1874,9 +1877,10 @@ QTreeWidget::indicator:checked {
             # 设置初始比例，左侧目录大纲20%，右侧工具80%
             self.content_splitter.setSizes([int(self.right_panel.width()*0.2), int(self.right_panel.width()*0.8)])
 
-            # 刷新数据
-            # 仅在窗口显示后（通过按钮点击等）才刷新，避免启动时布局问题
+            # 刷新数据，按启动次数排序
             if self._initial_load_done:
+                # 工具按launch_count降序
+                self.config.tools.sort(key=lambda x: x.get('launch_count', 0), reverse=True)
                 self.refresh_outline_and_tools()
         elif nav_id == 'code':
             self.show_cyberchef()
@@ -2045,11 +2049,10 @@ QTreeWidget::indicator:checked {
                 parent_item.addChild(child_item)
                 if sub_children:
                     add_items_to_tree(child_item, sub_children)
-                else:
-                    # 为叶子节点添加一个隐藏的子项，以显示折叠图标
-                    placeholder = QTreeWidgetItem()
-                    placeholder.setHidden(True)
-                    child_item.addChild(placeholder)
+                # else:  # 删除无下级分类时添加隐藏子项的逻辑
+                #     placeholder = QTreeWidgetItem()
+                #     placeholder.setHidden(True)
+                #     child_item.addChild(placeholder)
 
         # 遍历顶层分类并添加到树中
         for name, children in sorted(tree_dict.items()):
@@ -2057,11 +2060,10 @@ QTreeWidget::indicator:checked {
             self.outline_tree.addTopLevelItem(top_level_item)
             if children:
                 add_items_to_tree(top_level_item, children)
-            else:
-                # 为叶子节点添加一个隐藏的子项，以显示折叠图标
-                placeholder = QTreeWidgetItem()
-                placeholder.setHidden(True)
-                top_level_item.addChild(placeholder)
+            # else:  # 删除无下级分类时添加隐藏子项的逻辑
+            #     placeholder = QTreeWidgetItem()
+            #     placeholder.setHidden(True)
+            #     top_level_item.addChild(placeholder)
         
         # 默认折叠所有节点
         self.outline_tree.collapseAll()
@@ -2707,8 +2709,10 @@ QTreeWidget::indicator:checked {
                 logging.info(f"成功使用 {option['name']} 打开路径: {path}")
                 return
             except FileNotFoundError:
+                import logging
                 logging.info(f"未找到 {option['name']}，尝试下一个...")
             except Exception as e:
+                import logging
                 logging.warning(f"启动 {option['name']} 失败: {e}，尝试下一个...")
 
         from PyQt6.QtWidgets import QMessageBox
@@ -4820,6 +4824,10 @@ class MemoTabWidget(QWidget):
         self.btn_red.setCheckable(True)
         self.btn_red.setChecked(False)
         self.btn_red.clicked.connect(lambda: self.switch_tab('red'))
+        self.btn_webshell = QPushButton("WebShell一句话")
+        self.btn_webshell.setCheckable(True)
+        self.btn_webshell.setChecked(False)
+        self.btn_webshell.clicked.connect(lambda: self.switch_tab('webshell'))
         tab_btn_style = """
         QPushButton {
             background: #fff;
@@ -4841,8 +4849,10 @@ class MemoTabWidget(QWidget):
         """
         self.btn_file.setStyleSheet(tab_btn_style)
         self.btn_red.setStyleSheet(tab_btn_style)
+        self.btn_webshell.setStyleSheet(tab_btn_style)
         self.tab_bar.addWidget(self.btn_file)
         self.tab_bar.addWidget(self.btn_red)
+        self.tab_bar.addWidget(self.btn_webshell)
         self.tab_bar.addStretch()
         main_layout.addLayout(self.tab_bar)
         # 分割线
@@ -4863,6 +4873,18 @@ class MemoTabWidget(QWidget):
             "QLineEdit:focus{border:1.5px solid #2196f3;background:#f7fafd;}"
         )
         op_layout.addWidget(self.search_edit, 2)
+        # 新增：webshell密码输入框
+        self.pass_edit = QLineEdit()
+        self.pass_edit.setPlaceholderText("连接密码（默认：saury）")
+        self.pass_edit.setFixedHeight(32)
+        self.pass_edit.setText("saury")
+        self.pass_edit.setStyleSheet(
+            "QLineEdit{font-size:15px;font-family:'Microsoft YaHei',微软雅黑,Arial,sans-serif;"
+            "border-radius:8px;background:#fff;padding:6px 12px;border:1px solid #e0e0e0;}"
+            "QLineEdit:focus{border:1.5px solid #2196f3;background:#f7fafd;}"
+        )
+        self.pass_edit.setVisible(False)
+        op_layout.addWidget(self.pass_edit, 1)
         self.os_combo = QComboBox()
         self.os_combo.addItems(["All", "windows", "linux"])
         self.os_combo.setFixedWidth(90)
@@ -4901,6 +4923,7 @@ class MemoTabWidget(QWidget):
         self.encode_combo.currentTextChanged.connect(self.on_search)
         self.add_btn.clicked.connect(self.add_command)
         self.copy_btn.clicked.connect(self.copy_current_command)
+        self.pass_edit.textChanged.connect(self.on_search)  # 新增：密码输入变化时刷新
         # 内容区
         content_layout = QHBoxLayout()
         content_layout.setContentsMargins(16, 0, 16, 0)
@@ -4920,7 +4943,27 @@ class MemoTabWidget(QWidget):
     def switch_tab(self, tab):
         self.btn_file.setChecked(tab == 'file')
         self.btn_red.setChecked(tab == 'red')
+        self.btn_webshell.setChecked(tab == 'webshell')
         self.encode_combo.setVisible(tab == 'file')
+        if tab == 'webshell':
+            self.os_combo.setVisible(False)
+            self.encode_combo.setVisible(False)
+            self.pass_edit.setVisible(True)
+            self.search_edit.setVisible(True)
+        elif tab == 'file':
+            self.os_combo.setVisible(True)
+            self.os_combo.clear()
+            self.os_combo.addItems(["All", "windows", "linux"])
+            self.encode_combo.setVisible(True)
+            self.pass_edit.setVisible(False)
+            self.search_edit.setVisible(True)
+        else:
+            self.os_combo.setVisible(True)
+            self.os_combo.clear()
+            self.os_combo.addItems(["All", "windows", "linux"])
+            self.encode_combo.setVisible(False)
+            self.pass_edit.setVisible(False)
+            self.search_edit.setVisible(True)
         self.list_widget.set_mode(tab)
         self.on_search()
         self.detail_widget.clear()
@@ -4984,7 +5027,7 @@ class MemoCommandList(QListWidget):
         self.setSelectionMode(QListWidget.SelectionMode.SingleSelection)
         self.setFixedWidth(320)
         self.detail_widget = None
-        self.current_mode = 'file'  # 'file' or 'red'
+        self.current_mode = 'file'  # 'file' or 'red' or 'webshell'
         self.all_cmds = []
         self.parent_tab = parent
         self.itemClicked.connect(self.on_item_clicked)
@@ -5000,6 +5043,8 @@ class MemoCommandList(QListWidget):
         self.clear()
         if self.current_mode == 'file':
             self.data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'file-download-command.json')
+        elif self.current_mode == 'webshell':
+            self.data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'WebShell.json')
         else:
             self.data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'redcmd.json')
         try:
@@ -5030,14 +5075,26 @@ class MemoCommandList(QListWidget):
         self.setItemWidget(header_item, header_widget)
         # ====== 数据行 ======
         filtered = []
-        for cmd in self.all_cmds:
-            meta = ','.join(cmd.get('meta', [])) if 'meta' in cmd else cmd.get('os', 'All')
-            if os_type != 'All' and os_type not in meta:
-                continue
-            text = (cmd.get('name','') + cmd.get('command','') + cmd.get('desc','')).lower()
-            if keyword and keyword.lower() not in text:
-                continue
-            filtered.append(cmd)
+        if self.current_mode == 'webshell':
+            # 只对name字段模糊搜索
+            passwd = self.parent_tab.pass_edit.text() if self.parent_tab and hasattr(self.parent_tab, 'pass_edit') else 'saury'
+            for cmd in self.all_cmds:
+                name = cmd.get('name', '').lower()
+                if keyword and keyword.lower() not in name:
+                    continue
+                # 动态替换命令内容中的saury为自定义密码
+                cmd_copy = dict(cmd)
+                cmd_copy['command'] = cmd_copy.get('command', '').replace('saury', passwd)
+                filtered.append(cmd_copy)
+        else:
+            for cmd in self.all_cmds:
+                meta = ','.join(cmd.get('meta', [])) if 'meta' in cmd else cmd.get('os', 'All')
+                if os_type != 'All' and os_type not in meta:
+                    continue
+                text = (cmd.get('name','') + cmd.get('command','') + cmd.get('desc','')).lower()
+                if keyword and keyword.lower() not in text:
+                    continue
+                filtered.append(cmd)
         for idx, cmd in enumerate(filtered):
             item_widget = QWidget()
             layout = QHBoxLayout(item_widget)
@@ -5181,6 +5238,13 @@ class MemoCommandDetail(QWidget):
         self._cur_encode = encode
         # self.title.setText(cmd.get('name', ''))  # 不再显示标题
         content = cmd.get('command', '')
+        # 新增：webshell模式下动态替换密码
+        passwd = 'saury'
+        if self.parent_tab and hasattr(self.parent_tab, 'parent_tab') and self.parent_tab.parent_tab:
+            if hasattr(self.parent_tab.parent_tab, 'pass_edit'):
+                passwd = self.parent_tab.parent_tab.pass_edit.text()
+        if self.parent_tab and hasattr(self.parent_tab, 'parent_tab') and self.parent_tab.parent_tab and self.parent_tab.parent_tab.list_widget.current_mode == 'webshell':
+            content = content.replace('saury', passwd)
         if encode == 'url':
             from urllib.parse import quote
             content = quote(content)
