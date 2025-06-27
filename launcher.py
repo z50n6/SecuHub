@@ -120,62 +120,91 @@ class ConfirmDialog(QDialog):
         super().__init__(parent)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Dialog)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
-        self.setMinimumSize(380, 220)
-        card = QWidget(self)
-        card.setStyleSheet("""
-            QWidget {
-                background: #fff;
-                border-radius: 20px;
-                border: none;
-            }
-        """)
+        self.setMinimumWidth(400)
+        # 主布局
         main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.addWidget(card)
-        card_layout = QVBoxLayout(card)
-        card_layout.setContentsMargins(0, 0, 0, 0)
-        card_layout.setSpacing(0)
-        # 标题栏
-        title_bar = QWidget()
-        title_bar.setFixedHeight(54)
-        title_bar.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7); border-top-left-radius: 20px; border-top-right-radius: 20px;")
-        title_layout = QHBoxLayout(title_bar)
-        title_layout.setContentsMargins(22, 0, 18, 0)
-        title_icon = QLabel(f"<span style='font-size:22px;'>{icon}</span>")
-        title_icon.setStyleSheet("color: white;")
-        title_layout.addWidget(title_icon)
-        title_text = QLabel(title)
-        title_text.setStyleSheet("font-size: 17px; font-weight: bold; color: white; margin-left: 8px;")
-        title_layout.addWidget(title_text)
-        title_layout.addStretch()
-        close_btn = QPushButton("✕")
-        close_btn.setFixedSize(32, 32)
-        close_btn.setStyleSheet("background: transparent; color: white; border: none; font-size: 20px;")
-        close_btn.clicked.connect(self.reject)
-        title_layout.addWidget(close_btn)
-        card_layout.addWidget(title_bar)
-        # 内容
-        content_label = QLabel(content)
+        self.setStyleSheet("background: transparent;")
+        # 极简卡片容器
+        container = QWidget()
+        container.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        container.setStyleSheet("""
+            QWidget {
+                background: #fff;
+                border-radius: 12px;
+                border: 1px solid #e0e0e0;
+            }
+        """)
+        main_layout.addWidget(container)
+        vbox = QVBoxLayout(container)
+        vbox.setContentsMargins(32, 32, 32, 32)
+        vbox.setSpacing(18)
+        # 图标
+        icon_label = QLabel(icon)
+        icon_label.setFixedSize(36, 36)
+        icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        icon_label.setStyleSheet("font-size: 26px;")
+        vbox.addWidget(icon_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+        # 主标题（直接用title参数，无横条）
+        title_label = QLabel(title)
+        title_label.setStyleSheet("font-size: 18px; font-weight: bold; color: #00c48f; margin-top: 2px;")
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        vbox.addWidget(title_label)
+        # 内容（极简分行高亮）
+        content_label = QLabel()
+        content_label.setWordWrap(True)
         content_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        content_label.setStyleSheet("font-size: 16px; color: #222; font-weight: bold; padding: 36px 0 24px 0;")
-        card_layout.addWidget(content_label)
-        # 按钮
+        content_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        content_label.setStyleSheet("font-size: 15px; color: #222; margin-top: 10px; margin-bottom: 10px;")
+        if "未配置:" in content:
+            parts = content.split("未配置:")
+            main_tip = f'<div style="font-size:15px;font-weight:bold;margin-bottom:8px;">{parts[0].strip()}</div>'
+            if len(parts) > 1:
+                items = [x.strip() for x in parts[1].replace("，", ",").split(",") if x.strip()]
+                item_html = "<br>".join([f'<span style="color:#00c48f;font-weight:bold;">{item}</span>' for item in items])
+                content_label.setText(main_tip + '<div style="margin-top:8px;">未配置：<br>' + item_html + '</div>')
+            else:
+                content_label.setText(main_tip)
+        else:
+            content_label.setText(content)
+        vbox.addWidget(content_label)
+        # 按钮区
         btn_layout = QHBoxLayout()
-        btn_layout.setContentsMargins(0, 0, 0, 18)
-        btn_layout.addStretch()
+        btn_layout.addStretch(1)
         yes_btn = QPushButton(yes_text)
-        yes_btn.setFixedSize(110, 44)
-        yes_btn.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7); color: white; border-radius: 22px; font-size: 16px; font-weight: bold; margin-right: 18px;")
+        yes_btn.setFixedHeight(38)
+        yes_btn.setMinimumWidth(100)
+        yes_btn.setStyleSheet("""
+            QPushButton {
+                background: #00c48f;
+                color: white; font-size: 15px; font-weight: bold;
+                border-radius: 19px; border: none;
+            }
+            QPushButton:hover {
+                background: #00b07d;
+            }
+        """)
         yes_btn.clicked.connect(self.accept)
         btn_layout.addWidget(yes_btn)
         if no_text:
             no_btn = QPushButton(no_text)
-            no_btn.setFixedSize(110, 44)
-            no_btn.setStyleSheet("background: #f2f3f5; color: #495057; border-radius: 22px; font-size: 16px; font-weight: bold;")
+            no_btn.setFixedHeight(38)
+            no_btn.setMinimumWidth(100)
+            no_btn.setStyleSheet("""
+                QPushButton {
+                    background: #f5f5f5; color: #888; font-size: 15px;
+                    border-radius: 19px; border: none;
+                }
+                QPushButton:hover {
+                    background: #e0e0e0; color: #222;
+                }
+            """)
             no_btn.clicked.connect(self.reject)
+            btn_layout.addSpacing(14)
             btn_layout.addWidget(no_btn)
-        btn_layout.addStretch()
-        card_layout.addLayout(btn_layout)
+        btn_layout.addStretch(1)
+        vbox.addSpacing(8)
+        vbox.addLayout(btn_layout)
 
 class Config:
     """配置管理类"""
@@ -184,6 +213,10 @@ class Config:
         self.settings = QSettings("SecuHub", "SecuHub")
         self.config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
         self.theme_list = ["modern_light", "modern_dark"]
+        # 新增环境变量字段
+        self.python_path = ""
+        self.java8_path = ""
+        self.java11_path = ""
         self.load_config()
     
     def load_config(self):
@@ -208,6 +241,10 @@ class Config:
                     self.auto_refresh = data.get("auto_refresh", True)
                     self.search_history = data.get("search_history", [])
                     self.navigation_items = data.get("navigation_items", default_nav_items)
+                    # 新增环境变量字段
+                    self.python_path = data.get("python_path", "")
+                    self.java8_path = data.get("java8_path", "")
+                    self.java11_path = data.get("java11_path", "")
             except Exception as e:
                 logging.error(f"从JSON文件加载配置失败: {e}")
                 # 如果JSON加载失败，从QSettings加载
@@ -233,6 +270,10 @@ class Config:
         self.auto_refresh = self.settings.value("auto_refresh", True)
         self.search_history = self.settings.value("search_history", [])
         self.navigation_items = self.settings.value("navigation_items", default_nav_items)
+        # 新增环境变量字段
+        self.python_path = self.settings.value("python_path", "")
+        self.java8_path = self.settings.value("java8_path", "")
+        self.java11_path = self.settings.value("java11_path", "")
     
     def save_config(self):
         """保存配置"""
@@ -246,6 +287,10 @@ class Config:
         self.settings.setValue("auto_refresh", self.auto_refresh)
         self.settings.setValue("search_history", self.search_history)
         self.settings.setValue("navigation_items", self.navigation_items)
+        # 新增环境变量字段
+        self.settings.setValue("python_path", self.python_path)
+        self.settings.setValue("java8_path", self.java8_path)
+        self.settings.setValue("java11_path", self.java11_path)
         self.settings.sync()
         
         # 同时保存到JSON文件
@@ -258,7 +303,11 @@ class Config:
                 "show_status_bar": self.show_status_bar,
                 "auto_refresh": self.auto_refresh,
                 "search_history": self.search_history,
-                "navigation_items": self.navigation_items
+                "navigation_items": self.navigation_items,
+                # 新增环境变量字段
+                "python_path": self.python_path,
+                "java8_path": self.java8_path,
+                "java11_path": self.java11_path
             }
             with open(self.config_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
@@ -992,21 +1041,35 @@ class ToolLauncherWorker(QObject):
         :param dependency_check: 是否进行依赖检查
         """
         try:
+            from shutil import which
+            import os, sys, subprocess
+            # 获取主窗口config
+            mainwin = QApplication.activeWindow()
+            config = getattr(mainwin, 'config', None)
+            # 选择python/java路径
+            def get_valid_path(cfg_path, default):
+                if cfg_path:
+                    if os.path.isabs(cfg_path) and os.path.isfile(cfg_path):
+                        return cfg_path
+                    elif which(cfg_path):
+                        return cfg_path
+                return default
+            # Windows下隐藏控制台窗口
+            creationflags = 0
+            if sys.platform == "win32":
+                creationflags = subprocess.CREATE_NO_WINDOW
+            # Python依赖检查
             if tool.tool_type == "python" and dependency_check:
                 tool_dir = os.path.dirname(tool.path)
                 req_file = os.path.join(tool_dir, 'requirements.txt')
-                
+                python_path = get_valid_path(config.python_path if config else None, "python")
                 if os.path.exists(req_file):
                     self.installationRequired.emit(tool, 'requirements')
                     return
-
-                cmd = ["python", tool.path]
+                cmd = [python_path, tool.path]
                 if tool.args:
                     cmd.extend(tool.args.split())
-                
-                # 尝试运行一次来检查模块错误
-                process = subprocess.run(cmd, cwd=tool_dir, capture_output=True, text=True, encoding='utf-8', errors='replace')
-                
+                process = subprocess.run(cmd, cwd=tool_dir, capture_output=True, text=True, encoding='utf-8', errors='replace', creationflags=creationflags)
                 if process.returncode != 0:
                     stderr = process.stderr
                     if "ModuleNotFoundError" in stderr:
@@ -1015,15 +1078,9 @@ class ToolLauncherWorker(QObject):
                             module_name = match.group(1)
                             self.installationRequired.emit(tool, module_name)
                             return
-                    # 在测试运行时发生了其他错误
                     self.toolLaunched.emit(tool.name, False, stderr or process.stdout)
                     return
-
-            # 如果我们在这里，意味着：
-            # 1. 它不是一个python工具
-            # 2. 它是一个python工具，并且dependency_check为False（已经安装）
-            # 3. 它是一个python工具，dependency_check为True，但没有发现缺少依赖项
-            
+            # 启动
             if tool.tool_type == "url":
                 QDesktopServices.openUrl(QUrl(tool.path))
                 self.toolLaunched.emit(tool.name, True, "")
@@ -1033,28 +1090,50 @@ class ToolLauncherWorker(QObject):
             else:
                 tool_dir = os.path.dirname(tool.path)
                 cmd = []
-                
-                if tool.tool_type in ["java8_gui", "java11_gui"]:
-                    cmd = ["java", "-jar", tool.path]
-                elif tool.tool_type in ["java8", "java11"]:
-                    cmd = ["java"]
+                if tool.tool_type in ["java8_gui", "java8"]:
+                    java8_path = get_valid_path(config.java8_path if config else None, "java")
+                    if not java8_path or not self._is_exe_valid(java8_path):
+                        self.toolLaunched.emit(tool.name, False, "Java8路径未配置或无效")
+                        return
+                    if tool.tool_type == "java8_gui":
+                        cmd = [java8_path, "-jar", tool.path]
+                    else:
+                        cmd = [java8_path]
+                elif tool.tool_type in ["java11_gui", "java11"]:
+                    java11_path = get_valid_path(config.java11_path if config else None, "java")
+                    if not java11_path or not self._is_exe_valid(java11_path):
+                        self.toolLaunched.emit(tool.name, False, "Java11路径未配置或无效")
+                        return
+                    if tool.tool_type == "java11_gui":
+                        cmd = [java11_path, "-jar", tool.path]
+                    else:
+                        cmd = [java11_path]
                 elif tool.tool_type == "python":
-                    cmd = ["python", tool.path]
+                    python_path = get_valid_path(config.python_path if config else None, "python")
+                    if not python_path or not self._is_exe_valid(python_path):
+                        self.toolLaunched.emit(tool.name, False, "Python路径未配置或无效")
+                        return
+                    cmd = [python_path, tool.path]
                 elif tool.tool_type == "powershell":
                     cmd = ["powershell", "-ExecutionPolicy", "Bypass", "-File", tool.path]
                 elif tool.tool_type == "batch":
                     cmd = [tool.path]
                 else:  # 默认为 exe
                     cmd = [tool.path]
-                
                 if tool.args:
                     cmd.extend(tool.args.split())
-                
-                process = subprocess.Popen(cmd, cwd=tool_dir)
+                process = subprocess.Popen(cmd, cwd=tool_dir, creationflags=creationflags)
                 self.toolLaunched.emit(tool.name, True, str(process.pid))
-                
         except Exception as e:
             self.toolLaunched.emit(tool.name, False, str(e))
+    def _is_exe_valid(self, path):
+        import os
+        if not path:
+            return False
+        if os.path.isabs(path):
+            return os.path.isfile(path)
+        from shutil import which
+        return which(path) is not None
 
 class ConfigSaverWorker(QObject):
     """在工作线程中保存配置"""
@@ -1518,7 +1597,32 @@ class MainWindow(QMainWindow):
         # 启动时强制modern_light并apply_theme
         self.config.theme = "modern_light"
         self.apply_theme()
+        # 启动时检测环境变量
+        QTimer.singleShot(100, self.check_env_paths)
     
+    def check_env_paths(self):
+        """检测环境变量配置和有效性"""
+        import os
+        missing = []
+        if not self.config.python_path:
+            missing.append("Python解释器路径")
+        if not self.config.java8_path:
+            missing.append("Java8路径")
+        if not self.config.java11_path:
+            missing.append("Java11路径")
+        if missing:
+            msg = f"⚠️ 请在设置菜单中配置环境变量: {', '.join(missing)}"
+            self.statusBar().showMessage(msg, 15000)  # 显示15秒
+
+    def _is_exe_valid(self, path):
+        import os
+        if not path:
+            return False
+        if os.path.isabs(path):
+            return os.path.isfile(path)
+        from shutil import which
+        return which(path) is not None
+
     def showEvent(self, event):
         """在窗口首次显示时加载初始数据，避免布局问题"""
         super().showEvent(event)
@@ -2325,6 +2429,12 @@ QTreeWidget::indicator:checked {
         
         # 添加快捷键
         self.setup_shortcuts()
+        
+        # 设置菜单
+        settings_menu = menubar.addMenu("设置")
+        env_action = QAction("环境变量配置", self)
+        env_action.triggered.connect(self.show_settings_dialog)
+        settings_menu.addAction(env_action)
     
     def setup_shortcuts(self):
         """设置快捷键"""
@@ -4527,6 +4637,15 @@ SecuHub 工具统计报告
             except Exception as e:
                 QMessageBox.critical(self, "错误", f"保存失败: {e}")
             self.refresh_download_cmd_table()
+    def show_settings_dialog(self):
+        try:
+            print("[DEBUG] 打开SettingsDialog弹窗")
+            self.config.load_config()  # 优化：每次弹窗前都重新加载配置
+            dialog = SettingsDialog(self.config, self)
+            result = dialog.exec()
+            print(f"[DEBUG] SettingsDialog弹窗关闭，result={result}")
+        except Exception as e:
+            print(f"[ERROR] 打开SettingsDialog弹窗异常: {e}")
 
 class AddDownloadCommandDialog(QDialog):
     """添加/编辑文件下载命令对话框"""
@@ -5239,7 +5358,215 @@ class MemoCommandDialog(QDialog):
             "meta": [self.os_combo.currentText()]
         }
 
+# ========== 环境变量设置对话框 ==========
+class SettingsDialog(QDialog):
+    def __init__(self, config, parent=None):
+        print("[DEBUG] 进入SettingsDialog.__init__")
+        super().__init__(parent)
+        print("[DEBUG] super().__init__ 完成")
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Dialog)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
+        self.setMinimumWidth(540)
+        self.config = config
+        self.setWindowTitle("环境变量配置")
+        print("[DEBUG] 基本属性设置完成")
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        self.setStyleSheet("background: transparent;")
+        print("[DEBUG] main_layout 创建完成")
+        # 优化浏览按钮样式（提前定义）
+        browse_btn_style = """
+            QPushButton {
+                background: #fff;
+                color: #00c48f;
+                font-size: 16px;
+                font-weight: bold;
+                border: none !important;
+                outline: none !important;
+                min-width: 48px;
+                min-height: 32px;
+            }
+            QPushButton:hover {
+                background: #f2fdfb;
+                color: #009e6d;
+                border: none !important;
+                outline: none !important;
+            }
+            QPushButton:pressed {
+                background: #e6f7f3;
+                color: #007a54;
+                border: none !important;
+                outline: none !important;
+            }
+        """
+        print("[DEBUG] browse_btn_style 定义完成")
+        # 容器
+        container = QWidget()
+        container.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        container.setStyleSheet("""
+            QWidget {
+                background: #fdfdfe;
+                border-radius: 14px;
+            }
+        """)
+        main_layout.addWidget(container)
+        print("[DEBUG] container 创建并添加到main_layout")
+        container_layout = QVBoxLayout(container)
+        container_layout.setContentsMargins(0, 0, 0, 20)
+        container_layout.setSpacing(0)
+        print("[DEBUG] container_layout 创建完成")
+        # 标题栏
+        title_bar = QWidget()
+        title_bar.setFixedHeight(50)
+        title_bar.setStyleSheet("""
+            QWidget {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7);
+                border-top-left-radius: 14px;
+                border-top-right-radius: 14px;
+            }
+        """)
+        title_layout = QHBoxLayout(title_bar)
+        title_layout.setContentsMargins(18, 0, 18, 0)
+        title_text = QLabel("环境变量配置")
+        title_text.setStyleSheet("font-size: 16px; font-weight: bold; color: white; background: transparent;")
+        title_layout.addWidget(title_text)
+        title_layout.addStretch()
+        close_btn = QPushButton("✕")
+        close_btn.setFixedSize(32, 32)
+        close_btn.setStyleSheet("background: transparent; color: white; border: none; font-size: 18px;")
+        close_btn.clicked.connect(self.reject)
+        title_layout.addWidget(close_btn)
+        container_layout.addWidget(title_bar)
+        print("[DEBUG] 标题栏创建完成")
+        # 表单区
+        form_layout = QFormLayout()
+        form_layout.setContentsMargins(30, 24, 30, 18)
+        form_layout.setSpacing(18)
+        form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
+        print("[DEBUG] form_layout 创建完成")
+        # Python
+        self.python_edit = QLineEdit()
+        self.python_edit.setPlaceholderText("如: C:/Python311/python.exe 或 python")
+        self.python_edit.setText(config.python_path or "")
+        self.python_btn = QPushButton("📁")
+        self.python_btn.setToolTip("选择文件")
+        self.python_btn.setFixedSize(60, 32)
+        self.python_btn.setStyleSheet(browse_btn_style)
+        self.python_btn.clicked.connect(self.browse_python)
+        py_layout = QHBoxLayout()
+        py_layout.addWidget(self.python_edit)
+        py_layout.addWidget(self.python_btn)
+        form_layout.addRow("Python路径:", py_layout)
+        print("[DEBUG] Python行创建完成")
+        # Java8
+        self.java8_edit = QLineEdit()
+        self.java8_edit.setPlaceholderText("如: C:/Program Files/Java/jdk8/bin/java.exe")
+        self.java8_edit.setText(config.java8_path or "")
+        self.java8_btn = QPushButton("📁")
+        self.java8_btn.setToolTip("选择文件")
+        self.java8_btn.setFixedSize(60, 32)
+        self.java8_btn.setStyleSheet(browse_btn_style)
+        self.java8_btn.clicked.connect(self.browse_java8)
+        j8_layout = QHBoxLayout()
+        j8_layout.addWidget(self.java8_edit)
+        j8_layout.addWidget(self.java8_btn)
+        form_layout.addRow("Java8路径:", j8_layout)
+        print("[DEBUG] Java8行创建完成")
+        # Java11
+        self.java11_edit = QLineEdit()
+        self.java11_edit.setPlaceholderText("如: C:/Program Files/Java/jdk-11/bin/java.exe")
+        self.java11_edit.setText(config.java11_path or "")
+        self.java11_btn = QPushButton("📁")
+        self.java11_btn.setToolTip("选择文件")
+        self.java11_btn.setFixedSize(60, 32)
+        self.java11_btn.setStyleSheet(browse_btn_style)
+        self.java11_btn.clicked.connect(self.browse_java11)
+        j11_layout = QHBoxLayout()
+        j11_layout.addWidget(self.java11_edit)
+        j11_layout.addWidget(self.java11_btn)
+        form_layout.addRow("Java11路径:", j11_layout)
+        print("[DEBUG] Java11行创建完成")
+        container_layout.addLayout(form_layout)
+        print("[DEBUG] 表单区添加完成")
+        # ========== 按钮区 ==========
+        btn_layout = QHBoxLayout()
+        btn_layout.setContentsMargins(0, 18, 0, 0)
+        btn_layout.addStretch()
+        self.save_btn = QPushButton("保存")
+        self.save_btn.setFixedSize(120, 40)
+        self.save_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.save_btn.setStyleSheet("""
+            QPushButton {
+                background: #00c48f;
+                color: white; border-radius: 20px; font-size: 16px; font-weight: bold; border: none;
+            }
+            QPushButton:hover { background: #009e6d; }
+        """)
+        self.cancel_btn = QPushButton("取消")
+        self.cancel_btn.setFixedSize(120, 40)
+        self.cancel_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.cancel_btn.setStyleSheet("""
+            QPushButton {
+                background: #e9ecef; color: #495057; border-radius: 20px; font-size: 16px; font-weight: bold; border: none;
+            }
+            QPushButton:hover { background: #dee2e6; }
+        """)
+        self.save_btn.clicked.connect(self.save_settings)
+        self.cancel_btn.clicked.connect(self.reject)
+        btn_layout.addWidget(self.cancel_btn)
+        btn_layout.addWidget(self.save_btn)
+        container_layout.addLayout(btn_layout)
 
+        # 初始化输入框内容
+        self.refresh_env_fields()
+
+    def refresh_env_fields(self):
+        """刷新环境变量输入框内容"""
+        self.python_edit.setText(self.config.python_path or "")
+        self.java8_edit.setText(self.config.java8_path or "")
+        self.java11_edit.setText(self.config.java11_path or "")
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.refresh_env_fields()
+
+    def save_settings(self):
+        # 保存输入内容到config
+        self.config.python_path = self.python_edit.text().strip()
+        self.config.java8_path = self.java8_edit.text().strip()
+        self.config.java11_path = self.java11_edit.text().strip()
+        self.config.save_config()
+        self.accept()
+
+    # ========== 支持窗口拖动 ==========
+    def mousePressEvent(self, event):
+        try:
+            if event.button() == Qt.MouseButton.LeftButton:
+                self._drag_pos = event.globalPos() - self.frameGeometry().topLeft()
+                event.accept()
+        except Exception as e:
+            pass  # 防止极端情况下拖动报错
+
+    def mouseMoveEvent(self, event):
+        try:
+            if event.buttons() == Qt.MouseButton.LeftButton and hasattr(self, '_drag_pos'):
+                self.move(event.globalPos() - self._drag_pos)
+                event.accept()
+        except Exception as e:
+            pass
+
+    def browse_python(self):
+        path, _ = QFileDialog.getOpenFileName(self, "选择Python解释器", "", "可执行文件 (*.exe);;所有文件 (*)")
+        if path:
+            self.python_edit.setText(path)
+    def browse_java8(self):
+        path, _ = QFileDialog.getOpenFileName(self, "选择Java8可执行文件", "", "可执行文件 (*.exe);;所有文件 (*)")
+        if path:
+            self.java8_edit.setText(path)
+    def browse_java11(self):
+        path, _ = QFileDialog.getOpenFileName(self, "选择Java11可执行文件", "", "可执行文件 (*.exe);;所有文件 (*)")
+        if path:
+            self.java11_edit.setText(path)
 
 if __name__ == "__main__":
     logging.info("程序开始运行...")

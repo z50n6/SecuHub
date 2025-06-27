@@ -6,7 +6,7 @@ REM 获取当前脚本所在目录
 set "SCRIPT_DIR=%~dp0"
 
 REM 设置快捷方式名称
-set "SHORTCUT_NAME=AppLauncher.lnk"
+set "SHORTCUT_NAME=SecuHub.lnk"
 
 REM 获取当前用户桌面路径
 for /f "skip=2 tokens=2,*" %%A in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v Desktop') do set "DESKTOP=%%B"
