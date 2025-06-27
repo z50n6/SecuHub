@@ -49,6 +49,71 @@ logging.basicConfig(
     ]
 )
 
+# ========== 主题管理器 ==========
+class ThemeManager:
+    """主题管理器，自动发现和管理主题"""
+    
+    def __init__(self):
+        self.themes_dir = os.path.join(os.path.dirname(__file__), 'themes')
+        self.available_themes = self._discover_themes()
+    
+    def _discover_themes(self):
+        """自动发现可用主题"""
+        themes = {}
+        if os.path.exists(self.themes_dir):
+            for file in os.listdir(self.themes_dir):
+                if file.endswith('.qss') and not file.startswith('scrollbar_'):
+                    theme_name = file[:-4]  # 移除 .qss 扩展名
+                    themes[theme_name] = os.path.join(self.themes_dir, file)
+        return themes
+    
+    def get_theme_names(self):
+        """获取所有可用主题名称"""
+        return list(self.available_themes.keys())
+    
+    def load_theme(self, theme_name):
+        """加载指定主题的QSS内容"""
+        theme_file = self.available_themes.get(theme_name)
+        if theme_file and os.path.exists(theme_file):
+            try:
+                with open(theme_file, 'r', encoding='utf-8') as f:
+                    return f.read()
+            except Exception as e:
+                logging.error(f"加载主题 {theme_name} 失败: {e}")
+                return ""
+        return ""
+    
+    def load_scrollbar(self, theme_name):
+        """加载指定主题的滚动条样式"""
+        if theme_name == 'cyberpunk':
+            scrollbar_file = os.path.join(self.themes_dir, 'scrollbar_cyberpunk.qss')
+        else:
+            scrollbar_file = os.path.join(self.themes_dir, 'scrollbar_default.qss')
+        
+        if os.path.exists(scrollbar_file):
+            try:
+                with open(scrollbar_file, 'r', encoding='utf-8') as f:
+                    return f.read()
+            except Exception as e:
+                logging.error(f"加载滚动条样式失败: {e}")
+                return ""
+        return ""
+    
+    def get_theme_display_name(self, theme_name):
+        """获取主题的显示名称"""
+        display_names = {
+            'modern_light': '🌞 现代浅色',
+            'modern_dark': '🌙 现代深色',
+            'tranquil_green': '🌿 静谧绿',
+            'deep_ocean': '🌊 深海蓝',
+            'cyberpunk': '🤖 科技风',
+            'sunset_orange': '🌅 日落橙',
+            'midnight_purple': '🌌 午夜紫',
+            'forest_green': '🌲 森林绿',
+            'ice_blue': '❄️ 冰蓝'
+        }
+        return display_names.get(theme_name, theme_name)
+
 # ========== 全局唯一美化弹窗 ConfirmDialog ==========
 class ConfirmDialog(QDialog):
     def __init__(self, parent=None, title="提示", content="操作成功", icon="ℹ️", yes_text="确定", no_text=None):
@@ -1443,6 +1508,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.config = Config()
         self.cache_manager = CacheManager()
+        self.theme_manager = ThemeManager()  # 添加主题管理器
         self._initial_load_done = False
         self.nav_buttons = {}  # 存储导航按钮
         self.init_workers()
@@ -2205,6 +2271,30 @@ QTreeWidget::indicator:checked {
         cyberpunk_action.triggered.connect(partial(self.set_theme, "cyberpunk"))
         theme_menu.addAction(cyberpunk_action)
         
+        # 新增主题
+        sunset_orange_action = QAction("🌅 日落橙", self)
+        sunset_orange_action.triggered.connect(partial(self.set_theme, "sunset_orange"))
+        theme_menu.addAction(sunset_orange_action)
+        
+        midnight_purple_action = QAction("🌌 午夜紫", self)
+        midnight_purple_action.triggered.connect(partial(self.set_theme, "midnight_purple"))
+        theme_menu.addAction(midnight_purple_action)
+        
+        forest_green_action = QAction("🌲 森林绿", self)
+        forest_green_action.triggered.connect(partial(self.set_theme, "forest_green"))
+        theme_menu.addAction(forest_green_action)
+        
+        ice_blue_action = QAction("❄️ 冰蓝", self)
+        ice_blue_action.triggered.connect(partial(self.set_theme, "ice_blue"))
+        theme_menu.addAction(ice_blue_action)
+        
+        theme_menu.addSeparator()
+        
+        # 主题预览功能
+        # preview_action = QAction("👁️ 主题预览", self)
+        # preview_action.triggered.connect(self.show_theme_preview)
+        # theme_menu.addAction(preview_action)
+        
         theme_menu.addSeparator()
         
         # 统计菜单
@@ -2746,402 +2836,166 @@ QTreeWidget::indicator:checked {
     def apply_theme(self):
         """应用主题"""
         theme = self.config.theme
-        if theme == "modern_light":
-            qss = """
-            QMainWindow { background: #fafbfc; }
-            QWidget { background: #fafbfc; color: #2c3e50; font-family: 'Microsoft YaHei', '微软雅黑', Arial; }
-            QLineEdit, QTextEdit, QComboBox, QMenu, QListWidget, QTreeWidget { 
-                background: #ffffff; color: #2c3e50; border: 1px solid #e1e8ed; border-radius: 6px; 
-                padding: 8px; font-size: 13px;
+        qss = self.theme_manager.load_theme(theme)
+        scrollbar_qss = self.theme_manager.load_scrollbar(theme)
+        self.setStyleSheet(qss + scrollbar_qss)
+    
+    def show_theme_preview(self):
+        """显示主题预览对话框"""
+        dialog = QDialog(self)
+        dialog.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Dialog)
+        dialog.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
+        dialog.setMinimumSize(800, 600)
+        # 主布局
+        main_layout = QVBoxLayout(dialog)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+        # 标题栏
+        title_bar = QWidget()
+        title_bar.setFixedHeight(60)
+        title_bar.setStyleSheet("""
+            QWidget {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7);
+                border-top-left-radius: 18px;
+                border-top-right-radius: 18px;
             }
-            QLineEdit:focus, QTextEdit:focus, QComboBox:focus { 
-                border: 2px solid #1da1f2; background: #ffffff; 
-            }
-            QPushButton, QDialogButtonBox QPushButton, QMessageBox QPushButton { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1da1f2, stop:1 #0d8bd9); 
-                color: #fff; 
-                border-radius: 8px; 
-                padding: 8px 16px; 
-                font-weight: 600; 
-                font-size: 13px;
-                border: none;
-                min-width: 80px;
-            }
-            QPushButton:hover, QDialogButtonBox QPushButton:hover, QMessageBox QPushButton:hover { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0d8bd9, stop:1 #1da1f2); 
-            }
-            QPushButton:pressed, QDialogButtonBox QPushButton:pressed, QMessageBox QPushButton:pressed { 
-                background: #0c7bb8; 
-            }
-            QPushButton:disabled, QDialogButtonBox QPushButton:disabled, QMessageBox QPushButton:disabled {
-                background: #b0b0b0;
-                color: #f5f5f5;
-            }
-            QDialog, QMessageBox, QInputDialog {
+        """)
+        title_layout = QHBoxLayout(title_bar)
+        title_layout.setContentsMargins(20, 0, 20, 0)
+        title_icon = QLabel("🎨")
+        title_icon.setStyleSheet("font-size: 26px; color: white; background: transparent;")
+        title_layout.addWidget(title_icon)
+        title_text = QLabel("主题预览")
+        title_text.setStyleSheet("font-size: 20px; font-weight: bold; color: white; background: transparent; margin-left: 8px;")
+        title_layout.addWidget(title_text)
+        title_layout.addStretch()
+        close_btn = QPushButton("✕")
+        close_btn.setFixedSize(36, 36)
+        close_btn.setStyleSheet("""
+            QPushButton { background: rgba(255,255,255,0.18); border: none; border-radius: 18px; color: white; font-size: 18px; font-weight: bold; }
+            QPushButton:hover { background: rgba(255,255,255,0.32); }
+            QPushButton:pressed { background: rgba(0,0,0,0.12); }
+        """)
+        close_btn.clicked.connect(dialog.accept)
+        title_layout.addWidget(close_btn)
+        # 拖动支持
+        dialog.offset = None
+        def mousePressEvent(event):
+            if event.button() == Qt.MouseButton.LeftButton:
+                dialog.offset = event.globalPosition().toPoint() - dialog.pos()
+        def mouseMoveEvent(event):
+            if dialog.offset is not None and event.buttons() == Qt.MouseButton.LeftButton:
+                dialog.move(event.globalPosition().toPoint() - dialog.offset)
+        def mouseReleaseEvent(event):
+            dialog.offset = None
+        title_bar.mousePressEvent = mousePressEvent
+        title_bar.mouseMoveEvent = mouseMoveEvent
+        title_bar.mouseReleaseEvent = mouseReleaseEvent
+        main_layout.addWidget(title_bar)
+        # 主体内容
+        content = QWidget()
+        content.setStyleSheet("""
+            QWidget {
                 background: #fff;
-                border-radius: 14px;
+                border-bottom-left-radius: 18px;
+                border-bottom-right-radius: 18px;
             }
-            QLabel, QTextBrowser {
-                font-family: 'Microsoft YaHei', '微软雅黑', Arial;
-            }
-            QMenuBar { background: #ffffff; color: #2c3e50; border-bottom: 1px solid #e1e8ed; }
-            QMenuBar::item:selected { background: #f7f9fa; border-radius: 4px; }
-            QMenu { background: #ffffff; color: #2c3e50; border: 1px solid #e1e8ed; border-radius: 6px; padding: 4px; }
-            QMenu::item:selected { background: #f7f9fa; border-radius: 4px; }
-            """
-        elif theme == "modern_dark":
-            qss = """
-            QMainWindow { background: #1a1a1a; }
-            QWidget { background: #1a1a1a; color: #e0e0e0; font-family: 'Microsoft YaHei', '微软雅黑', Arial; }
-            QLineEdit, QTextEdit, QComboBox, QMenu, QListWidget, QTreeWidget { 
-                background: #2d2d2d; color: #e0e0e0; border: 2px solid #404040; border-radius: 8px; 
-                padding: 8px; font-size: 13px;
-            }
-            QLineEdit:focus, QTextEdit:focus, QComboBox:focus { 
-                border: 2px solid #00d4ff; background: #333333; 
-            }
-            QPushButton, QDialogButtonBox QPushButton, QMessageBox QPushButton { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #00d4ff, stop:1 #0099cc); 
-                color: #fff; 
-                border-radius: 8px; 
-                padding: 10px 16px; 
-                font-weight: bold; 
-                font-size: 13px;
-                border: none;
-                min-width: 80px;
-            }
-            QPushButton:hover, QDialogButtonBox QPushButton:hover, QMessageBox QPushButton:hover { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0099cc, stop:1 #00d4ff); 
-            }
-            QPushButton:pressed, QDialogButtonBox QPushButton:pressed, QMessageBox QPushButton:pressed { 
-                background: #006699; 
-            }
-            QPushButton:disabled, QDialogButtonBox QPushButton:disabled, QMessageBox QPushButton:disabled {
-                background: #444;
-                color: #888;
-            }
-            QDialog, QMessageBox, QInputDialog {
-                background: #23272e;
-                border-radius: 14px;
-            }
-            QLabel, QTextBrowser {
-                font-family: 'Microsoft YaHei', '微软雅黑', Arial;
-            }
-            QMenuBar { background: #1a1a1a; color: #e0e0e0; border-bottom: 1px solid #404040; }
-            QMenuBar::item:selected { background: #333333; border-radius: 4px; }
-            QMenu { background: #2d2d2d; color: #e0e0e0; border: 1px solid #404040; border-radius: 8px; padding: 4px; }
-            QMenu::item:selected { background: #333333; border-radius: 4px; }
-            """
-        elif theme == "tranquil_green":
-            qss = """
-            QMainWindow { background: #f5fdf5; }
-            QWidget { background: #f5fdf5; color: #3a4f3f; font-family: 'Microsoft YaHei', '微软雅黑', Arial; }
-            QLineEdit, QTextEdit, QComboBox, QMenu, QListWidget, QTreeWidget { 
-                background: #ffffff; color: #3a4f3f; border: 1px solid #d8e8d8; border-radius: 6px; 
-                padding: 8px; font-size: 13px;
-            }
-            QLineEdit:focus, QTextEdit:focus, QComboBox:focus { 
-                border: 2px solid #4caf50; background: #ffffff; 
-            }
-            QPushButton, QDialogButtonBox QPushButton, QMessageBox QPushButton { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #4caf50, stop:1 #81c784); 
-                color: #fff; 
-                border-radius: 8px; 
-                padding: 8px 16px; 
-                font-weight: 600; 
-                font-size: 13px;
-                border: none;
-                min-width: 80px;
-            }
-            QPushButton:hover, QDialogButtonBox QPushButton:hover, QMessageBox QPushButton:hover { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #66bb6a, stop:1 #a5d6a7); 
-            }
-            QPushButton:pressed, QDialogButtonBox QPushButton:pressed, QMessageBox QPushButton:pressed { 
-                background: #43a047; 
-            }
-            QPushButton:disabled, QDialogButtonBox QPushButton:disabled, QMessageBox QPushButton:disabled {
-                background: #c8e6c9;
-                color: #a5d6a7;
-            }
-            QDialog, QMessageBox, QInputDialog {
-                background: #f5fdf5;
-                border-radius: 14px;
-            }
-            QMenuBar { background: #ffffff; color: #3a4f3f; border-bottom: 1px solid #e8f5e9; }
-            QMenuBar::item:selected { background: #e8f5e9; border-radius: 4px; }
-            QMenu { background: #ffffff; color: #3a4f3f; border: 1px solid #e8f5e9; border-radius: 6px; padding: 4px; }
-            QMenu::item:selected { background: #e8f5e9; border-radius: 4px; }
-            """
-        elif theme == "deep_ocean":
-            qss = """
-            QMainWindow { background: #0c142c; }
-            QWidget { background: #0c142c; color: #d0d5e8; font-family: 'Microsoft YaHei', '微软雅黑', Arial; }
-            QLineEdit, QTextEdit, QComboBox, QMenu, QListWidget, QTreeWidget { 
-                background: #1a2340; color: #d0d5e8; border: 1px solid #2a3459; border-radius: 6px; 
-                padding: 8px; font-size: 13px;
-            }
-            QLineEdit:focus, QTextEdit:focus, QComboBox:focus { 
-                border: 2px solid #3d8bff; background: #1e2a4a; 
-            }
-            QPushButton, QDialogButtonBox QPushButton, QMessageBox QPushButton { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #3d8bff, stop:1 #5a9fff); 
-                color: #fff; 
-                border-radius: 8px; 
-                padding: 8px 16px; 
-                font-weight: 600; 
-                font-size: 13px;
-                border: none;
-                min-width: 80px;
-            }
-            QPushButton:hover, QDialogButtonBox QPushButton:hover, QMessageBox QPushButton:hover { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #5a9fff, stop:1 #7abaff); 
-            }
-            QPushButton:pressed, QDialogButtonBox QPushButton:pressed, QMessageBox QPushButton:pressed { 
-                background: #2e7ae5; 
-            }
-            QPushButton:disabled, QDialogButtonBox QPushButton:disabled, QMessageBox QPushButton:disabled {
-                background: #2a3459;
-                color: #55628a;
-            }
-            QDialog, QMessageBox, QInputDialog {
-                background: #131c38;
-                border-radius: 14px;
-            }
-            QMenuBar { background: #1a2340; color: #d0d5e8; border-bottom: 1px solid #2a3459; }
-            QMenuBar::item:selected { background: #2a3459; border-radius: 4px; }
-            QMenu { background: #1a2340; color: #d0d5e8; border: 1px solid #2a3459; border-radius: 6px; padding: 4px; }
-            QMenu::item:selected { background: #2a3459; border-radius: 4px; }
-            """
-        elif theme == "cyberpunk":
-            qss = """
-            QMainWindow { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #0a0a0a, stop:0.3 #1a0a1a, stop:0.7 #0a1a0a, stop:1 #0a0a0a);
-                border: 2px solid #00ffff;
-                border-radius: 10px;
-            }
-            QWidget { 
-                background: transparent; 
-                color: #00ffff; 
-                font-family: 'Microsoft YaHei', '微软雅黑', 'Consolas', monospace; 
-                font-weight: bold;
-            }
-            QLineEdit, QTextEdit, QComboBox, QMenu, QListWidget, QTreeWidget { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #1a1a2e, stop:1 #16213e); 
-                color: #00ffff; 
-                border: 2px solid #00ffff; 
-                border-radius: 8px; 
-                padding: 10px; 
-                font-size: 13px;
-                box-shadow: 0 0 10px #00ffff;
-            }
-            QLineEdit:focus, QTextEdit:focus, QComboBox:focus { 
-                border: 3px solid #ff00ff; 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #2a2a4e, stop:1 #26264e); 
-                box-shadow: 0 0 15px #ff00ff;
-            }
-            QPushButton, QDialogButtonBox QPushButton, QMessageBox QPushButton { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #ff00ff, stop:0.5 #00ffff, stop:1 #ff00ff); 
-                color: #000000; 
-                border-radius: 10px; 
-                padding: 12px 20px; 
-                font-weight: bold; 
-                font-size: 14px;
-                border: 2px solid #00ffff;
-                min-width: 100px;
-                box-shadow: 0 0 10px #00ffff;
-            }
-            QPushButton:hover, QDialogButtonBox QPushButton:hover, QMessageBox QPushButton:hover { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #00ffff, stop:0.5 #ff00ff, stop:1 #00ffff); 
-                box-shadow: 0 0 20px #ff00ff;
-                transform: scale(1.05);
-            }
-            QPushButton:pressed, QDialogButtonBox QPushButton:pressed, QMessageBox QPushButton:pressed { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #800080, stop:1 #008080); 
-                box-shadow: 0 0 5px #00ffff;
-            }
-            QPushButton:disabled, QDialogButtonBox QPushButton:disabled, QMessageBox QPushButton:disabled {
-                background: #333333;
-                color: #666666;
-                border: 1px solid #666666;
-                box-shadow: none;
-            }
-            QDialog, QMessageBox, QInputDialog {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #0a0a0a, stop:1 #1a0a1a);
-                border: 2px solid #00ffff;
-                border-radius: 15px;
-                box-shadow: 0 0 20px #00ffff;
-            }
-            QLabel, QTextBrowser {
-                font-family: 'Microsoft YaHei', '微软雅黑', 'Consolas', monospace;
-                color: #00ffff;
-                font-weight: bold;
-            }
-            QMenuBar { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, 
-                    stop:0 #1a1a2e, stop:1 #16213e); 
-                color: #00ffff; 
-                border-bottom: 2px solid #00ffff; 
-                font-weight: bold;
-            }
-            QMenuBar::item:selected { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #ff00ff, stop:1 #00ffff); 
-                color: #000000;
-                border-radius: 6px; 
-                padding: 4px 8px;
-            }
-            QMenu { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #1a1a2e, stop:1 #16213e); 
-                color: #00ffff; 
-                border: 2px solid #00ffff; 
-                border-radius: 10px; 
-                padding: 6px; 
-                font-weight: bold;
-                box-shadow: 0 0 15px #00ffff;
-            }
-            QMenu::item:selected { 
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #ff00ff, stop:1 #00ffff); 
-                color: #000000;
-                border-radius: 6px; 
-                padding: 4px 8px;
-            }
-            QTreeWidget, QListWidget {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #1a1a2e, stop:1 #16213e);
-                border: 2px solid #00ffff;
-                border-radius: 10px;
-                color: #00ffff;
-                font-weight: bold;
-                alternate-background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #2a2a4e, stop:1 #26264e);
-            }
-            QTreeWidget::item:selected, QListWidget::item:selected {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #ff00ff, stop:1 #00ffff);
-                color: #000000;
-                border-radius: 6px;
-            }
-            QTreeWidget::item:hover, QListWidget::item:hover {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #2a2a4e, stop:1 #26264e);
-                border-radius: 6px;
-            }
-            QTabWidget::pane {
-                border: 2px solid #00ffff;
-                border-radius: 10px;
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #1a1a2e, stop:1 #16213e);
-            }
-            QTabBar::tab {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #1a1a2e, stop:1 #16213e);
-                color: #00ffff;
-                border: 2px solid #00ffff;
-                border-bottom: none;
-                border-radius: 8px 8px 0 0;
-                padding: 8px 16px;
-                font-weight: bold;
-            }
-            QTabBar::tab:selected {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #ff00ff, stop:1 #00ffff);
-                color: #000000;
-            }
-            QTabBar::tab:hover {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #2a2a4e, stop:1 #26264e);
-            }
-            QStatusBar {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, 
-                    stop:0 #1a1a2e, stop:1 #16213e);
-                color: #00ffff;
-                border-top: 2px solid #00ffff;
-                font-weight: bold;
-            }
-            QToolTip {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #1a1a2e, stop:1 #16213e);
-                color: #00ffff;
-                border: 2px solid #00ffff;
+        """)
+        content_layout = QHBoxLayout(content)
+        content_layout.setContentsMargins(20, 20, 20, 20)
+        content_layout.setSpacing(20)
+        # 左侧主题列表
+        theme_list = QListWidget()
+        theme_list.setFixedWidth(200)
+        theme_list.setStyleSheet("""
+            QListWidget {
+                border: 1px solid #e1e8ed;
                 border-radius: 8px;
                 padding: 8px;
-                font-weight: bold;
             }
-            """
-        else:
-            qss = ""
-        # 在原有qss后拼接滚动条QSS
-        scrollbar_qss = '''
-        QScrollBar:vertical {
-            width: 6px;
-            background: transparent;
-            margin: 10px 2px 10px 0;
-        }
-        QScrollBar::handle:vertical {
-            background: #e6eef6;
-            min-height: 40px;
-            border-radius: 3px;
-            border: none;
-        }
-        QScrollBar::handle:vertical:hover {
-            background: #b5d3f5;
-        }
-        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-            height: 0;
-            background: none;
-            border: none;
-        }
-        QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-            background: none;
-        }
-        '''
-        
-        # 为科技风主题添加特殊的滚动条样式
-        if theme == "cyberpunk":
-            scrollbar_qss = '''
-            QScrollBar:vertical {
-                width: 8px;
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #1a1a2e, stop:1 #16213e);
-                margin: 10px 2px 10px 0;
-                border-radius: 4px;
-                border: 1px solid #00ffff;
+            QListWidget::item {
+                padding: 12px;
+                border-radius: 6px;
+                margin: 2px 0;
             }
-            QScrollBar::handle:vertical {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #ff00ff, stop:1 #00ffff);
-                min-height: 40px;
-                border-radius: 4px;
-                border: none;
-                box-shadow: 0 0 5px #00ffff;
+            QListWidget::item:selected {
+                background: #1da1f2;
+                color: white;
             }
-            QScrollBar::handle:vertical:hover {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
-                    stop:0 #00ffff, stop:1 #ff00ff);
-                box-shadow: 0 0 10px #ff00ff;
+            QListWidget::item:hover {
+                background: #f7f9fa;
             }
-            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-                height: 0;
-                background: none;
-                border: none;
-            }
-            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-                background: none;
-            }
-            '''
-        
-        qss = qss + scrollbar_qss
-        self.setStyleSheet(qss)
-    
+        """)
+        # 右侧预览区域
+        preview_area = QWidget()
+        preview_layout = QVBoxLayout(preview_area)
+        preview_layout.setContentsMargins(0, 0, 0, 0)
+        preview_layout.setSpacing(15)
+        # 预览标题
+        preview_title = QLabel("主题预览")
+        preview_title.setStyleSheet("font-size: 18px; font-weight: bold; color: #2c3e50;")
+        preview_layout.addWidget(preview_title)
+        # 预览内容区域
+        preview_content = QWidget()
+        preview_content.setStyleSheet("border: 1px solid #e1e8ed; border-radius: 8px; padding: 20px;")
+        preview_content_layout = QVBoxLayout(preview_content)
+        preview_content_layout.setSpacing(15)
+        # 模拟按钮
+        test_button = QPushButton("测试按钮")
+        test_button.setFixedSize(120, 40)
+        preview_content_layout.addWidget(test_button)
+        # 模拟输入框
+        test_input = QLineEdit()
+        test_input.setPlaceholderText("测试输入框")
+        test_input.setFixedHeight(35)
+        preview_content_layout.addWidget(test_input)
+        # 模拟下拉框
+        test_combo = QComboBox()
+        test_combo.addItems(["选项1", "选项2", "选项3"])
+        test_combo.setFixedHeight(35)
+        preview_content_layout.addWidget(test_combo)
+        # 模拟文本区域
+        test_text = QTextEdit()
+        test_text.setPlaceholderText("测试文本区域")
+        test_text.setFixedHeight(100)
+        preview_content_layout.addWidget(test_text)
+        # 应用按钮
+        apply_btn = QPushButton("应用此主题")
+        apply_btn.setFixedSize(120, 40)
+        preview_content_layout.addWidget(apply_btn)
+        preview_layout.addWidget(preview_content)
+        preview_layout.addStretch()
+        # 添加到主布局
+        content_layout.addWidget(theme_list)
+        content_layout.addWidget(preview_area)
+        main_layout.addWidget(content)
+        # 填充主题列表
+        current_theme = self.config.theme
+        for theme_name in self.theme_manager.get_theme_names():
+            display_name = self.theme_manager.get_theme_display_name(theme_name)
+            item = QListWidgetItem(display_name)
+            item.setData(Qt.ItemDataRole.UserRole, theme_name)
+            theme_list.addItem(item)
+            if theme_name == current_theme:
+                theme_list.setCurrentItem(item)
+        # 主题切换事件
+        def on_theme_selected(item):
+            theme_name = item.data(Qt.ItemDataRole.UserRole)
+            qss = self.theme_manager.load_theme(theme_name)
+            scrollbar_qss = self.theme_manager.load_scrollbar(theme_name)
+            dialog.setStyleSheet(qss + scrollbar_qss)
+        theme_list.currentItemChanged.connect(on_theme_selected)
+        # 应用主题事件
+        def apply_selected_theme():
+            current_item = theme_list.currentItem()
+            if current_item:
+                theme_name = current_item.data(Qt.ItemDataRole.UserRole)
+                self.set_theme(theme_name)
+                dialog.accept()
+        apply_btn.clicked.connect(apply_selected_theme)
+        # 初始应用当前主题样式
+        on_theme_selected(theme_list.currentItem())
+        dialog.exec()
     def export_config(self):
         """导出配置，包含所有工具及分类信息"""
         path, _ = QFileDialog.getSaveFileName(
@@ -4745,7 +4599,7 @@ class AddDownloadCommandDialog(QDialog):
         # 命令内容
         self.cmd_edit = QTextEdit()
         self.cmd_edit.setPlaceholderText("请输入命令内容")
-        self.cmd_edit.setMaximumHeight(80)
+        self.cmd_edit.setMinimumHeight(100)
         form_layout.addRow("命令内容:", self.cmd_edit)
         # 适用系统
         self.os_combo = QComboBox()
@@ -4779,7 +4633,7 @@ class AddDownloadCommandDialog(QDialog):
         btn_layout.addWidget(self.cancel_btn)
         btn_layout.addWidget(self.ok_btn)
         container_layout.addLayout(btn_layout)
-        # 如果是编辑模式，填充数据
+        # 编辑模式填充
         if data:
             self.name_edit.setText(data.get('name', ''))
             self.cmd_edit.setPlainText(data.get('command', ''))
@@ -5384,6 +5238,8 @@ class MemoCommandDialog(QDialog):
             "command": self.cmd_edit.toPlainText().strip(),
             "meta": [self.os_combo.currentText()]
         }
+
+
 
 if __name__ == "__main__":
     logging.info("程序开始运行...")

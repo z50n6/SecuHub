@@ -1,0 +1,40 @@
+QMainWindow { background: #1a1a1a; }
+QWidget { background: #1a1a1a; color: #e0e0e0; font-family: 'Microsoft YaHei', '微软雅黑', Arial; }
+QLineEdit, QTextEdit, QComboBox, QMenu, QListWidget, QTreeWidget { 
+    background: #2d2d2d; color: #e0e0e0; border: 2px solid #404040; border-radius: 8px; 
+    padding: 8px; font-size: 13px;
+}
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus { 
+    border: 2px solid #00d4ff; background: #333333; 
+}
+QPushButton, QDialogButtonBox QPushButton, QMessageBox QPushButton { 
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #00d4ff, stop:1 #0099cc); 
+    color: #fff; 
+    border-radius: 8px; 
+    padding: 10px 16px; 
+    font-weight: bold; 
+    font-size: 13px;
+    border: none;
+    min-width: 80px;
+}
+QPushButton:hover, QDialogButtonBox QPushButton:hover, QMessageBox QPushButton:hover { 
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0099cc, stop:1 #00d4ff); 
+}
+QPushButton:pressed, QDialogButtonBox QPushButton:pressed, QMessageBox QPushButton:pressed { 
+    background: #006699; 
+}
+QPushButton:disabled, QDialogButtonBox QPushButton:disabled, QMessageBox QPushButton:disabled {
+    background: #444;
+    color: #888;
+}
+QDialog, QMessageBox, QInputDialog {
+    background: #23272e;
+    border-radius: 14px;
+}
+QLabel, QTextBrowser {
+    font-family: 'Microsoft YaHei', '微软雅黑', Arial;
+}
+QMenuBar { background: #1a1a1a; color: #e0e0e0; border-bottom: 1px solid #404040; }
+QMenuBar::item:selected { background: #333333; border-radius: 4px; }
+QMenu { background: #2d2d2d; color: #e0e0e0; border: 1px solid #404040; border-radius: 8px; padding: 4px; }
+QMenu::item:selected { background: #333333; border-radius: 4px; } 
