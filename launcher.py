@@ -2401,26 +2401,26 @@ QTreeWidget::indicator:checked {
         
         theme_menu.addSeparator()
         
-        # 统计菜单
-        stats_menu = menubar.addMenu("统计")
+        # # 统计菜单
+        # stats_menu = menubar.addMenu("统计")
         
-        # 总工具数
-        total_tools_action = QAction("总工具数", self)
-        total_tools_action.triggered.connect(self.show_total_tools)
-        stats_menu.addAction(total_tools_action)
+        # # 总工具数
+        # total_tools_action = QAction("总工具数", self)
+        # total_tools_action.triggered.connect(self.show_total_tools)
+        # stats_menu.addAction(total_tools_action)
         
-        # 最近启动的工具
-        recent_tools_action = QAction("最近启动的工具", self)
-        recent_tools_action.triggered.connect(self.show_recent_tools)
-        stats_menu.addAction(recent_tools_action)
+        # # 最近启动的工具
+        # recent_tools_action = QAction("最近启动的工具", self)
+        # recent_tools_action.triggered.connect(self.show_recent_tools)
+        # stats_menu.addAction(recent_tools_action)
         
-        stats_menu.addSeparator()
+        # stats_menu.addSeparator()
         
-        # 刷新统计
-        refresh_stats_action = QAction("刷新统计", self)
-        refresh_stats_action.setShortcut(QKeySequence("F5"))
-        refresh_stats_action.triggered.connect(self.refresh_data)
-        stats_menu.addAction(refresh_stats_action)
+        # # 刷新统计
+        # refresh_stats_action = QAction("刷新统计", self)
+        # refresh_stats_action.setShortcut(QKeySequence("F5"))
+        # refresh_stats_action.triggered.connect(self.refresh_data)
+        # stats_menu.addAction(refresh_stats_action)
         
         # 直接添加关于菜单项到菜单栏
         about_action = QAction("关于", self)
