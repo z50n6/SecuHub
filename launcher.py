@@ -1996,6 +1996,14 @@ QTreeWidget::indicator:checked {
             self.btn_java_encode.setStyleSheet(tab_btn_style)
             self.assist_tab_bar.addWidget(self.btn_java_encode)
             self.assist_tabs.append(self.btn_java_encode)
+            # 新增IP提取Tab按钮
+            self.btn_ip_extract = QPushButton("IP提取")
+            self.btn_ip_extract.setCheckable(True)
+            self.btn_ip_extract.setChecked(False)
+            self.btn_ip_extract.clicked.connect(lambda: self.switch_assist_tab('ip_extract'))
+            self.btn_ip_extract.setStyleSheet(tab_btn_style)
+            self.assist_tab_bar.addWidget(self.btn_ip_extract)
+            self.assist_tabs.append(self.btn_ip_extract)
             # 新增命令查询Tab按钮
             self.btn_memo = QPushButton("命令查询")
             self.btn_memo.setCheckable(True)
@@ -2028,6 +2036,15 @@ QTreeWidget::indicator:checked {
             else:
                 self.java_encode_webview.setUrl(QUrl("https://gchq.github.io/CyberChef/"))
             self.assist_content.addWidget(self.java_encode_webview)
+            # 新增IP提取WebView
+            self.ip_extract_webview = QWebEngineView()
+            ip_extract_path = os.path.join(current_dir, "project", "ip-extract", "ip-extract.html")
+            if os.path.exists(ip_extract_path):
+                url = QUrl.fromLocalFile(ip_extract_path)
+                self.ip_extract_webview.setUrl(url)
+            else:
+                self.ip_extract_webview.setUrl(QUrl("about:blank"))
+            self.assist_content.addWidget(self.ip_extract_webview)
             # 命令查询Tab内容页
             self.memo_widget = MemoTabWidget()
             self.assist_content.addWidget(self.memo_widget)
@@ -4221,9 +4238,13 @@ SecuHub 工具统计报告
             self.btn_java_encode.setChecked(True)
             self.assist_content.setCurrentIndex(1)
             self.current_assist_tab = 'java_encode'
+        elif tab_name == 'ip_extract':
+            self.btn_ip_extract.setChecked(True)
+            self.assist_content.setCurrentIndex(2)
+            self.current_assist_tab = 'ip_extract'
         elif tab_name == 'memo':
             self.btn_memo.setChecked(True)
-            self.assist_content.setCurrentIndex(2)
+            self.assist_content.setCurrentIndex(3)
             self.current_assist_tab = 'memo'
 
     def closeEvent(self, event):

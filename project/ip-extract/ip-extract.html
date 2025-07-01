@@ -2,20 +2,22 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <!-- <title>实用工具集</title> -->
+    <title>实用工具集</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            font-size: 14px;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #000000; /* 背景颜色改为黑色 */
-            color: #f5f5f5; /* 文字颜色改为浅色 */
+            background-color: #fff; /* 背景颜色改为白色 */
+            color: #222; /* 文字颜色改为深色 */
         }
         .tab {
             overflow: hidden;
-            border-bottom: 1px solid #333;
-            background-color: #111111; /* 标签背景色改为深黑 */
+            border-bottom: 1px solid #e0e0e0;
+            background-color: #f7fafd; /* 标签背景色改为浅色 */
+            font-size: 14px;
         }
         .tab button {
             background-color: inherit;
@@ -23,15 +25,15 @@
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 14px 20px;
+            padding: 10px 16px;
             transition: 0.3s;
             font-size: 16px;
             border-radius: 5px 5px 0 0;
             margin-right: 5px;
-            color: #f5f5f5; /* 按钮文字颜色 */
+            color: #222; /* 按钮文字颜色 */
         }
         .tab button:hover {
-            background-color: #333333;
+            background-color: #e0e0e0;
         }
         .tab button.active {
             background-color: #1a73e8;
@@ -39,24 +41,27 @@
         }
         .tabcontent {
             display: none;
-            padding: 20px;
-            border: 1px solid #333;
+            padding: 16px;
+            border: 1px solid #e0e0e0;
             border-top: none;
-            background-color: #111111; /* 内容区域背景色 */
+            background-color: #fff; /* 内容区域背景色 */
             border-radius: 0 5px 5px 5px;
-            color: #f5f5f5;
+            color: #222;
+            font-size: 14px;
         }
         .usage-description {
-            padding: 10px;
-            margin-bottom: 15px;
-            background-color: #222; /* 描述区域背景色 */
+            padding: 8px;
+            margin-bottom: 12px;
+            background-color: #f7fafd; /* 描述区域背景色 */
             border-left: 4px solid #1a73e8; /* 强调色边框 */
-            color: #e0e0e0; /* 描述文字颜色 */
+            color: #333; /* 描述文字颜色 */
             border-radius: 4px;
+            font-size: 13px;
         }
         .usage-description h3 {
             margin-top: 0;
-            color: #f5f5f5;
+            color: #222;
+            font-size: 15px;
         }
         .input-output-container {
             display: flex;
@@ -72,50 +77,55 @@
         }
         textarea {
             width: 100%;
-            height: 200px;
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #333;
+            height: 160px;
+            margin: 8px 0;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
             border-radius: 4px;
             resize: vertical;
-            background-color: #000000; /* 文本区域背景色 */
-            color: #f5f5f5; /* 文本颜色 */
+            background-color: #fff; /* 文本区域背景色 */
+            color: #222; /* 文本颜色 */
+            font-size: 13px;
         }
         .controls {
             margin: 10px 0;
         }
         button, .save-btn {
-            padding: 8px 15px;
-            margin: 5px;
+            padding: 6px 12px;
+            margin: 4px;
             background-color: #1a73e8;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 13px;
         }
         button:hover, .save-btn:hover {
             background-color: #1669c1;
         }
         input[type="text"], input[type="file"] {
-            padding: 8px;
-            margin: 5px 5px 5px 0;
-            border: 1px solid #333;
+            padding: 6px;
+            margin: 4px 4px 4px 0;
+            border: 1px solid #e0e0e0;
             border-radius: 4px;
-            background-color: #1a1a1a; /* 输入框背景色 */
-            color: #f5f5f5; /* 输入框文字颜色 */
+            background-color: #f7fafd; /* 输入框背景色 */
+            color: #222; /* 输入框文字颜色 */
+            font-size: 13px;
         }
         .title {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #f5f5f5;
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: #222;
             text-align: center;
         }
         label {
             font-weight: bold;
+            font-size: 13px;
         }
         .error-message {
             color: red;
-            margin-top: 5px;
+            margin-top: 4px;
+            font-size: 12px;
         }
         /* 响应式设计 */
         @media screen and (max-width: 768px) {
@@ -124,13 +134,13 @@
             }
             button, .save-btn, input[type="file"] {
                 width: 100%;
-                margin: 5px 0;
+                margin: 4px 0;
             }
         }
     </style>
 </head>
 <body>
-    <h1 class="title">实用工具集</h1>
+    <!-- <h1 class="title">实用工具集</h1> -->
     
     <div class="tab">
         <button class="tablinks active" onclick="openTab(event, 'urlDeduplication')">URL去重</button>
@@ -146,7 +156,7 @@
     <div id="urlDeduplication" class="tabcontent" style="display: block;">
         <div class="usage-description" style="display: block;">
             <h3>使用说明</h3>
-            <p>输入多行URL或逗号分隔的URL，点击“执行去重”按钮，即可去除重复项，每行显示一个唯一的URL。</p>
+            <p>输入多行URL或逗号分隔的URL，点击"执行去重"按钮，即可去除重复项，每行显示一个唯一的URL。</p>
         </div>
         <div class="input-output-container">
             <div class="input-area">
@@ -172,7 +182,7 @@
     <div id="addPrefix" class="tabcontent">
         <div class="usage-description">
             <h3>使用说明</h3>
-            <p>在输入区域粘贴数据或选择TXT文件，在“请输入前缀”输入框中填入前缀，点击“执行加前缀”按钮，即可将前缀添加到每个文本项前。</p>
+            <p>在输入区域粘贴数据或选择TXT文件，在"请输入前缀"输入框中填入前缀，点击"执行加前缀"按钮，即可将前缀添加到每个文本项前。</p>
         </div>
         <div class="input-output-container">
             <div class="input-area">
@@ -199,7 +209,7 @@
     <div id="pathDecomposition" class="tabcontent">
         <div class="usage-description">
             <h3>使用说明</h3>
-            <p>输入URL，点击“执行路径分解”按钮，即可将其分解为层级路径，并显示所有层级路径，去除重复项。</p>
+            <p>输入URL，点击"执行路径分解"按钮，即可将其分解为层级路径，并显示所有层级路径，去除重复项。</p>
         </div>
         <div class="input-output-container">
             <div class="input-area">
@@ -225,7 +235,7 @@
     <div id="extractWebPaths" class="tabcontent">
         <div class="usage-description">
             <h3>使用说明</h3>
-            <p>在输入区域粘贴文本或选择文件，点击“执行提取”按钮，即可从文本中提取所有HTTP/HTTPS URL和以斜杠开头的路径。</p>
+            <p>在输入区域粘贴文本或选择文件，点击"执行提取"按钮，即可从文本中提取所有HTTP/HTTPS URL和以斜杠开头的路径。</p>
         </div>
         <div class="input-output-container">
             <div class="input-area">
@@ -251,7 +261,7 @@
     <div id="ipExtraction" class="tabcontent">
         <div class="usage-description">
             <h3>使用说明</h3>
-            <p>在输入区域输入IP地址段（CIDR）、IP范围或单个IP地址，或选择TXT文件，点击“执行提取”按钮，即可提取所有IP地址。</p>
+            <p>在输入区域输入IP地址段（CIDR）、IP范围或单个IP地址，或选择TXT文件，点击"执行提取"按钮，即可提取所有IP地址。</p>
         </div>
         <div class="input-output-container">
             <div class="input-area">
@@ -277,7 +287,7 @@
     <div id="removeString" class="tabcontent">
         <div class="usage-description">
             <h3>使用说明</h3>
-            <p>在输入区域粘贴文本或选择TXT文件，在“输入要去除的字符串”输入框中填入要去除的字符串，点击“执行去除”按钮，即可移除文本中所有匹配的字符串。</p>
+            <p>在输入区域粘贴文本或选择TXT文件，在"输入要去除的字符串"输入框中填入要去除的字符串，点击"执行去除"按钮，即可移除文本中所有匹配的字符串。</p>
         </div>
         <div class="input-output-container">
             <div class="input-area">
@@ -305,7 +315,7 @@
     <div id="urlFormatCheck" class="tabcontent">
         <div class="usage-description">
             <h3>使用说明</h3>
-            <p>输入URL，点击“执行检查”按钮，如果URL不包含协议（http/https），则自动添加`http://`前缀。</p>
+            <p>输入URL，点击"执行检查"按钮，如果URL不包含协议（http/https），则自动添加`http://`前缀。</p>
         </div>
         <div class="input-output-container">
             <div class="input-area">
@@ -654,12 +664,12 @@
 
             textarea.addEventListener('dragleave', function(e) {
                 e.preventDefault();
-                textarea.style.borderColor = '#333';
+                textarea.style.borderColor = '#e0e0e0';
             });
 
             textarea.addEventListener('drop', function(e) {
                 e.preventDefault();
-                textarea.style.borderColor = '#333';
+                textarea.style.borderColor = '#e0e0e0';
                 const files = e.dataTransfer.files;
                 if (files.length > 0) {
                     fileInput.files = files;
