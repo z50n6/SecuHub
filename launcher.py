@@ -24,15 +24,15 @@ from PyQt6.QtWebChannel import QWebChannel
 
 
 # Add new imports for icon extraction
-try:
-    import win32gui
-    import win32api
-    import win32con
-    from PIL import Image
-    IS_WINDOWS = True
-except ImportError:
-    IS_WINDOWS = False
-    logging.warning("pywin32或Pillow库未安装，无法使用EXE图标提取功能。")
+# try:
+#     import win32gui
+#     import win32api
+#     import win32con
+#     from PIL import Image
+#     IS_WINDOWS = True
+# except ImportError:
+#     IS_WINDOWS = False
+#     logging.warning("pywin32或Pillow库未安装，无法使用EXE图标提取功能。")
 
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
 
@@ -472,115 +472,7 @@ class Tool:
 
 logging.info("定义工具类完成...")
 
-def extract_icon_from_exe(exe_path, save_dir):
-    """
-    从 .exe 或 .dll 文件中提取最佳质量的图标并保存为.png文件 (更健壮的版本)
-    :param exe_path: 文件路径
-    :param save_dir: 图标保存目录
-    :return: 保存的png文件路径, 或在失败时返回None
-    """
-    if not IS_WINDOWS or not os.path.exists(exe_path):
-        return None
 
-    os.makedirs(save_dir, exist_ok=True)
-    
-    # 1. 提取所有图标句柄
-    large_icons, small_icons = [], []
-    try:
-        icon_count = win32gui.ExtractIconEx(exe_path, -1)
-        if icon_count > 0:
-            large_icons, small_icons = win32gui.ExtractIconEx(exe_path, 0, icon_count)
-    except Exception as e:
-        logging.warning(f"ExtractIconEx 提取 '{os.path.basename(exe_path)}' 图标计数失败: {e}。尝试提取第一个图标。")
-    
-    # 如果标准方法失败或没有图标，尝试仅提取第一个作为备用方案
-    if not large_icons and not small_icons:
-        try:
-            large_icons, small_icons = win32gui.ExtractIconEx(exe_path, 0, 1)
-        except Exception as e:
-            logging.error(f"无法从 '{os.path.basename(exe_path)}' 提取任何图标: {e}")
-            return None
-    
-    all_hicons = large_icons + small_icons
-    if not all_hicons:
-        logging.warning(f"无法从 {exe_path} 中找到任何图标。")
-        return None
-
-    # 将所有句柄放入一个我们将保证清理的列表中
-    hicons_to_destroy = list(all_hicons)
-    saved_path = None
-
-    try:
-        # 2. 遍历所有句柄，收集有效图标信息
-        icons_info = []
-        for hicon in all_hicons:
-            info = hbmMask = hbmColor = None
-            try:
-                info = win32gui.GetIconInfo(hicon)
-                fIcon, _, _, hbmMask, hbmColor = info
-                # 我们只处理彩色的图标以简化保存逻辑
-                if fIcon and hbmColor:
-                    bmp = win32api.GetObject(hbmColor)
-                    icons_info.append({
-                        'hicon': hicon, 'width': bmp.bmWidth, 'bpp': bmp.bmBitsPixel
-                    })
-            except Exception as e:
-                logging.debug(f"处理来自 {exe_path} 的一个图标句柄时出错: {e}")
-            finally:
-                # 无论成功与否，都释放GetIconInfo创建的位图资源
-                if hbmMask: win32gui.DeleteObject(hbmMask)
-                if hbmColor: win32gui.DeleteObject(hbmColor)
-        
-        if not icons_info:
-            logging.warning(f"未能从 {exe_path} 成功提取任何可用的彩色图标信息。")
-            return None
-
-        # 3. 选择最佳图标（尺寸最大，其次色深最高）
-        icons_info.sort(key=lambda x: (x['width'], x['bpp']), reverse=True)
-        best_hicon = icons_info[0]['hicon']
-
-        # 4. 保存最佳图标
-        info = hbmMask = hbmColor = None
-        try:
-            info = win32gui.GetIconInfo(best_hicon)
-            _, _, _, hbmMask, hbmColor = info
-            bmp = win32api.GetObject(hbmColor)
-
-            if bmp.bmBits is None:
-                raise ValueError("位图数据为空")
-
-            img = Image.frombuffer("RGBA", (bmp.bmWidth, bmp.bmHeight), bmp.bmBits, "raw", "BGRA", 0, 1)
-            
-            # 简单的Alpha通道处理：如果图标不是32bpp（即没有内嵌alpha），则尝试从掩码创建
-            if bmp.bmBitsPixel != 32:
-                mask_bmp = win32api.GetObject(hbmMask)
-                if mask_bmp.bmBitsPixel == 1:
-                    mask = Image.frombuffer("L", (bmp.bmWidth, bmp.bmHeight), mask_bmp.bmBits, "raw", "L", 0, 1)
-                    img.putalpha(mask)
-
-            exe_name = os.path.splitext(os.path.basename(exe_path))[0]
-            save_path = os.path.join(save_dir, f"{exe_name}_icon.png")
-            img.save(save_path, "PNG")
-            logging.info(f"成功提取图标并保存到: {save_path}")
-            saved_path = save_path
-        
-        except Exception as e:
-            logging.error(f"保存图标时出错: {e}")
-            # 保存失败，返回None，finally块会负责清理
-            return None
-        
-        finally:
-            # 释放为保存图标而创建的位图资源
-            if hbmMask: win32gui.DeleteObject(hbmMask)
-            if hbmColor: win32gui.DeleteObject(hbmColor)
-
-    finally:
-        # 5. 确保销毁所有提取出的图标句柄
-        for hicon in hicons_to_destroy:
-            try: win32gui.DestroyIcon(hicon)
-            except Exception: pass
-            
-    return saved_path
 
 class CyberChefDialog(QDialog):
     """CyberChef 对话框"""
@@ -713,7 +605,7 @@ class AddToolDialog(QDialog):
         self.path_btn = QPushButton("📂")
         self.icon_edit = QLineEdit()
         self.icon_btn = QPushButton("🖼️")
-        self.extract_icon_btn = QPushButton("✨ 提取") # 新增提取按钮
+        # self.extract_icon_btn = QPushButton("✨ 提取") # 新增提取按钮
         self.category_combo = QComboBox()
         self.args_edit = QLineEdit()
         self.desc_edit = QTextEdit()
@@ -778,17 +670,17 @@ class AddToolDialog(QDialog):
         self.icon_btn.setToolTip("选择图标文件")
         self.icon_btn.clicked.connect(self.browse_icon)
         
-        self.extract_icon_btn.setFixedSize(80, 40)
-        self.extract_icon_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.extract_icon_btn.setToolTip("从上方填写的EXE/DLL路径中提取图标")
-        self.extract_icon_btn.clicked.connect(self.extract_icon)
-        if not IS_WINDOWS:
-            self.extract_icon_btn.setEnabled(False)
-            self.extract_icon_btn.setToolTip("该功能仅支持Windows系统")
+        # self.extract_icon_btn.setFixedSize(80, 40)
+        # self.extract_icon_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        # self.extract_icon_btn.setToolTip("从上方填写的EXE/DLL路径中提取图标")
+        # self.extract_icon_btn.clicked.connect(self.extract_icon)
+        # if not IS_WINDOWS:
+        #     self.extract_icon_btn.setEnabled(False)
+        #     self.extract_icon_btn.setToolTip("该功能仅支持Windows系统")
 
         icon_layout.addWidget(self.icon_edit)
         icon_layout.addWidget(self.icon_btn)
-        icon_layout.addWidget(self.extract_icon_btn)
+        # icon_layout.addWidget(self.extract_icon_btn)
         form_layout.addRow("图标路径:", icon_layout)
         
         # Category
@@ -899,32 +791,7 @@ class AddToolDialog(QDialog):
         if path:
             self.icon_edit.setText(path)
     
-    def extract_icon(self):
-        """从EXE文件中提取图标"""
-        exe_path = self.path_edit.text().strip()
-        if not exe_path or not exe_path.lower().endswith(('.exe', '.dll')):
-            ConfirmDialog(self, title="提示", content='请先在上方"工具路径"中指定一个有效的.exe或.dll文件。', icon="ℹ️").exec()
-            return
-        
-        if not os.path.exists(exe_path):
-            ConfirmDialog(self, title="错误", content=f"文件不存在:\n{exe_path}", icon="❌").exec()
-            return
-            
-        # 定义图标保存目录
-        save_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'imgs', 'extracted_icons')
-        
-        # 调用辅助函数提取图标
-        icon_path = extract_icon_from_exe(exe_path, save_dir)
-        
-        main_window = self.parent()
-
-        if icon_path:
-            self.icon_edit.setText(icon_path)
-            if main_window and hasattr(main_window, 'status_label'):
-                main_window.status_label.setText(f"✅ 成功从 {os.path.basename(exe_path)} 提取图标")
-        else:
-            if main_window and hasattr(main_window, 'status_label'):
-                main_window.status_label.setText(f"❌ 提取失败: 无法从 {os.path.basename(exe_path)} 中提取图标")
+   
 
     def get_tool_data(self):
         """获取工具数据"""

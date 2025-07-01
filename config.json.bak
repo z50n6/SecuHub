@@ -87,8 +87,8 @@
       "description": "",
       "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-godzilla.ico",
       "color": "#000000",
-      "launch_count": 8,
-      "last_launch": "2025-07-01T10:08:55.515407",
+      "launch_count": 9,
+      "last_launch": "2025-07-01T10:43:37.397472",
       "args": ""
     },
     {
@@ -355,13 +355,13 @@
   "theme": "modern_light",
   "view_mode": "grid",
   "recent_tools": [
+    "哥斯拉",
     "冰蝎_v4.1.t00ls",
     "burpsuite2025",
     "BurpSuite2023",
     "Befree",
     "Jack-Proxy-V3",
     "DeepSeekSelfTool",
-    "哥斯拉",
     "Charles",
     "BlueTeamToolsV2.16",
     "burpsuite",
