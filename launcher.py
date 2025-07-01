@@ -287,15 +287,24 @@ class Config:
         self.settings.setValue("auto_refresh", self.auto_refresh)
         self.settings.setValue("search_history", self.search_history)
         self.settings.setValue("navigation_items", self.navigation_items)
-        # 新增环境变量字段
         self.settings.setValue("python_path", self.python_path)
         self.settings.setValue("java8_path", self.java8_path)
         self.settings.setValue("java11_path", self.java11_path)
         self.settings.sync()
-        
-        # 同时保存到JSON文件
+
+        # 自动备份
+        if os.path.exists(self.config_file):
+            import shutil
+            shutil.copyfile(self.config_file, self.config_file + ".bak")
+
+        # 合并写入，防止丢字段
         try:
-            data = {
+            data = {}
+            if os.path.exists(self.config_file):
+                with open(self.config_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+            # 更新字段
+            data.update({
                 "tools": self.tools,
                 "theme": self.theme,
                 "view_mode": self.view_mode,
@@ -304,11 +313,10 @@ class Config:
                 "auto_refresh": self.auto_refresh,
                 "search_history": self.search_history,
                 "navigation_items": self.navigation_items,
-                # 新增环境变量字段
                 "python_path": self.python_path,
                 "java8_path": self.java8_path,
                 "java11_path": self.java11_path
-            }
+            })
             with open(self.config_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
         except Exception as e:
@@ -747,7 +755,7 @@ class AddToolDialog(QDialog):
         form_layout.addRow("工具名称:", self.name_edit)
         
         # Tool Type
-        self.type_combo.addItems(["GUI应用", "命令行", "java8图形化", "java11图形化", "java8", "java11", "python", "powershell", "批处理", "网页", "文件夹"])
+        self.type_combo.addItems(["GUI应用", "命令行", "java8图形化", "java11图形化", "java8", "java11", "python", "powershell", "批处理", "VBS脚本", "网页", "文件夹"])
         self.type_combo.currentTextChanged.connect(self.on_type_changed)
         form_layout.addRow("工具类型:", self.type_combo)
         
@@ -930,6 +938,7 @@ class AddToolDialog(QDialog):
             "python": "python",
             "powershell": "powershell",
             "批处理": "batch",
+            "VBS脚本": "vbs",
             "网页": "url",
             "文件夹": "folder"
         }
@@ -1117,11 +1126,33 @@ class ToolLauncherWorker(QObject):
                 elif tool.tool_type == "powershell":
                     cmd = ["powershell", "-ExecutionPolicy", "Bypass", "-File", tool.path]
                 elif tool.tool_type == "batch":
-                    cmd = [tool.path]
+                    bat_path = os.path.abspath(tool.path)
+                    cmd = ["cmd.exe", "/k", bat_path]
+                    if tool.args:
+                        cmd.extend(tool.args.split())
+                    tool_dir = os.path.dirname(bat_path) or None
+                    # 强制新开一个控制台窗口
+                    process = subprocess.Popen(
+                        cmd,
+                        cwd=tool_dir,
+                        creationflags=subprocess.CREATE_NEW_CONSOLE
+                    )
+                    self.toolLaunched.emit(tool.name, True, str(process.pid))
+                    return
+                elif tool.tool_type == "vbs":
+                    vbs_path = os.path.abspath(tool.path)
+                    cmd = ["wscript.exe", vbs_path]
+                    if tool.args:
+                        cmd.extend(tool.args.split())
+                    tool_dir = os.path.dirname(vbs_path) or None
+                    process = subprocess.Popen(cmd, cwd=tool_dir)
+                    self.toolLaunched.emit(tool.name, True, str(process.pid))
+                    return
                 else:  # 默认为 exe
                     cmd = [tool.path]
-                if tool.args:
+                if tool.tool_type != "batch" and tool.args:
                     cmd.extend(tool.args.split())
+                tool_dir = os.path.dirname(os.path.abspath(tool.path)) or None
                 process = subprocess.Popen(cmd, cwd=tool_dir, creationflags=creationflags)
                 self.toolLaunched.emit(tool.name, True, str(process.pid))
         except Exception as e:
@@ -2098,8 +2129,8 @@ QTreeWidget::indicator:checked {
             self.btn_java_encode.setStyleSheet(tab_btn_style)
             self.assist_tab_bar.addWidget(self.btn_java_encode)
             self.assist_tabs.append(self.btn_java_encode)
-            # 新增备忘录Tab按钮
-            self.btn_memo = QPushButton("备忘录")
+            # 新增命令查询Tab按钮
+            self.btn_memo = QPushButton("命令查询")
             self.btn_memo.setCheckable(True)
             self.btn_memo.setChecked(False)
             self.btn_memo.clicked.connect(lambda: self.switch_assist_tab('memo'))
@@ -2130,7 +2161,7 @@ QTreeWidget::indicator:checked {
             else:
                 self.java_encode_webview.setUrl(QUrl("https://gchq.github.io/CyberChef/"))
             self.assist_content.addWidget(self.java_encode_webview)
-            # 备忘录Tab内容页
+            # 命令查询Tab内容页
             self.memo_widget = MemoTabWidget()
             self.assist_content.addWidget(self.memo_widget)
             assist_layout.addWidget(self.assist_content)
@@ -2362,13 +2393,13 @@ QTreeWidget::indicator:checked {
         theme_menu.addAction(modern_dark_action)
         
         # 新增主题
-        tranquil_green_action = QAction("🌿 静谧绿", self)
-        tranquil_green_action.triggered.connect(partial(self.set_theme, "tranquil_green"))
-        theme_menu.addAction(tranquil_green_action)
+        # tranquil_green_action = QAction("🌿 静谧绿", self)
+        # tranquil_green_action.triggered.connect(partial(self.set_theme, "tranquil_green"))
+        # theme_menu.addAction(tranquil_green_action)
 
-        deep_ocean_action = QAction("🌊 深海蓝", self)
-        deep_ocean_action.triggered.connect(partial(self.set_theme, "deep_ocean"))
-        theme_menu.addAction(deep_ocean_action)
+        # deep_ocean_action = QAction("🌊 深海蓝", self)
+        # deep_ocean_action.triggered.connect(partial(self.set_theme, "deep_ocean"))
+        # theme_menu.addAction(deep_ocean_action)
         
         # 科技风主题
         cyberpunk_action = QAction("🤖 科技风", self)
@@ -4776,7 +4807,7 @@ def clear_layout(layout):
         elif child_layout:
             clear_layout(child_layout)
 
-# ========== 备忘录Tab主结构 ==========
+# ========== 命令查询Tab主结构 ==========
 class MemoTabWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)

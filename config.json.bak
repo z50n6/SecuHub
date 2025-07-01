@@ -380,25 +380,5 @@
   "auto_refresh": "true",
   "search_history": [
     "wire"
-  ],
-  "navigation_items": [
-    {
-      "id": "safe",
-      "name": "安全工具",
-      "icon": "🛡️"
-    },
-    {
-      "id": "code",
-      "name": "编码与解码",
-      "icon": "🔧"
-    },
-    {
-      "id": "assist",
-      "name": "辅助工具",
-      "icon": "🛠️"
-    }
-  ],
-  "python_path": "",
-  "java8_path": "",
-  "java11_path": "E:/Penetration/Others/ProgramTools/dev/Java/Jav11/bin/java.exe"
+  ]
 }
