@@ -7,10 +7,10 @@
       "subcategory": "",
       "tool_type": "batch",
       "description": "",
-      "icon_path": null,
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/freeplane.png",
       "color": "#000000",
       "launch_count": 35,
-      "last_launch": "2025-07-01T10:23:04.722812",
+      "last_launch": null,
       "args": ""
     },
     {
@@ -22,8 +22,8 @@
       "description": "渗透利器",
       "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite_pro/BurpSuite.ico",
       "color": "#000000",
-      "launch_count": 32,
-      "last_launch": "2025-07-01T10:23:45.370071",
+      "launch_count": 33,
+      "last_launch": "2025-07-02T10:50:52.725168",
       "args": ""
     },
     {
@@ -40,6 +40,19 @@
       "args": ""
     },
     {
+      "name": "哥斯拉",
+      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/godzilla/godzilla.jar",
+      "category": "WebShell管理器",
+      "subcategory": "",
+      "tool_type": "java8_gui",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-godzilla.ico",
+      "color": "#000000",
+      "launch_count": 11,
+      "last_launch": "2025-07-02T21:59:03.270592",
+      "args": ""
+    },
+    {
       "name": "impacket-0.11.0",
       "path": "E:/Penetration/RedTeam/Post-Exploition/Lateral_Movement/impacket-0.11.0/examples",
       "category": "后渗透/横向移动",
@@ -50,6 +63,32 @@
       "color": "#000000",
       "launch_count": 10,
       "last_launch": "2025-06-27T15:24:56.184121",
+      "args": ""
+    },
+    {
+      "name": "burpsuite2025",
+      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/bp2025.5/EN_Burp(无CMD窗口).VBS",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
+      "tool_type": "vbs",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/png/kali-burpsuite-1.png",
+      "color": "#000000",
+      "launch_count": 10,
+      "last_launch": "2025-07-01T10:24:16.007280",
+      "args": ""
+    },
+    {
+      "name": "冰蝎_v4.1.t00ls",
+      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/Behinder_v4.1.t00ls/Behinder.jar",
+      "category": "WebShell管理器",
+      "subcategory": "",
+      "tool_type": "java11_gui",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-behinder.ico",
+      "color": "#000000",
+      "launch_count": 10,
+      "last_launch": "2025-07-02T21:58:45.440361",
       "args": ""
     },
     {
@@ -66,68 +105,29 @@
       "args": "-Dfile.encoding=UTF-8 -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -Duser.language=en -jar cobaltstrike-client.jar %*"
     },
     {
-      "name": "burpsuite2025",
-      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/bp2025.5/EN_Burp(无CMD窗口).VBS",
-      "category": "流量代理/抓包工具",
-      "subcategory": "",
-      "tool_type": "vbs",
-      "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/png/kali-burpsuite-1.png",
-      "color": "#000000",
-      "launch_count": 10,
-      "last_launch": "2025-07-01T10:24:16.007280",
-      "args": ""
-    },
-    {
-      "name": "哥斯拉",
-      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/godzilla/godzilla.jar",
-      "category": "WebShell管理器",
-      "subcategory": "",
-      "tool_type": "java8_gui",
-      "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-godzilla.ico",
-      "color": "#000000",
-      "launch_count": 9,
-      "last_launch": "2025-07-01T10:43:37.397472",
-      "args": ""
-    },
-    {
       "name": "Jack-Proxy-V3",
       "path": "E:/Penetration/RedTeam/TrafficProxyTools/proxy-pool/Jack-Proxy/jackproxy-v3.bat",
       "category": "流量代理/代理池",
       "subcategory": "",
       "tool_type": "batch",
       "description": "",
-      "icon_path": null,
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/kali-proxychains.png",
       "color": "#000000",
       "launch_count": 8,
-      "last_launch": "2025-07-01T10:18:22.039401",
+      "last_launch": null,
       "args": ""
     },
     {
-      "name": "冰蝎_v4.1.t00ls",
-      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/Behinder_v4.1.t00ls/Behinder.jar",
-      "category": "WebShell管理器",
-      "subcategory": "",
-      "tool_type": "java11_gui",
-      "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-behinder.ico",
-      "color": "#000000",
-      "launch_count": 8,
-      "last_launch": "2025-07-01T10:24:37.148674",
-      "args": ""
-    },
-    {
-      "name": "BlueTeamToolsV2.16",
-      "path": "E:/Penetration/BlueTeam/AssistiveTools/BlueTeamToolsV2.16/BlueTeamToolsV2.16.jar",
+      "name": "BlueTeamToolsV2.18",
+      "path": "E:/Penetration/BlueTeam/AssistiveTools/BlueTeamToolsV2.18/BlueTeamToolsV2.18.jar",
       "category": "BlueTeam",
       "subcategory": "",
       "tool_type": "java8_gui",
       "description": "",
-      "icon_path": null,
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/Url/java.com.png",
       "color": "#000000",
-      "launch_count": 7,
-      "last_launch": "2025-07-01T09:36:29.902976",
+      "launch_count": 8,
+      "last_launch": "2025-07-01T11:23:21.063624",
       "args": ""
     },
     {
@@ -137,7 +137,7 @@
       "subcategory": "",
       "tool_type": "java8",
       "description": "",
-      "icon_path": null,
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/Url/python.org.png",
       "color": "#000000",
       "launch_count": 5,
       "last_launch": null,
@@ -183,6 +183,19 @@
       "args": ""
     },
     {
+      "name": "哥斯拉特战版",
+      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/godzilla-特战版/哥斯拉特战版.jar",
+      "category": "WebShell管理器",
+      "subcategory": "",
+      "tool_type": "java8_gui",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-godzilla-1.ico",
+      "color": "#000000",
+      "launch_count": 3,
+      "last_launch": "2025-07-01T22:05:02.256007",
+      "args": ""
+    },
+    {
       "name": "AnotherRedisDesktopManager",
       "path": "E:/Penetration/RedTeam/AuxiliaryTools/database-connect/AnotherRedisDesktopManager/AnotherRedisDesktopManager.exe",
       "category": "辅助工具/数据库连接",
@@ -196,29 +209,16 @@
       "args": ""
     },
     {
-      "name": "哥斯拉特战版",
-      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/godzilla-特战版/哥斯拉特战版.jar",
-      "category": "WebShell管理器",
-      "subcategory": "",
-      "tool_type": "java8_gui",
-      "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-godzilla-1.ico",
-      "color": "#000000",
-      "launch_count": 2,
-      "last_launch": "2025-06-27T15:07:32.485765",
-      "args": ""
-    },
-    {
       "name": "navicat",
       "path": "E:/Penetration/RedTeam/AuxiliaryTools/database-connect/Navicat_Premium_17.0.13_Green/navicat.exe",
       "category": "辅助工具/数据库连接",
       "subcategory": "",
       "tool_type": "exe",
       "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Icon/DataabaseTools.png",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/DataabaseTools.png",
       "color": "#000000",
       "launch_count": 1,
-      "last_launch": "2025-06-27T11:24:46.493038",
+      "last_launch": null,
       "args": ""
     },
     {
@@ -254,10 +254,10 @@
       "subcategory": "",
       "tool_type": "exe",
       "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-hash-identifier.ico",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/kali-hashdeep.png",
       "color": "#000000",
       "launch_count": 1,
-      "last_launch": "2025-06-27T15:48:32.198186",
+      "last_launch": null,
       "args": ""
     },
     {
@@ -282,8 +282,8 @@
       "description": "常用利器",
       "icon_path": "D:/SoftWare/Yakit/Yakit/uninstallerIcon.ico",
       "color": "#000000",
-      "launch_count": 0,
-      "last_launch": null,
+      "launch_count": 1,
+      "last_launch": "2025-07-03T09:38:45.602190",
       "args": ""
     },
     {
@@ -319,7 +319,7 @@
       "subcategory": "",
       "tool_type": "java8_gui",
       "description": "",
-      "icon_path": null,
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/Url/java.com.png",
       "color": "#000000",
       "launch_count": 0,
       "last_launch": null,
@@ -345,20 +345,37 @@
       "subcategory": "",
       "tool_type": "exe",
       "description": "",
-      "icon_path": null,
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/dbeaver.png",
       "color": "#000000",
       "launch_count": 0,
       "last_launch": null,
+      "args": ""
+    },
+    {
+      "name": "burpsuite2025-部分汉化",
+      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite-CN/Burp_Chs.vbs",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
+      "tool_type": "vbs",
+      "description": "",
+      "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite-CN/Favicon.ico",
+      "color": "#000000",
+      "launch_count": 1,
+      "last_launch": "2025-07-03T10:18:13.051071",
       "args": ""
     }
   ],
   "theme": "modern_light",
   "view_mode": "grid",
   "recent_tools": [
+    "burpsuite2025-部分汉化",
+    "yakit",
     "哥斯拉",
     "冰蝎_v4.1.t00ls",
-    "burpsuite2025",
     "BurpSuite2023",
+    "哥斯拉特战版",
+    "BlueTeamToolsV2.18",
+    "burpsuite2025",
     "Befree",
     "Jack-Proxy-V3",
     "DeepSeekSelfTool",
@@ -369,16 +386,17 @@
     "Hash",
     "impacket-0.11.0",
     "Reqable",
-    "哥斯拉特战版",
     "Cobalt_Strike_4.7",
-    "游魂",
-    "CobaltStrike-无影",
-    "navicat",
-    "cobaltstrike-wuying"
+    "游魂"
   ],
   "show_status_bar": "true",
   "auto_refresh": "true",
   "search_history": [
+    "h",
+    "ha",
+    "haas",
+    "blu",
+    "bl",
     "wire"
   ]
 }

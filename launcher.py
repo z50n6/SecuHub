@@ -319,8 +319,17 @@ class Config:
             })
             with open(self.config_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
+            # ===== 新增：保存后校验 =====
+            with open(self.config_file, 'r', encoding='utf-8') as f:
+                verify_data = json.load(f)
+                if verify_data.get("java11_path", "") != self.java11_path or \
+                   verify_data.get("python_path", "") != self.python_path or \
+                   verify_data.get("java8_path", "") != self.java8_path:
+                    return "环境变量保存失败，请检查写入权限或磁盘空间！"
+            return None  # 保存成功
         except Exception as e:
             logging.error(f"保存到JSON文件失败: {e}")
+            return f"保存到JSON文件失败: {e}"
     
     def add_to_recent(self, tool_name):
         """添加到最近使用"""
@@ -5454,7 +5463,13 @@ class SettingsDialog(QDialog):
         self.config.python_path = self.python_edit.text().strip()
         self.config.java8_path = self.java8_edit.text().strip()
         self.config.java11_path = self.java11_edit.text().strip()
-        self.config.save_config()
+        err = self.config.save_config()
+        parent = self.parent()
+        if parent and hasattr(parent, 'statusBar'):
+            if err:
+                parent.statusBar().showMessage(err, 15000)
+            else:
+                parent.statusBar().showMessage("✅ 环境变量保存成功", 8000)
         self.accept()
 
     # ========== 支持窗口拖动 ==========
