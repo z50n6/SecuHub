@@ -14,9 +14,10 @@ from PyQt6.QtWidgets import (
     QFormLayout, QMenu, QMenuBar, QSplitter, QStackedWidget,
     QInputDialog, QScrollArea, QGroupBox, QProgressBar,
     QStatusBar, QSizePolicy, QStyle, QTableWidget, QTableWidgetItem, QHeaderView,
-    QListWidget, QListWidgetItem, QDialogButtonBox
+    QListWidget, QListWidgetItem, QDialogButtonBox, QGridLayout, QFrame,
+    QTabWidget, QLayout
 )
-from PyQt6.QtCore import Qt, QUrl, QTimer, QThread, pyqtSignal, QSize, QPoint, QSettings, QObject, pyqtSlot
+from PyQt6.QtCore import Qt, QUrl, QTimer, QThread, pyqtSignal, QSize, QPoint, QSettings, QObject, pyqtSlot, QRect
 from PyQt6.QtGui import QFont, QColor, QIcon, QPixmap, QAction, QKeySequence, QDesktopServices
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEnginePage
@@ -226,7 +227,8 @@ class Config:
         default_nav_items = [
             {"id": "safe", "name": "安全工具", "icon": "🛡️"},
             {"id": "code", "name": "编码与解码", "icon": "🔧"},
-            {"id": "assist", "name": "辅助工具", "icon": "🛠️"}
+            {"id": "assist", "name": "辅助工具", "icon": "🛠️"},
+            {"id": "webnav", "name": "网站导航", "icon": "🌐"}
         ]
         # 首先尝试从JSON文件加载
         if os.path.exists(self.config_file):
@@ -260,7 +262,8 @@ class Config:
         default_nav_items = [
             {"id": "safe", "name": "安全工具", "icon": "🛡️"},
             {"id": "code", "name": "编码与解码", "icon": "🔧"},
-            {"id": "assist", "name": "辅助工具", "icon": "🛠️"}
+            {"id": "assist", "name": "辅助工具", "icon": "🛠️"},
+            {"id": "webnav", "name": "网站导航", "icon": "🌐"}
         ]
         self.tools = self.settings.value("tools", [])
         self.theme = self.settings.value("theme", "modern_light")
@@ -1672,7 +1675,7 @@ class MainWindow(QMainWindow):
         """初始化界面（重构为左侧固定导航栏）"""
         logging.info("开始初始化界面...")
         self.setWindowTitle("SecuHub - 智能程序启动")
-        self.setMinimumSize(1200, 800)
+        self.resize(1260, 800)  # 启动时窗口更宽
 
         # 分页参数
         # self.tools_per_page = 20
@@ -1889,42 +1892,22 @@ class MainWindow(QMainWindow):
             self.outline_tree.setHeaderHidden(True)
             self.outline_tree.itemClicked.connect(self.on_outline_clicked)
             self.outline_tree.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-            self.outline_tree.setIndentation(10)  # 控制缩进，为折叠图标留出空间
+            self.outline_tree.setIndentation(10)
             self.outline_tree.setStyleSheet("""
-QTreeWidget {
-    background: #ffffff;
-    border: none;
-    font-size: 12px;
-    color: #34495e;
-    padding: 2px 0px;
-    outline: 0px;
-}
-QTreeWidget::item {
-    height: 22px;
-    border-radius: 4px;
-    margin: 0px 5px;
-    border: 1px solid transparent;
-    padding-left: 5px; /* 移除固定的左内边距，由缩进控制 */
-}
-QTreeWidget::item:hover {
-    background: transparent;
-}
-QTreeWidget::item:selected {
-    background: transparent;
-    color: #1c6ef3;
-    font-weight: 600;
-    border: none;
-}
-QTreeWidget::branch {
-    image: none; /* 隐藏默认的虚线 */
-}
-QTreeWidget::indicator:unchecked {
-    image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM2Yzc1N2QiIHN0cm9rZS13aWR0aD0iMi4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1bGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSI5IDYgMTUgMTIgOSAxOCI+PC9wb2x5bGluZT48L3N2Zz4=);
-}
-QTreeWidget::indicator:checked {
-    image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM2Yzc1N2QiIHN0cm9rZS13aWR0aD0iMi4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1bGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSI2IDkgMTIgMTUgMTggOSI+PC9wb2x5bGluZT48L3N2Zz4=);
-}
-""")
+                QTreeWidget {
+                    border:none; background:transparent; font-size:13px; font-weight:bold; font-family:'Microsoft YaHei','微软雅黑',Arial;
+                }
+                QTreeWidget::item {
+                    height: 36px;
+                    padding-left: 8px;
+                }
+                QTreeWidget::item:selected {
+                    background: #23272e; color: #00c48f; border: none;
+                }
+                QTreeWidget::item:focus, QTreeWidget::item:!selected:focus {
+                    outline: none; border: none;
+                }
+            """)
             self.content_splitter.addWidget(self.outline_tree)
 
             # 右侧工具中心
@@ -2060,6 +2043,9 @@ QTreeWidget::indicator:checked {
             assist_layout.addWidget(self.assist_content)
             self.right_layout.addWidget(assist_container)
             self.current_assist_tab = 'java_encode'
+        elif nav_id == 'webnav':
+            self.right_layout.addWidget(WebsiteNavWidget())
+            return
         else:
             # 未来可以扩展为动态加载不同类型的页面
             # 当前为未知导航项创建一个空白页
@@ -2115,53 +2101,62 @@ QTreeWidget::indicator:checked {
             self.search_stats.setText("")
 
     def refresh_outline_and_tools(self):
-        """根据所有工具的分类字段动态生成树形大纲（支持多级），并显示所有工具"""
         self.outline_tree.clear()
-        
         # 添加"所有工具"项
         all_tools_item = QTreeWidgetItem(["所有工具"])
-        all_tools_item.setData(0, Qt.ItemDataRole.UserRole, "show_all") # 特殊标记
+        all_tools_item.setData(0, Qt.ItemDataRole.UserRole, "show_all")
         all_tools_item.setIcon(0, self.style().standardIcon(QStyle.StandardPixmap.SP_DirHomeIcon))
         self.outline_tree.addTopLevelItem(all_tools_item)
-        
         # 构建支持多级的分类树结构
         tree_dict = {}
         for t in self.config.tools:
-            # 使用strip()去除前后空格，并过滤掉空部分
             parts = [p.strip() for p in t.get('category', '').split('/') if p.strip()]
             if not parts:
                 continue
-            
             current_level = tree_dict
             for part in parts:
                 current_level = current_level.setdefault(part, {})
-
         # 递归函数，用于将字典树添加到QTreeWidget
         def add_items_to_tree(parent_item, children):
+            # 先收集叶子节点和分组节点
+            leaves = []
+            groups = []
             for name, sub_children in sorted(children.items()):
+                if sub_children:
+                    groups.append((name, sub_children))
+                else:
+                    leaves.append((name, sub_children))
+            # 先添加叶子节点
+            for name, sub_children in leaves:
                 child_item = QTreeWidgetItem([name])
                 parent_item.addChild(child_item)
-                if sub_children:
-                    add_items_to_tree(child_item, sub_children)
-                # else:  # 删除无下级分类时添加隐藏子项的逻辑
-                #     placeholder = QTreeWidgetItem()
-                #     placeholder.setHidden(True)
-                #     child_item.addChild(placeholder)
-
-        # 遍历顶层分类并添加到树中
+            # 再添加分组节点
+            for name, sub_children in groups:
+                child_item = QTreeWidgetItem([name])
+                parent_item.addChild(child_item)
+                add_items_to_tree(child_item, sub_children)
+        # 遍历顶层分类并添加到树中，先叶子后分组
+        leaves = []
+        groups = []
         for name, children in sorted(tree_dict.items()):
+            if children:
+                groups.append((name, children))
+            else:
+                leaves.append((name, children))
+        for name, children in leaves:
             top_level_item = QTreeWidgetItem([name])
             self.outline_tree.addTopLevelItem(top_level_item)
-            if children:
-                add_items_to_tree(top_level_item, children)
-            # else:  # 删除无下级分类时添加隐藏子项的逻辑
-            #     placeholder = QTreeWidgetItem()
-            #     placeholder.setHidden(True)
-            #     top_level_item.addChild(placeholder)
-        
+        for name, children in groups:
+            top_level_item = QTreeWidgetItem([name])
+            self.outline_tree.addTopLevelItem(top_level_item)
+            add_items_to_tree(top_level_item, children)
         # 默认折叠所有节点
         self.outline_tree.collapseAll()
-        
+        # 刷新目录树
+        self.update_category_tree()
+        # 默认全部收起
+        for i in range(self.outline_tree.topLevelItemCount()):
+            self.outline_tree.collapseItem(self.outline_tree.topLevelItem(i))
         # 默认显示所有工具
         self.update_tools_list_for_outline()
 
@@ -2740,6 +2735,7 @@ QTreeWidget::indicator:checked {
         # 设置工具类型
         tool_type = type_mapping_reverse.get(tool.tool_type, "GUI应用")
         dialog.type_combo.setCurrentText(tool_type)
+        
         
         if dialog.exec() == QDialog.DialogCode.Accepted:
             tool_data = dialog.get_tool_data()
@@ -5501,6 +5497,342 @@ class SettingsDialog(QDialog):
         path, _ = QFileDialog.getOpenFileName(self, "选择Java11可执行文件", "", "可执行文件 (*.exe);;所有文件 (*)")
         if path:
             self.java11_edit.setText(path)
+
+class WebsiteNavWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setObjectName("websiteNavWidget")
+        self.theme_manager = ThemeManager()
+        self.config = Config()
+        self.current_theme = self.config.theme
+        self.data = self.load_data()
+        self.category_tree = None
+        self.card_area = None
+        self.card_layout = None
+        self.current_category = None
+        self.icon_cache_dir = os.path.join(os.path.dirname(__file__), 'data', 'website')
+        if not os.path.exists(self.icon_cache_dir):
+            os.makedirs(self.icon_cache_dir)
+        self.init_ui()
+
+    def load_data(self):
+        import json
+        import os
+        data_path = os.path.join(os.path.dirname(__file__), 'data', 'website_flat.json')
+        if not os.path.exists(data_path):
+            return []
+        with open(data_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+
+    def group_by_category(self):
+        from collections import defaultdict
+        cats = defaultdict(list)
+        for item in self.data:
+            cats[item['category']].append(item)
+        return cats
+
+    def get_theme_card_style(self):
+        # 主题适配卡片背景色/字体色
+        theme = self.current_theme
+        if 'dark' in theme or theme == 'cyberpunk' or theme == 'midnight_purple' or theme == 'deep_ocean':
+            return "background: #23272e; color: #e0e0e0; border: 1px solid #404040;"
+        else:
+            return "background: #fff; color: #2c3e50; border: 1px solid #e1e8ed;"
+
+    def init_ui(self):
+        main_layout = QHBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+        # 左侧分类树
+        self.category_tree = QTreeWidget()
+        self.category_tree.setHeaderHidden(True)
+        self.category_tree.setFixedWidth(220)
+        self.category_tree.setStyleSheet("""
+            QTreeWidget {
+                border:none; background:transparent; font-size:13px; font-weight:bold; font-family:'Microsoft YaHei','微软雅黑',Arial;
+            }
+            QTreeWidget::item {
+                height: 36px;
+                padding-left: 8px;
+            }
+            QTreeWidget::item:selected {
+                background: #23272e; color: #00c48f; 
+            }
+        """)
+        self.category_tree.itemClicked.connect(self.on_category_clicked)
+        main_layout.addWidget(self.category_tree)
+        # 右侧卡片区
+        right_widget = QWidget()
+        right_layout = QVBoxLayout(right_widget)
+        right_layout.setContentsMargins(10, 10, 10, 10)
+        right_layout.setSpacing(0)
+        # 滚动区
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setStyleSheet("QScrollArea{border:none; background:transparent;}")
+        scroll_content = QWidget()
+        self.card_layout = QGridLayout(scroll_content)
+        self.card_layout.setSpacing(18)
+        self.card_layout.setContentsMargins(0, 0, 0, 0)
+        scroll.setWidget(scroll_content)
+        right_layout.addWidget(scroll)
+        main_layout.addWidget(right_widget)
+        self.setLayout(main_layout)
+        self.build_category_tree()
+        self.category_tree.expandAll()
+        # 默认选中第一个分类
+        if self.category_tree.topLevelItemCount() > 0:
+            self.category_tree.setCurrentItem(self.category_tree.topLevelItem(0))
+            self.on_category_clicked(self.category_tree.topLevelItem(0))
+        # 右键菜单（空白区）
+        scroll_content.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        scroll_content.customContextMenuRequested.connect(self.show_blank_context_menu)
+
+    def build_category_tree(self):
+        self.category_tree.clear()
+        cats = self.group_by_category()
+        # 支持 type1/type2
+        tree = {}
+        for cat in cats:
+            parts = cat.split('/')
+            if len(parts) == 1:
+                tree.setdefault(parts[0], {})
+            elif len(parts) == 2:
+                tree.setdefault(parts[0], {})[parts[1]] = cat
+        for k, v in tree.items():
+            parent = QTreeWidgetItem([k])
+            if v:
+                for sub, full in v.items():
+                    child = QTreeWidgetItem([sub])
+                    child.setData(0, Qt.ItemDataRole.UserRole, full)
+                    parent.addChild(child)
+            else:
+                parent.setData(0, Qt.ItemDataRole.UserRole, k)
+            self.category_tree.addTopLevelItem(parent)
+        # 默认选中"漏洞平台"
+        for i in range(self.category_tree.topLevelItemCount()):
+            item = self.category_tree.topLevelItem(i)
+            if item.text(0) == "漏洞平台":
+                self.category_tree.setCurrentItem(item)
+                self.on_category_clicked(item)
+                break
+
+    def on_category_clicked(self, item):
+        cat = item.data(0, Qt.ItemDataRole.UserRole)
+        if not cat:
+            cat = item.text(0)
+        # 一级分类（有子项）显示所有以cat开头的内容
+        if item.childCount() > 0:
+            all_items = [d for d in self.data if d['category'].startswith(cat)]
+            self.current_category = cat
+            self.refresh_cards(items=all_items)
+        else:
+            self.current_category = cat
+            self.refresh_cards()
+
+    def refresh_cards(self, items=None):
+        # 清空卡片区
+        while self.card_layout.count():
+            child = self.card_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+        if items is None:
+            cats = self.group_by_category()
+            items = cats.get(self.current_category, [])
+        from collections import defaultdict
+        group_map = defaultdict(list)
+        for item in items:
+            cat = item['category']
+            parts = cat.split('/')
+            if len(parts) == 2:
+                group_map[parts[1]].append(item)
+            else:
+                group_map[parts[0]].append(item)
+        row = 0
+        for group, group_items in group_map.items():
+            # 分组标题左对齐，间距更协调
+            title = QLabel(group)
+            title.setStyleSheet("font-size:18px;font-weight:bold;color:#00c48f;margin:18px 0 8px 0;text-align:left;")
+            self.card_layout.addWidget(title, row, 0, 1, 6)
+            row += 1
+            # 卡片流式紧凑排列
+            for idx, item in enumerate(group_items):
+                card = self.create_card(item)
+                r, c = divmod(idx, 6)
+                self.card_layout.addWidget(card, row + r, c)
+            row += (len(group_items) + 5) // 6
+        # 填充空白区域，保证底部对齐
+        self.card_layout.setRowStretch(row, 1)
+        self.card_layout.setColumnStretch(6, 1)
+
+    def create_card(self, item):
+        card = QWidget()
+        card.setFixedSize(180, 80)
+        card.setStyleSheet(f"QWidget{{border-radius:12px; border:none; {self.get_theme_card_style()} margin:0;}}" )
+        layout = QHBoxLayout(card)
+        layout.setContentsMargins(10, 6, 10, 6)
+        layout.setSpacing(8)
+        # icon
+        icon_label = QLabel()
+        icon_label.setFixedSize(36, 36)
+        icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        icon_label.setStyleSheet("background:transparent;")
+        self.load_icon(item['icon'], icon_label)
+        layout.addWidget(icon_label)
+        # 右侧信息
+        info_layout = QVBoxLayout()
+        name = QLabel(item['name'])
+        name.setStyleSheet("font-size:14px;font-weight:bold;")
+        remark = QLabel(item.get('remark', ''))
+        remark.setStyleSheet("font-size:11px;color:gray;")
+        remark.setWordWrap(True)
+        info_layout.addWidget(name)
+        info_layout.addWidget(remark)
+        info_layout.addStretch()
+        layout.addLayout(info_layout)
+        card.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        card.customContextMenuRequested.connect(lambda pos, i=item: self.show_card_context_menu(card, i, pos))
+        card.mouseDoubleClickEvent = lambda e, url=item['url']: self.open_url(url)
+        return card
+
+    def load_icon(self, icon_path, label):
+        from PyQt6.QtGui import QPixmap
+        from PyQt6.QtCore import Qt
+        import os
+        import hashlib
+        # 统一本地缓存
+        if icon_path.startswith('http'):
+            ext = os.path.splitext(icon_path)[-1]
+            if not ext or len(ext) > 5:
+                ext = '.ico'
+            fname = hashlib.md5(icon_path.encode('utf-8')).hexdigest() + ext
+            local_path = os.path.join(self.icon_cache_dir, fname)
+            if not os.path.exists(local_path):
+                try:
+                    import requests
+                    resp = requests.get(icon_path, timeout=3)
+                    with open(local_path, 'wb') as f:
+                        f.write(resp.content)
+                except Exception:
+                    label.setText('🌐')
+                    return
+            if os.path.exists(local_path):
+                pixmap = QPixmap(local_path)
+                if not pixmap.isNull():
+                    label.setPixmap(pixmap.scaled(36, 36, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+                else:
+                    label.setText('🌐')
+            else:
+                label.setText('🌐')
+        else:
+            local_path = icon_path
+            if not os.path.isabs(local_path):
+                local_path = os.path.join(os.path.dirname(__file__), 'data', 'Icon', icon_path)
+            if os.path.exists(local_path):
+                pixmap = QPixmap(local_path)
+                if not pixmap.isNull():
+                    label.setPixmap(pixmap.scaled(36, 36, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+                else:
+                    label.setText('🖼️')
+            else:
+                label.setText('🖼️')
+
+    def show_card_context_menu(self, card, item, pos):
+        menu = QMenu(card)
+        edit_action = QAction('✏️ 编辑', card)
+        delete_action = QAction('🗑️ 删除', card)
+        edit_action.triggered.connect(lambda: self.edit_nav(item))
+        delete_action.triggered.connect(lambda: self.delete_nav(item))
+        menu.addAction(edit_action)
+        menu.addAction(delete_action)
+        menu.exec(card.mapToGlobal(pos))
+
+    def show_blank_context_menu(self, pos):
+        menu = QMenu(self)
+        add_action = QAction('➕ 添加新导航', self)
+        add_action.triggered.connect(self.add_nav)
+        menu.addAction(add_action)
+        menu.exec(self.mapToGlobal(pos))
+
+    def open_url(self, url):
+        from PyQt6.QtGui import QDesktopServices
+        from PyQt6.QtCore import QUrl
+        QDesktopServices.openUrl(QUrl(url))
+
+    def edit_nav(self, item):
+        # TODO: 弹窗编辑，保存后刷新
+        pass
+
+    def delete_nav(self, item):
+        # TODO: 删除后保存并刷新
+        pass
+
+    def add_nav(self):
+        # TODO: 弹窗添加，保存后刷新
+        pass
+
+class IconLoader(QObject):
+    icon_loaded = pyqtSignal(QPixmap, QLabel)
+
+    def __init__(self, url, label):
+        super().__init__()
+        self.url = url
+        self.label = label
+
+    def run(self):
+        try:
+            resp = requests.get(self.url, timeout=3)
+            pixmap = QPixmap()
+            pixmap.loadFromData(resp.content)
+            self.icon_loaded.emit(pixmap, self.label)
+        except Exception:
+            pass
+
+class WebsiteNavEditDialog(QDialog):
+    def __init__(self, parent=None, categories=None, data=None):
+        super().__init__(parent)
+        self.setWindowTitle("网站导航编辑" if data else "添加网站导航")
+        self.setMinimumWidth(400)
+        layout = QFormLayout(self)
+        self.category_combo = QComboBox()
+        if categories:
+            self.category_combo.addItems(sorted(categories))
+        self.name_edit = QLineEdit()
+        self.remark_edit = QLineEdit()
+        self.url_edit = QLineEdit()
+        self.icon_edit = QLineEdit()
+        self.icon_btn = QPushButton("选择本地图片")
+        self.icon_btn.clicked.connect(self.choose_icon)
+        icon_layout = QHBoxLayout()
+        icon_layout.addWidget(self.icon_edit)
+        icon_layout.addWidget(self.icon_btn)
+        layout.addRow("分类", self.category_combo)
+        layout.addRow("名称", self.name_edit)
+        layout.addRow("描述", self.remark_edit)
+        layout.addRow("网址", self.url_edit)
+        layout.addRow("图标", icon_layout)
+        btn_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        btn_box.accepted.connect(self.accept)
+        btn_box.rejected.connect(self.reject)
+        layout.addRow(btn_box)
+        if data:
+            self.category_combo.setCurrentText(data.get('category', ''))
+            self.name_edit.setText(data.get('name', ''))
+            self.remark_edit.setText(data.get('remark', ''))
+            self.url_edit.setText(data.get('url', ''))
+            self.icon_edit.setText(data.get('icon', ''))
+    def choose_icon(self):
+        path, _ = QFileDialog.getOpenFileName(self, "选择图标", "", "图片文件 (*.png *.jpg *.ico *.bmp)")
+        if path:
+            self.icon_edit.setText(path)
+    def get_data(self):
+        return {
+            'category': self.category_combo.currentText(),
+            'name': self.name_edit.text().strip(),
+            'remark': self.remark_edit.text().strip(),
+            'url': self.url_edit.text().strip(),
+            'icon': self.icon_edit.text().strip(),
+        }
 
 if __name__ == "__main__":
     logging.info("程序开始运行...")

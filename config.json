@@ -1,19 +1,6 @@
 {
   "tools": [
     {
-      "name": "Befree",
-      "path": "E:/Penetration/RedTeam/TrafficProxyTools/proxy-pool/Befree代理池工具/start.bat",
-      "category": "流量代理/代理池",
-      "subcategory": "",
-      "tool_type": "batch",
-      "description": "",
-      "icon_path": "E:/Code/Python/SecuHub/data/Icon/freeplane.png",
-      "color": "#000000",
-      "launch_count": 35,
-      "last_launch": null,
-      "args": ""
-    },
-    {
       "name": "BurpSuite2023",
       "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite_pro/BurpSuiteLoader.vbs",
       "category": "流量代理/抓包工具",
@@ -22,8 +9,21 @@
       "description": "渗透利器",
       "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite_pro/BurpSuite.ico",
       "color": "#000000",
-      "launch_count": 33,
-      "last_launch": "2025-07-02T10:50:52.725168",
+      "launch_count": 37,
+      "last_launch": "2025-07-04T09:59:11.656721",
+      "args": ""
+    },
+    {
+      "name": "Befree",
+      "path": "E:/Penetration/RedTeam/TrafficProxyTools/proxy-pool/Befree代理池工具/start.bat",
+      "category": "流量代理/代理池",
+      "subcategory": "",
+      "tool_type": "batch",
+      "description": "",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/freeplane.png",
+      "color": "#000000",
+      "launch_count": 36,
+      "last_launch": "2025-07-03T13:45:54.766383",
       "args": ""
     },
     {
@@ -37,6 +37,19 @@
       "color": "#000000",
       "launch_count": 12,
       "last_launch": "2025-07-01T10:09:09.344457",
+      "args": ""
+    },
+    {
+      "name": "冰蝎_v4.1.t00ls",
+      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/Behinder_v4.1.t00ls/Behinder.jar",
+      "category": "WebShell管理器",
+      "subcategory": "",
+      "tool_type": "java11_gui",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-behinder.ico",
+      "color": "#000000",
+      "launch_count": 12,
+      "last_launch": "2025-07-03T13:41:06.354145",
       "args": ""
     },
     {
@@ -76,19 +89,6 @@
       "color": "#000000",
       "launch_count": 10,
       "last_launch": "2025-07-01T10:24:16.007280",
-      "args": ""
-    },
-    {
-      "name": "冰蝎_v4.1.t00ls",
-      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/Behinder_v4.1.t00ls/Behinder.jar",
-      "category": "WebShell管理器",
-      "subcategory": "",
-      "tool_type": "java11_gui",
-      "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-behinder.ico",
-      "color": "#000000",
-      "launch_count": 10,
-      "last_launch": "2025-07-02T21:58:45.440361",
       "args": ""
     },
     {
@@ -287,6 +287,19 @@
       "args": ""
     },
     {
+      "name": "burpsuite2025-部分汉化",
+      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite-CN/Burp_Chs.vbs",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
+      "tool_type": "vbs",
+      "description": "",
+      "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite-CN/Favicon.ico",
+      "color": "#000000",
+      "launch_count": 1,
+      "last_launch": "2025-07-03T10:18:13.051071",
+      "args": ""
+    },
+    {
       "args": "",
       "category": "流量代理/抓包工具",
       "color": "#000000",
@@ -350,33 +363,20 @@
       "launch_count": 0,
       "last_launch": null,
       "args": ""
-    },
-    {
-      "name": "burpsuite2025-部分汉化",
-      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite-CN/Burp_Chs.vbs",
-      "category": "流量代理/抓包工具",
-      "subcategory": "",
-      "tool_type": "vbs",
-      "description": "",
-      "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite-CN/Favicon.ico",
-      "color": "#000000",
-      "launch_count": 1,
-      "last_launch": "2025-07-03T10:18:13.051071",
-      "args": ""
     }
   ],
   "theme": "modern_light",
   "view_mode": "grid",
   "recent_tools": [
+    "BurpSuite2023",
+    "Befree",
+    "冰蝎_v4.1.t00ls",
     "burpsuite2025-部分汉化",
     "yakit",
     "哥斯拉",
-    "冰蝎_v4.1.t00ls",
-    "BurpSuite2023",
     "哥斯拉特战版",
     "BlueTeamToolsV2.18",
     "burpsuite2025",
-    "Befree",
     "Jack-Proxy-V3",
     "DeepSeekSelfTool",
     "Charles",
@@ -414,9 +414,14 @@
       "id": "assist",
       "name": "辅助工具",
       "icon": "🛠️"
+    },
+    {
+      "id": "webnav",
+      "name": "网站导航",
+      "icon": "🌐"
     }
   ],
   "python_path": "",
   "java8_path": "",
-  "java11_path": "E:/Penetration/Others/ProgramTools/dev/Java/Jav11/bin/java.exe"
+  "java11_path": ""
 }
