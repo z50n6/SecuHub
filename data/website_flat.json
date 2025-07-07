@@ -1,10 +1,31 @@
 [
   {
-    "category": "漏洞平台/热门推荐浏览",
-    "name": "Virgol",
-    "remark": "Virgol 渗透测试工具",
-    "url": "https://github.com/VirgoLee/Virgol",
-    "icon": "https://i-blog.csdnimg.cn/direct/3a2122afc08f45c0b4b168bc40e8ff19.png"
+    "category": "me/付费圈子",
+    "name": "知识星球",
+    "remark": "",
+    "url": "https://wx.zsxq.com/group/51128424511814",
+    "icon": "https://wx.zsxq.com/assets_dweb/images/favicon_32.ico"
+  },
+  {
+    "category": "me/付费圈子",
+    "name": "FREEBUF知识大陆",
+    "remark": "",
+    "url": "https://wiki.freebuf.com/page",
+    "icon": "https://wiki.freebuf.com/favicon-blue.ico"
+  },
+  {
+    "category": "me/付费圈子",
+    "name": "纷传",
+    "remark": "",
+    "url": "https://pc.fenchuan8.com/#/index?forum=80488&yqm=4SQF",
+    "icon": "https://img.leadshiptech.com/lzimg/gq/fenchuan/D4ZL/20240108/1704699263629_8dcacb61-c2d9-4812-badd-5b7669bc2b63.png"
+  },
+  {
+    "category": "me/付费圈子",
+    "name": "无问社区",
+    "remark": "",
+    "url": "https://www.wwlib.cn/index.php/wuwen",
+    "icon": ""
   },
   {
     "category": "漏洞平台/热门推荐浏览",
@@ -12,6 +33,13 @@
     "remark": "洞见微信聚合",
     "url": "http://wechat.doonsec.com/",
     "icon": "https://www.shentoushi.top/Public/home/images/T/wechat.doonsec.com.ico"
+  },
+  {
+    "category": "漏洞平台/热门推荐浏览",
+    "name": "棉花糖vip",
+    "remark": "网络安全资源大全",
+    "url": "https://vip.bdziyi.com/",
+    "icon": "https://oss.bdziyi.com/vip/2024/03/20240324075052980.jpg"
   },
   {
     "category": "漏洞平台/热门推荐浏览",
@@ -82,13 +110,6 @@
     "remark": "微步在线-威胁情报分析平台",
     "url": "https://x.threatbook.cn",
     "icon": "https://www.shentoushi.top/Public/home/images/T/x.threatbook.com.ico"
-  },
-  {
-    "category": "漏洞平台/热门推荐浏览",
-    "name": "TI-start.me",
-    "remark": "资源导航集合",
-    "url": "https://start.me/p/rxRbpo/ti",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/start.me.ico"
   },
   {
     "category": "漏洞平台/热门推荐浏览",
@@ -3673,257 +3694,5 @@
     "remark": "NAGA-娜迦信息-Android保护-iOS保护",
     "url": "http://www.nagain.com",
     "icon": "https://www.shentoushi.top/Public/home/images/T/nagain.png"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "Exploit.IN Forum",
-    "remark": "Exploit.IN Forum",
-    "url": "https://forum.exploit.in",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/exploit.png"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "Carding Forum",
-    "remark": "Carding Forum - Carding - Credit Cards - Dumps - Tracks - Laptops Shipping - Bank Accounts - Western Union Transfer",
-    "url": "http://www.cardmafia.ws",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/apple_git.png"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "Hack Forums",
-    "remark": "Hack Forums",
-    "url": "https://hackforums.net/index.php",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/hackforums.ico"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "Форум АНТИЧАТ",
-    "remark": "安全在线社区",
-    "url": "https://forum.antichat.ru",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/antichat.ico"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "0x00sec",
-    "remark": "The Home of the Hacker黑客之家",
-    "url": "https://0x00sec.org",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/0x00sec.png"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "FuzzySecurity",
-    "remark": "FuzzySecurity",
-    "url": "http://www.fuzzysecurity.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/fuzzysecurity.ico"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "EXETOOLS FORUM",
-    "remark": "Powered by vBulletin",
-    "url": "https://forum.exetools.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/exetools.ico"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "Tuts 4 You",
-    "remark": "Tuts 4 You",
-    "url": "https://forum.tuts4you.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/tuts4you.ico"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "R0 CREW",
-    "remark": "The Best Community Ever =)",
-    "url": "https://forum.reverse4you.org/",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/forum.reverse4you.org.png"
-  },
-  {
-    "category": "国外安全/国外论坛",
-    "name": "0x00sec",
-    "remark": "The Home of the Hacker",
-    "url": "https://0x00sec.org/",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/0x00sec.png"
-  },
-  {
-    "category": "国外安全/国外团队",
-    "name": "Security Affairs",
-    "remark": "Security Affairs - Read, think, share … Security is everyone responsibility Security Affairs",
-    "url": "http://securityaffairs.co/wordpress",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/securityaffairs.ico"
-  },
-  {
-    "category": "国外安全/国外团队",
-    "name": "SecurityFocus",
-    "remark": "SecurityFocus",
-    "url": "http://www.securityfocus.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/securityfocus.ico"
-  },
-  {
-    "category": "国外安全/国外团队",
-    "name": "Exploit.IN",
-    "remark": "Exploit.IN",
-    "url": "https://exploit.in",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/exploit.png"
-  },
-  {
-    "category": "国外安全/国外团队",
-    "name": "HighOn.Coffee",
-    "remark": "渗透测试&&安全研究博客",
-    "url": "https://highon.coffee",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/highon.ico"
-  },
-  {
-    "category": "国外安全/国外团队",
-    "name": "Hacking Articles",
-    "remark": "Hacking Articles",
-    "url": "http://www.hackingarticles.in",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/apple_git.png"
-  },
-  {
-    "category": "国外安全/国外团队",
-    "name": "MDSec",
-    "remark": "MDSec是一家对信息安全充满热情的全球权威机构，拥有客户群，包括一些来自金融和政府部门的世界上最知名的组织。",
-    "url": "https://www.mdsec.co.uk/",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/www.mdsec.co.uk.png"
-  },
-  {
-    "category": "国外安全/国外视频",
-    "name": "Security Tube",
-    "remark": "SecurityTube.net",
-    "url": "http://www.securitytube.net",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/securitytube.ico"
-  },
-  {
-    "category": "国外安全/国外视频",
-    "name": "blackMORE Ops",
-    "remark": "Linux, InfoSec, Hacking - blackMORE Ops",
-    "url": "https://www.blackmoreops.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/blackmoreops.ico"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "Exploit.IN Forum",
-    "remark": "Exploit.IN Forum",
-    "url": "https://forum.exploit.in",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/exploit.png"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "Carding Forum",
-    "remark": "Carding Forum - Carding - Credit Cards - Dumps - Tracks - Laptops Shipping - Bank Accounts - Western Union Transfer",
-    "url": "http://www.cardmafia.ws",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/apple_git.png"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "Hack Forums",
-    "remark": "Hack Forums",
-    "url": "https://hackforums.net/index.php",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/hackforums.ico"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "Форум АНТИЧАТ",
-    "remark": "安全在线社区",
-    "url": "https://forum.antichat.ru",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/antichat.ico"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "0x00sec",
-    "remark": "The Home of the Hacker黑客之家",
-    "url": "https://0x00sec.org",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/0x00sec.png"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "FuzzySecurity",
-    "remark": "FuzzySecurity",
-    "url": "http://www.fuzzysecurity.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/fuzzysecurity.ico"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "EXETOOLS FORUM",
-    "remark": "Powered by vBulletin",
-    "url": "https://forum.exetools.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/exetools.ico"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "Tuts 4 You",
-    "remark": "Tuts 4 You",
-    "url": "https://forum.tuts4you.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/tuts4you.ico"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "R0 CREW",
-    "remark": "The Best Community Ever =)",
-    "url": "https://forum.reverse4you.org/",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/forum.reverse4you.org.png"
-  },
-  {
-    "category": "利器集合/国外论坛",
-    "name": "0x00sec",
-    "remark": "The Home of the Hacker",
-    "url": "https://0x00sec.org/",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/0x00sec.png"
-  },
-  {
-    "category": "利器集合/国外团队",
-    "name": "Security Affairs",
-    "remark": "Security Affairs - Read, think, share … Security is everyone responsibility Security Affairs",
-    "url": "http://securityaffairs.co/wordpress",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/securityaffairs.ico"
-  },
-  {
-    "category": "利器集合/国外团队",
-    "name": "SecurityFocus",
-    "remark": "SecurityFocus",
-    "url": "http://www.securityfocus.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/icons/securityfocus.ico"
-  },
-  {
-    "category": "利器集合/国外团队",
-    "name": "Exploit.IN",
-    "remark": "Exploit.IN",
-    "url": "https://exploit.in",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/exploit.png"
-  },
-  {
-    "category": "利器集合/国外团队",
-    "name": "HighOn.Coffee",
-    "remark": "渗透测试&&安全研究博客",
-    "url": "https://highon.coffee",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/highon.ico"
-  },
-  {
-    "category": "利器集合/国外团队",
-    "name": "Hacking Articles",
-    "remark": "Hacking Articles",
-    "url": "http://www.hackingarticles.in",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/apple_git.png"
-  },
-  {
-    "category": "利器集合/国外团队",
-    "name": "MDSec",
-    "remark": "MDSec是一家对信息安全充满热情的全球权威机构，拥有客户群，包括一些来自金融和政府部门的世界上最知名的组织。",
-    "url": "https://www.mdsec.co.uk/",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/www.mdsec.co.uk.png"
-  },
-  {
-    "category": "利器集合/国外视频",
-    "name": "Security Tube",
-    "remark": "SecurityTube.net",
-    "url": "http://www.securitytube.net",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/securitytube.ico"
-  },
-  {
-    "category": "利器集合/国外视频",
-    "name": "blackMORE Ops",
-    "remark": "Linux, InfoSec, Hacking - blackMORE Ops",
-    "url": "https://www.blackmoreops.com",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/blackmoreops.ico"
   }
 ]

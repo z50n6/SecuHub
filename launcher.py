@@ -5760,16 +5760,87 @@ class WebsiteNavWidget(QWidget):
         QDesktopServices.openUrl(QUrl(url))
 
     def edit_nav(self, item):
-        # TODO: 弹窗编辑，保存后刷新
-        pass
+        # 弹窗编辑，保存后刷新
+        dialog = WebsiteNavEditDialog(self, categories={d['category'] for d in self.data}, data=item)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            new_data = dialog.get_data()
+            # 找到并替换原数据
+            for i, d in enumerate(self.data):
+                if d is item or (d['category'] == item['category'] and d['name'] == item['name'] and d['url'] == item['url']):
+                    self.data[i] = new_data
+                    break
+            self.save_data()
+            # 重新加载数据并刷新界面
+            self.data = self.load_data()
+            self.build_category_tree()
+            self.category_tree.expandAll()
+            # 重新选中当前分类
+            if self.current_category:
+                self.refresh_cards()
+            else:
+                # 默认选中第一个分类
+                if self.category_tree.topLevelItemCount() > 0:
+                    self.category_tree.setCurrentItem(self.category_tree.topLevelItem(0))
+                    self.on_category_clicked(self.category_tree.topLevelItem(0))
 
     def delete_nav(self, item):
-        # TODO: 删除后保存并刷新
-        pass
+        # 优化删除后保存并刷新，弹窗UI更友好
+        dlg = ConfirmDialog(
+            self,
+            title="⚠️ 确认删除",
+            content=(
+                f"<div style='font-size:16px;line-height:1.8;'>"
+                f"确定要<strong style='color:#ff4d4f;'>永久删除</strong>导航<br>"
+                f"<span style='color:#43e97b;font-weight:bold;font-size:18px;'>『{item['name']}』</span> 吗？"
+                f"<br><span style='color:gray;font-size:13px;'>{item['url']}</span>"
+                f"</div>"
+            ),
+            icon="🗑️",
+            yes_text="是，永久删除",
+            no_text="取消操作"
+        )
+        if dlg.exec() == QDialog.DialogCode.Accepted:
+            self.data = [d for d in self.data if not (d['category'] == item['category'] and d['name'] == item['name'] and d['url'] == item['url'])]
+            self.save_data()
+            # 重新加载数据并刷新界面
+            self.data = self.load_data()
+            self.build_category_tree()
+            self.category_tree.expandAll()
+            # 重新选中当前分类
+            if self.current_category:
+                self.refresh_cards()
+            else:
+                # 默认选中第一个分类
+                if self.category_tree.topLevelItemCount() > 0:
+                    self.category_tree.setCurrentItem(self.category_tree.topLevelItem(0))
+                    self.on_category_clicked(self.category_tree.topLevelItem(0))
 
     def add_nav(self):
-        # TODO: 弹窗添加，保存后刷新
-        pass
+        # 弹窗添加，保存后刷新
+        dialog = WebsiteNavEditDialog(self, categories={d['category'] for d in self.data})
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            new_data = dialog.get_data()
+            self.data.append(new_data)
+            self.save_data()
+            # 重新加载数据并刷新界面
+            self.data = self.load_data()
+            self.build_category_tree()
+            self.category_tree.expandAll()
+            # 重新选中当前分类
+            if self.current_category:
+                self.refresh_cards()
+            else:
+                # 默认选中第一个分类
+                if self.category_tree.topLevelItemCount() > 0:
+                    self.category_tree.setCurrentItem(self.category_tree.topLevelItem(0))
+                    self.on_category_clicked(self.category_tree.topLevelItem(0))
+
+    def save_data(self):
+        import json
+        import os
+        data_path = os.path.join(os.path.dirname(__file__), 'data', 'website_flat.json')
+        with open(data_path, 'w', encoding='utf-8') as f:
+            json.dump(self.data, f, ensure_ascii=False, indent=2)
 
 class IconLoader(QObject):
     icon_loaded = pyqtSignal(QPixmap, QLabel)
@@ -5797,6 +5868,7 @@ class WebsiteNavEditDialog(QDialog):
         self.category_combo = QComboBox()
         if categories:
             self.category_combo.addItems(sorted(categories))
+            self.category_combo.setEditable(True)  # 允许自定义输入
         self.name_edit = QLineEdit()
         self.remark_edit = QLineEdit()
         self.url_edit = QLineEdit()
@@ -5842,5 +5914,4 @@ if __name__ == "__main__":
     logging.info("创建主窗口...")
     window.show()
     logging.info("显示主窗口...")
-    sys.exit(app.exec()) 
-    
+    sys.exit(app.exec())
