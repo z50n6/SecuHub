@@ -122,18 +122,21 @@ class ConfirmDialog(QDialog):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Dialog)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.setMinimumWidth(400)
+        self.content_widget = QWidget(self)  # 假设你有这样一个内容区
+
         # 主布局
         main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        self.setStyleSheet("background: transparent;")
-        # 极简卡片容器
+        self.setStyleSheet("QWidget { border: none; }")
+        # self.setStyleSheet("background: transparent;")
+        # self.content_widget.setStyleSheet("border: none;")        # 极简卡片容器
         container = QWidget()
         container.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         container.setStyleSheet("""
             QWidget {
                 background: #fff;
                 border-radius: 12px;
-                border: 1px solid #e0e0e0;
+                /*border: 1px solid #e0e0e0;*/
             }
         """)
         main_layout.addWidget(container)
@@ -1667,8 +1670,11 @@ class MainWindow(QMainWindow):
             "recent_tools": self.config.recent_tools,
             "show_status_bar": self.config.show_status_bar,
             "auto_refresh": self.config.auto_refresh,
-            "search_history": self.config.search_history
-        }
+            "search_history": self.config.search_history,
+            "python_path": self.config.python_path,
+            "java8_path": self.config.java8_path,
+            "java11_path": self.config.java11_path
+    }
         self.startConfigSave.emit(config_data)
     
     def init_ui(self):
@@ -1709,16 +1715,16 @@ class MainWindow(QMainWindow):
         nav_layout.setContentsMargins(10, 20, 10, 20)
         nav_layout.setSpacing(16)
         
-        # 导航标题
-        nav_title = QLabel("导航")
-        nav_title.setStyleSheet("""
-            font-size: 16px;
-            font-weight: bold;
-            color: #495057;
-            padding: 10px 0;
-            border-bottom: 1px solid #e9ecef;
-        """)
-        nav_layout.addWidget(nav_title)
+        # # 导航标题
+        # nav_title = QLabel("导航")
+        # nav_title.setStyleSheet("""
+        #     font-size: 16px;
+        #     font-weight: bold;
+        #     color: #495057;
+        #     padding: 10px 0;
+        #     border-bottom: 1px solid #e9ecef;
+        # """)
+        # nav_layout.addWidget(nav_title)
         
         # 动态创建导航按钮
         for nav_item in self.config.navigation_items:
@@ -1751,17 +1757,17 @@ class MainWindow(QMainWindow):
         
         nav_layout.addStretch()
         
-        # 底部信息
-        bottom_info = QLabel("SecuHub v1.0")
-        bottom_info.setStyleSheet("""
-            font-size: 11px;
-            color: #adb5bd;
-            text-align: center;
-            padding: 10px 0;
-            border-top: 1px solid #e9ecef;
-        """)
-        bottom_info.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        nav_layout.addWidget(bottom_info)
+        # # 底部信息
+        # bottom_info = QLabel("SecuHub v1.0")
+        # bottom_info.setStyleSheet("""
+        #     font-size: 11px;
+        #     color: #adb5bd;
+        #     text-align: center;
+        #     padding: 10px 0;
+        #     border-top: 1px solid #e9ecef;
+        # """)
+        # bottom_info.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # nav_layout.addWidget(bottom_info)
         
         self.main_splitter.addWidget(nav_panel)
 
@@ -5665,13 +5671,69 @@ class WebsiteNavWidget(QWidget):
         self.card_layout.setRowStretch(row, 1)
         self.card_layout.setColumnStretch(6, 1)
 
+    # def create_card(self, item):
+    #     card = QWidget()
+    #     card.setFixedSize(180, 80)
+    #     # 极简风格：无边框、无阴影、无多余背景，仅圆角和hover高亮
+    #     card.setStyleSheet("""
+    #         QWidget{
+    #             border-radius:14px;
+    #             background:rgba(255,255,255,0.97);
+    #             border:none;
+    #             margin:0;
+    #             transition: box-shadow 0.2s;
+    #         }
+    #         QWidget:hover{
+    #             background:#f2f6fa;
+    #             box-shadow:0 2px 8px 0 rgba(60,60,60,0.08);
+    #         }
+    #     """)
+    #     layout = QHBoxLayout(card)
+    #     layout.setContentsMargins(14, 8, 14, 8)
+    #     layout.setSpacing(10)
+    #     # icon
+    #     icon_label = QLabel()
+    #     icon_label.setFixedSize(36, 36)
+    #     icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+    #     icon_label.setStyleSheet("background:transparent;")
+    #     self.load_icon(item['icon'], icon_label)
+    #     layout.addWidget(icon_label)
+    #     # 右侧信息
+    #     info_layout = QVBoxLayout()
+    #     name = QLabel(item['name'])
+    #     name.setStyleSheet("font-size:15px;font-weight:bold;color:#222;")
+    #     remark = QLabel(item.get('remark', ''))
+    #     remark.setStyleSheet("font-size:11px;color:#888;")
+    #     remark.setWordWrap(True)
+    #     info_layout.addWidget(name)
+    #     info_layout.addWidget(remark)
+    #     info_layout.addStretch()
+    #     layout.addLayout(info_layout)
+    #     card.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+    #     card.customContextMenuRequested.connect(lambda pos, i=item: self.show_card_context_menu(card, i, pos))
+    #     card.mouseDoubleClickEvent = lambda e, url=item['url']: self.open_url(url)
+    #     return card
     def create_card(self, item):
         card = QWidget()
         card.setFixedSize(180, 80)
-        card.setStyleSheet(f"QWidget{{border-radius:12px; border:none; {self.get_theme_card_style()} margin:0;}}" )
+        # 极简风格：无任何边框，hover时只有背景色和阴影
+        card.setStyleSheet("""
+            QWidget{
+                border-radius:14px;
+                background:rgba(255,255,255,0.97);
+                border:none;
+                margin:0;
+                transition: box-shadow 0.2s;
+            }
+            QWidget:hover{
+                background:#f2f6fa;
+                box-shadow:0 2px 8px 0 rgba(60,60,60,0.08);
+                border:none;
+            }
+        """)
         layout = QHBoxLayout(card)
-        layout.setContentsMargins(10, 6, 10, 6)
-        layout.setSpacing(8)
+        layout.setContentsMargins(14, 8, 14, 8)
+        layout.setSpacing(10)
         # icon
         icon_label = QLabel()
         icon_label.setFixedSize(36, 36)
@@ -5682,9 +5744,9 @@ class WebsiteNavWidget(QWidget):
         # 右侧信息
         info_layout = QVBoxLayout()
         name = QLabel(item['name'])
-        name.setStyleSheet("font-size:14px;font-weight:bold;")
+        name.setStyleSheet("font-size:15px;font-weight:bold;color:#222;")
         remark = QLabel(item.get('remark', ''))
-        remark.setStyleSheet("font-size:11px;color:gray;")
+        remark.setStyleSheet("font-size:11px;color:#888;")
         remark.setWordWrap(True)
         info_layout.addWidget(name)
         info_layout.addWidget(remark)
@@ -5694,7 +5756,6 @@ class WebsiteNavWidget(QWidget):
         card.customContextMenuRequested.connect(lambda pos, i=item: self.show_card_context_menu(card, i, pos))
         card.mouseDoubleClickEvent = lambda e, url=item['url']: self.open_url(url)
         return card
-
     def load_icon(self, icon_path, label):
         from PyQt6.QtGui import QPixmap
         from PyQt6.QtCore import Qt
@@ -5859,53 +5920,498 @@ class IconLoader(QObject):
         except Exception:
             pass
 
+# class WebsiteNavEditDialog(QDialog):
+#     def __init__(self, parent=None, categories=None, data=None):
+#         super().__init__(parent)
+#         self.setWindowTitle("网站导航编辑" if data else "添加网站导航")
+#         self.setMinimumWidth(480)
+#         self.setMinimumHeight(420)
+        
+#         # 现代化样式
+#         self.setStyleSheet("""
+#             QDialog {
+#                 border-radius: 16px;
+#                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
+#                     stop:0 #2c3e50, stop:1 #34495e);
+#                 color: #ecf0f1;
+#                 font-size: 14px;
+#                 font-family: 'Microsoft YaHei', Arial, sans-serif;
+#             }
+#             QLineEdit, QComboBox {
+#                 border-radius: 8px;
+#                 padding: 10px 12px;
+#                 border: 2px solid #34495e;
+#                 background: #2c3e50;
+#                 color: #ecf0f1;
+#                 font-size: 13px;
+#                 min-height: 20px;
+#             }
+#             QLineEdit:focus, QComboBox:focus {
+#                 border: 2px solid #3498db;
+#                 background: #34495e;
+#             }
+#             QLineEdit:hover, QComboBox:hover {
+#                 border: 2px solid #5dade2;
+#             }
+#             QLabel[error='true'] {
+#                 color: #e74c3c;
+#                 font-size: 12px;
+#                 font-weight: bold;
+#                 padding: 2px 0;
+#             }
+#             QPushButton {
+#                 border-radius: 8px;
+#                 padding: 10px 20px;
+#                 background: #34495e;
+#                 color: #ecf0f1;
+#                 border: 2px solid #34495e;
+#                 font-weight: bold;
+#                 min-height: 20px;
+#             }
+#             QPushButton:hover {
+#                 background: #5dade2;
+#                 border: 2px solid #5dade2;
+#             }
+#             QPushButton:pressed {
+#                 background: #2980b9;
+#                 border: 2px solid #2980b9;
+#             }
+#             QPushButton#mainBtn {
+#                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0, 
+#                     stop:0 #3498db, stop:1 #2ecc71);
+#                 color: white;
+#                 font-weight: bold;
+#                 border: none;
+#                 font-size: 14px;
+#             }
+#             QPushButton#mainBtn:hover {
+#                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0, 
+#                     stop:0 #2980b9, stop:1 #27ae60);
+#             }
+#             QDialogButtonBox {
+#                 padding-top: 15px;
+#             }
+#             QLabel#fieldLabel {
+#                 color: #bdc3c7;
+#                 font-weight: bold;
+#                 font-size: 13px;
+#             }
+#             QLabel#required {
+#                 color: #e74c3c;
+#                 font-size: 12px;
+#             }
+#         """)
+        
+#         # 主布局
+#         main_layout = QVBoxLayout(self)
+#         main_layout.setContentsMargins(30, 25, 30, 20)
+#         main_layout.setSpacing(15)
+        
+#         # 标题区
+#         title_layout = QHBoxLayout()
+#         title_icon = QLabel("🌐")
+#         title_icon.setStyleSheet("font-size: 24px; padding: 5px;")
+#         title_text = QLabel("网站导航编辑" if data else "添加网站导航")
+#         title_text.setStyleSheet("font-size: 18px; font-weight: bold; color: #ecf0f1;")
+#         title_layout.addWidget(title_icon)
+#         title_layout.addWidget(title_text)
+#         title_layout.addStretch()
+#         main_layout.addLayout(title_layout)
+        
+#         # 表单布局
+#         form_layout = QFormLayout()
+#         form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
+#         form_layout.setFormAlignment(Qt.AlignmentFlag.AlignHCenter)
+#         form_layout.setHorizontalSpacing(20)
+#         form_layout.setVerticalSpacing(12)
+        
+#         # 分类选择
+#         self.category_combo = QComboBox()
+#         if categories:
+#             self.category_combo.addItems(sorted(categories))
+#         self.category_combo.setEditable(True)
+#         self.category_combo.setPlaceholderText("选择或输入分类名称")
+        
+#         # 支持可搜索
+#         from PyQt6.QtWidgets import QCompleter
+#         completer = QCompleter([str(c) for c in categories] if categories else [])
+#         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+#         self.category_combo.setCompleter(completer)
+        
+#         # 名称输入
+#         self.name_edit = QLineEdit()
+#         self.name_edit.setPlaceholderText("请输入网站名称")
+        
+#         # 描述输入
+#         self.remark_edit = QLineEdit()
+#         self.remark_edit.setPlaceholderText("可选，网站描述信息")
+        
+#         # 网址输入
+#         self.url_edit = QLineEdit()
+#         self.url_edit.setPlaceholderText("请输入完整网址，如：https://www.example.com")
+        
+#         # 图标选择
+#         self.icon_edit = QLineEdit()
+#         self.icon_edit.setPlaceholderText("可选，支持本地图片路径或网络图片URL")
+#         self.icon_btn = QPushButton("📁 选择图片")
+#         self.icon_btn.setFixedWidth(100)
+#         self.icon_btn.clicked.connect(self.choose_icon)
+        
+#         # 图标预览
+#         self.icon_preview = QLabel()
+#         self.icon_preview.setFixedSize(48, 48)
+#         self.icon_preview.setStyleSheet("""
+#             background: #2c3e50; 
+#             border-radius: 8px; 
+#             border: 2px solid #34495e;
+#             padding: 2px;
+#         """)
+#         self.icon_preview.setAlignment(Qt.AlignmentFlag.AlignCenter)
+#         self.icon_edit.textChanged.connect(self.update_icon_preview)
+        
+#         # 图标布局
+#         icon_layout = QHBoxLayout()
+#         icon_layout.addWidget(self.icon_edit)
+#         icon_layout.addWidget(self.icon_btn)
+#         icon_layout.addWidget(self.icon_preview)
+#         icon_layout.setSpacing(10)
+        
+#         # 错误提示标签
+#         self.name_error = QLabel()
+#         self.name_error.setProperty('error', True)
+#         self.name_error.hide()
+#         self.url_error = QLabel()
+#         self.url_error.setProperty('error', True)
+#         self.url_error.hide()
+        
+#         # 拖拽支持
+#         self.icon_edit.setAcceptDrops(True)
+#         def dragEnterEvent(e):
+#             if e.mimeData().hasUrls():
+#                 e.acceptProposedAction()
+#         def dropEvent(e):
+#             for url in e.mimeData().urls():
+#                 path = url.toLocalFile()
+#                 if path.lower().endswith(('.png','.jpg','.jpeg','.ico','.bmp','.gif')):
+#                     self.icon_edit.setText(path)
+#                     break
+#         self.icon_edit.dragEnterEvent = dragEnterEvent
+#         self.icon_edit.dropEvent = dropEvent
+        
+#         # 添加表单字段
+#         category_label = QLabel("分类")
+#         category_label.setObjectName("fieldLabel")
+#         form_layout.addRow(category_label, self.category_combo)
+        
+#         # 名称字段
+#         name_label = QLabel("名称")
+#         name_label.setObjectName("fieldLabel")
+#         required_label = QLabel(" *")
+#         required_label.setObjectName("required")
+#         name_container = QWidget()
+#         name_layout = QHBoxLayout(name_container)
+#         name_layout.setContentsMargins(0, 0, 0, 0)
+#         name_layout.addWidget(name_label)
+#         name_layout.addWidget(required_label)
+#         name_layout.addStretch()
+#         form_layout.addRow(name_container, self.name_edit)
+#         form_layout.addRow("", self.name_error)
+        
+#         # 描述字段
+#         remark_label = QLabel("描述")
+#         remark_label.setObjectName("fieldLabel")
+#         form_layout.addRow(remark_label, self.remark_edit)
+        
+#         # 网址字段
+#         url_label = QLabel("网址")
+#         url_label.setObjectName("fieldLabel")
+#         required_label2 = QLabel(" *")
+#         required_label2.setObjectName("required")
+#         url_container = QWidget()
+#         url_layout = QHBoxLayout(url_container)
+#         url_layout.setContentsMargins(0, 0, 0, 0)
+#         url_layout.addWidget(url_label)
+#         url_layout.addWidget(required_label2)
+#         url_layout.addStretch()
+#         form_layout.addRow(url_container, self.url_edit)
+#         form_layout.addRow("", self.url_error)
+        
+#         # 图标字段
+#         icon_label = QLabel("图标")
+#         icon_label.setObjectName("fieldLabel")
+#         form_layout.addRow(icon_label, icon_layout)
+        
+#         main_layout.addLayout(form_layout)
+        
+#         # 按钮区
+#         btn_box = QDialogButtonBox()
+#         self.ok_btn = QPushButton("✅ 确定")
+#         self.ok_btn.setObjectName("mainBtn")
+#         self.cancel_btn = QPushButton("❌ 取消")
+#         btn_box.addButton(self.ok_btn, QDialogButtonBox.ButtonRole.AcceptRole)
+#         btn_box.addButton(self.cancel_btn, QDialogButtonBox.ButtonRole.RejectRole)
+#         main_layout.addWidget(btn_box)
+        
+#         # 连接信号
+#         self.ok_btn.clicked.connect(self.validate_and_accept)
+#         self.cancel_btn.clicked.connect(self.reject)
+        
+#         # 回车提交、ESC关闭
+#         self.name_edit.returnPressed.connect(self.validate_and_accept)
+#         self.url_edit.returnPressed.connect(self.validate_and_accept)
+#         self.remark_edit.returnPressed.connect(self.validate_and_accept)
+#         self.icon_edit.returnPressed.connect(self.validate_and_accept)
+#         self.category_combo.currentTextChanged.connect(self.on_category_changed)
+        
+#         # 填充数据
+#         if data:
+#             self.category_combo.setCurrentText(data.get('category', ''))
+#             self.name_edit.setText(data.get('name', ''))
+#             self.remark_edit.setText(data.get('remark', ''))
+#             self.url_edit.setText(data.get('url', ''))
+#             self.icon_edit.setText(data.get('icon', ''))
+        
+#         # 窗口设置
+#         self.setWindowFlag(Qt.WindowType.WindowContextHelpButtonHint, False)
+#         self.setWindowModality(Qt.WindowModality.ApplicationModal)
+#         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
+#         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
+        
+#         # 焦点设置
+#         self.name_edit.setFocus()
+#     def update_icon_preview(self):
+#         """更新图标预览"""
+#         from PyQt6.QtGui import QPixmap
+#         path = self.icon_edit.text().strip()
+#         if path:
+#             if path.startswith(('http://', 'https://')):
+#                 try:
+#                     import requests
+#                     resp = requests.get(path, timeout=3)
+#                     pixmap = QPixmap()
+#                     pixmap.loadFromData(resp.content)
+#                     if not pixmap.isNull():
+#                         self.icon_preview.setPixmap(pixmap.scaled(44, 44, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+#                     else:
+#                         self.icon_preview.setText("❌")
+#                 except Exception:
+#                     self.icon_preview.setText("❌")
+#             else:
+#                 pixmap = QPixmap(path)
+#                 if not pixmap.isNull():
+#                     self.icon_preview.setPixmap(pixmap.scaled(44, 44, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+#                 else:
+#                     self.icon_preview.setText("❌")
+#         else:
+#             self.icon_preview.setText("🖼️")
+    
+#     def choose_icon(self):
+#         """选择本地图片文件"""
+#         path, _ = QFileDialog.getOpenFileName(
+#             self, 
+#             "选择图标", 
+#             "", 
+#             "图片文件 (*.png *.jpg *.jpeg *.ico *.bmp *.gif)"
+#         )
+#         if path:
+#             self.icon_edit.setText(path)
+    
+#     def on_category_changed(self, text):
+#         """分类变化时的处理"""
+#         # 可以在这里添加分类相关的逻辑
+#         pass
+    
+#     def validate_and_accept(self):
+#         """验证表单并接受"""
+#         name = self.name_edit.text().strip()
+#         url = self.url_edit.text().strip()
+#         valid = True
+        
+#         # 验证名称
+#         if not name:
+#             self.name_error.setText("⚠️ 名称为必填项")
+#             self.name_error.show()
+#             valid = False
+#         elif len(name) < 2:
+#             self.name_error.setText("⚠️ 名称至少需要2个字符")
+#             self.name_error.show()
+#             valid = False
+#         else:
+#             self.name_error.hide()
+        
+#         # 验证URL
+#         import re
+#         url_pattern = r"^https?://[\w\-]+(\.[\w\-]+)+.*$"
+#         if not url:
+#             self.url_error.setText("⚠️ 网址为必填项")
+#             self.url_error.show()
+#             valid = False
+#         elif not re.match(url_pattern, url):
+#             self.url_error.setText("⚠️ 网址格式不正确，需以http://或https://开头")
+#             self.url_error.show()
+#             valid = False
+#         else:
+#             self.url_error.hide()
+        
+#         if valid:
+#             self.accept()
+    
+#     def get_data(self):
+#         """获取表单数据"""
+#         return {
+#             'category': self.category_combo.currentText().strip(),
+#             'name': self.name_edit.text().strip(),
+#             'remark': self.remark_edit.text().strip(),
+#             'url': self.url_edit.text().strip(),
+#             'icon': self.icon_edit.text().strip(),
+#         }
 class WebsiteNavEditDialog(QDialog):
     def __init__(self, parent=None, categories=None, data=None):
         super().__init__(parent)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Dialog)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.setWindowTitle("网站导航编辑" if data else "添加网站导航")
-        self.setMinimumWidth(400)
-        layout = QFormLayout(self)
+        self.setMinimumWidth(600)
+        self.categories = categories or []
+
+        # 主布局
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        self.setStyleSheet("background: transparent;")
+
+        # 卡片容器
+        container = QWidget()
+        container.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        container.setStyleSheet("""
+            QWidget {
+                background: #fff;
+                border-radius: 12px;
+            }
+        """)
+        main_layout.addWidget(container)
+        container_layout = QVBoxLayout(container)
+        container_layout.setContentsMargins(0, 0, 0, 20)
+        container_layout.setSpacing(0)
+
+        # 标题栏
+        title_bar = QWidget()
+        title_bar.setFixedHeight(50)
+        title_bar.setStyleSheet("""
+            QWidget {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7);
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+            }
+        """)
+        title_layout = QHBoxLayout(title_bar)
+        title_layout.setContentsMargins(15, 0, 15, 0)
+        title_text = QLabel("网站导航编辑" if data else "添加网站导航")
+        title_text.setStyleSheet("font-size: 16px; font-weight: bold; color: white; background: transparent;")
+        title_layout.addWidget(title_text)
+        title_layout.addStretch()
+        close_btn = QPushButton("✕")
+        close_btn.setFixedSize(36, 36)
+        close_btn.setStyleSheet("""
+            QPushButton { background: transparent; color: white; border: none; font-size: 18px; }
+            QPushButton:hover { background: rgba(255,255,255,0.32); }
+            QPushButton:pressed { background: rgba(0,0,0,0.12); }
+        """)
+        close_btn.clicked.connect(self.reject)
+        title_layout.addWidget(close_btn)
+        # 拖动支持
+        self.offset = None
+        def mousePressEvent(event):
+            if event.button() == Qt.MouseButton.LeftButton:
+                self.offset = event.globalPosition().toPoint() - self.pos()
+        def mouseMoveEvent(event):
+            if self.offset is not None and event.buttons() == Qt.MouseButton.LeftButton:
+                self.move(event.globalPosition().toPoint() - self.offset)
+        def mouseReleaseEvent(event):
+            self.offset = None
+        title_bar.mousePressEvent = mousePressEvent
+        title_bar.mouseMoveEvent = mouseMoveEvent
+        title_bar.mouseReleaseEvent = mouseReleaseEvent
+        container_layout.addWidget(title_bar)
+
+        # 表单区
+        form_layout = QFormLayout()
+        form_layout.setContentsMargins(25, 20, 25, 20)
+        form_layout.setSpacing(18)
+        form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
+
+        # 分类
         self.category_combo = QComboBox()
-        if categories:
-            self.category_combo.addItems(sorted(categories))
-            self.category_combo.setEditable(True)  # 允许自定义输入
+        self.category_combo.addItems(self.categories)
+        self.category_combo.setEditable(True)
+        form_layout.addRow("分类:", self.category_combo)
+        # 名称
         self.name_edit = QLineEdit()
+        self.name_edit.setPlaceholderText("请输入网站名称")
+        form_layout.addRow("名称:", self.name_edit)
+        # 描述
         self.remark_edit = QLineEdit()
+        self.remark_edit.setPlaceholderText("可选，网站描述信息")
+        form_layout.addRow("描述:", self.remark_edit)
+        # 网址
         self.url_edit = QLineEdit()
-        self.icon_edit = QLineEdit()
-        self.icon_btn = QPushButton("选择本地图片")
-        self.icon_btn.clicked.connect(self.choose_icon)
+        self.url_edit.setPlaceholderText("请输入网址，如 https://xxx.com")
+        form_layout.addRow("网址:", self.url_edit)
+        # 图标
         icon_layout = QHBoxLayout()
+        self.icon_edit = QLineEdit()
+        self.icon_edit.setPlaceholderText("可选，支持本地或网络图片")
+        self.icon_btn = QPushButton("选择图片")
+        self.icon_btn.setFixedSize(40, 40)
+        self.icon_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.icon_btn.clicked.connect(self.choose_icon)
         icon_layout.addWidget(self.icon_edit)
         icon_layout.addWidget(self.icon_btn)
-        layout.addRow("分类", self.category_combo)
-        layout.addRow("名称", self.name_edit)
-        layout.addRow("描述", self.remark_edit)
-        layout.addRow("网址", self.url_edit)
-        layout.addRow("图标", icon_layout)
-        btn_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
-        btn_box.accepted.connect(self.accept)
-        btn_box.rejected.connect(self.reject)
-        layout.addRow(btn_box)
+        form_layout.addRow("图标:", icon_layout)
+        container_layout.addLayout(form_layout)
+
+        # 按钮区
+        buttons_layout = QHBoxLayout()
+        buttons_layout.setContentsMargins(0, 10, 25, 0)
+        buttons_layout.addStretch()
+        self.ok_button = QPushButton("✔️ 确定")
+        self.cancel_button = QPushButton("❌ 取消")
+        self.ok_button.setFixedSize(120, 40)
+        self.cancel_button.setFixedSize(120, 40)
+        self.ok_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.cancel_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.ok_button.clicked.connect(self.accept)
+        self.cancel_button.clicked.connect(self.reject)
+        self.ok_button.setStyleSheet("""
+            QPushButton {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7);
+                color: white; border-radius: 20px; font-size: 14px; font-weight: bold; border: none;
+            }
+            QPushButton:hover { background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #38f9d7, stop:1 #43e97b); }
+        """)
+        self.cancel_button.setStyleSheet("""
+            QPushButton {
+                background: #e9ecef; color: #495057; border-radius: 20px; font-size: 14px; font-weight: bold; border: none;
+            }
+            QPushButton:hover { background: #dee2e6; }
+        """)
+        buttons_layout.addWidget(self.cancel_button)
+        buttons_layout.addWidget(self.ok_button)
+        container_layout.addLayout(buttons_layout)
+
+        # 编辑模式填充
         if data:
             self.category_combo.setCurrentText(data.get('category', ''))
             self.name_edit.setText(data.get('name', ''))
             self.remark_edit.setText(data.get('remark', ''))
             self.url_edit.setText(data.get('url', ''))
             self.icon_edit.setText(data.get('icon', ''))
-    def choose_icon(self):
-        path, _ = QFileDialog.getOpenFileName(self, "选择图标", "", "图片文件 (*.png *.jpg *.ico *.bmp)")
-        if path:
-            self.icon_edit.setText(path)
-    def get_data(self):
-        return {
-            'category': self.category_combo.currentText(),
-            'name': self.name_edit.text().strip(),
-            'remark': self.remark_edit.text().strip(),
-            'url': self.url_edit.text().strip(),
-            'icon': self.icon_edit.text().strip(),
-        }
 
+    def choose_icon(self):
+        from PyQt6.QtWidgets import QFileDialog
+        path, _ = QFileDialog.getOpenFileName(self, "选择图标", "", "图标文件 (*.ico *.png *.jpg *.jpeg);;所有文件 (*)")
+        if path:
+            
+            self.icon_edit.setText(path)
 if __name__ == "__main__":
     logging.info("程序开始运行...")
     app = QApplication(sys.argv)

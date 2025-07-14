@@ -21,13 +21,6 @@
     "icon": "https://img.leadshiptech.com/lzimg/gq/fenchuan/D4ZL/20240108/1704699263629_8dcacb61-c2d9-4812-badd-5b7669bc2b63.png"
   },
   {
-    "category": "me/付费圈子",
-    "name": "无问社区",
-    "remark": "",
-    "url": "https://www.wwlib.cn/index.php/wuwen",
-    "icon": ""
-  },
-  {
     "category": "漏洞平台/热门推荐浏览",
     "name": "洞见微信聚合",
     "remark": "洞见微信聚合",
@@ -35,7 +28,7 @@
     "icon": "https://www.shentoushi.top/Public/home/images/T/wechat.doonsec.com.ico"
   },
   {
-    "category": "漏洞平台/热门推荐浏览",
+    "category": "me/付费圈子",
     "name": "棉花糖vip",
     "remark": "网络安全资源大全",
     "url": "https://vip.bdziyi.com/",
@@ -271,13 +264,6 @@
     "remark": "jetlib.sec",
     "url": "http://sec.jetlib.com",
     "icon": "https://www.shentoushi.top/Public/home/images/T/jetlib.ico"
-  },
-  {
-    "category": "漏洞平台/国外漏洞平台",
-    "name": "Уязвимости",
-    "remark": "Уязвимости|securitylab.ru",
-    "url": "http://www.securitylab.ru/vulnerability",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/securitylab.ico"
   },
   {
     "category": "漏洞平台/国外漏洞平台",
@@ -782,13 +768,6 @@
     "remark": "安天是中国网络安全应急响应体系中重要的企业节点，打造了“第一时间启动，同时应对多线威胁，三体系联动，四作业面协同”的应急体系，在高级持续性威胁（APT）的发现、监测和分析方面进行了大量工作。",
     "url": "https://www.antiy.cn/research/special/single_copy.html",
     "icon": "https://www.shentoushi.top/Public/home/images/T/www.antiy.cn.ico"
-  },
-  {
-    "category": "知识学习/APT攻防",
-    "name": "Cobalt Strike",
-    "remark": "基础部分,扩展进阶,原理部分",
-    "url": "https://wbglil.gitbook.io/cobalt-strike/",
-    "icon": "https://www.shentoushi.top/Public/home/images/T/wbglil.gitbook.io.png"
   },
   {
     "category": "知识学习/APT攻防",

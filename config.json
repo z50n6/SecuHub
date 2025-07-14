@@ -9,8 +9,8 @@
       "description": "渗透利器",
       "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite_pro/BurpSuite.ico",
       "color": "#000000",
-      "launch_count": 37,
-      "last_launch": "2025-07-04T09:59:11.656721",
+      "launch_count": 45,
+      "last_launch": "2025-07-08T14:24:28.428859",
       "args": ""
     },
     {
@@ -27,6 +27,32 @@
       "args": ""
     },
     {
+      "name": "yakit",
+      "path": "D:/SoftWare/Yakit/Yakit/Yakit.exe",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "常用利器",
+      "icon_path": "D:/SoftWare/Yakit/Yakit/uninstallerIcon.ico",
+      "color": "#000000",
+      "launch_count": 24,
+      "last_launch": "2025-07-08T14:56:52.540902",
+      "args": ""
+    },
+    {
+      "name": "冰蝎_v4.1.t00ls",
+      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/Behinder_v4.1.t00ls/Behinder.jar",
+      "category": "WebShell管理器",
+      "subcategory": "",
+      "tool_type": "java11_gui",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-behinder.ico",
+      "color": "#000000",
+      "launch_count": 13,
+      "last_launch": "2025-07-07T15:38:58.024915",
+      "args": ""
+    },
+    {
       "name": "DeepSeekSelfTool",
       "path": "E:/Penetration/RedTeam/ComprehensiveTools/DeepSeekSelfTool/DeepSeekSelfTool.py",
       "category": "RedTeam/综合工具",
@@ -40,16 +66,16 @@
       "args": ""
     },
     {
-      "name": "冰蝎_v4.1.t00ls",
-      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/Behinder_v4.1.t00ls/Behinder.jar",
-      "category": "WebShell管理器",
+      "name": "burpsuite2025",
+      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/bp2025.5/EN_Burp(无CMD窗口).VBS",
+      "category": "流量代理/抓包工具",
       "subcategory": "",
-      "tool_type": "java11_gui",
+      "tool_type": "vbs",
       "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-behinder.ico",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/png/kali-burpsuite-1.png",
       "color": "#000000",
       "launch_count": 12,
-      "last_launch": "2025-07-03T13:41:06.354145",
+      "last_launch": "2025-07-08T14:03:36.453305",
       "args": ""
     },
     {
@@ -79,19 +105,6 @@
       "args": ""
     },
     {
-      "name": "burpsuite2025",
-      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/bp2025.5/EN_Burp(无CMD窗口).VBS",
-      "category": "流量代理/抓包工具",
-      "subcategory": "",
-      "tool_type": "vbs",
-      "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/png/kali-burpsuite-1.png",
-      "color": "#000000",
-      "launch_count": 10,
-      "last_launch": "2025-07-01T10:24:16.007280",
-      "args": ""
-    },
-    {
       "name": "Cobalt_Strike_4.7",
       "path": "E:/Penetration/RedTeam/Post-Exploition/C2/Cobalt_Strike_4.7/cobaltstrike-client.jar",
       "category": "后渗透/C2",
@@ -100,8 +113,8 @@
       "description": "",
       "icon_path": "E:/Penetration/RedTeam/Post-Exploition/C2/Cobalt_Strike_4.7/favicon.ico",
       "color": "#000000",
-      "launch_count": 9,
-      "last_launch": "2025-06-27T14:49:18.437330",
+      "launch_count": 10,
+      "last_launch": "2025-07-14T14:22:27.549102",
       "args": "-Dfile.encoding=UTF-8 -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -Duser.language=en -jar cobaltstrike-client.jar %*"
     },
     {
@@ -128,6 +141,19 @@
       "color": "#000000",
       "launch_count": 8,
       "last_launch": "2025-07-01T11:23:21.063624",
+      "args": ""
+    },
+    {
+      "name": "DudeSuite.v1.2.0.5",
+      "path": "E:/Penetration/RedTeam/ComprehensiveTools/DudeSuite.v1.2.0.5.win-x64/DudeSuite.exe",
+      "category": "RedTeam/综合工具",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 6,
+      "last_launch": "2025-07-08T15:34:18.992453",
       "args": ""
     },
     {
@@ -274,19 +300,6 @@
       "args": ""
     },
     {
-      "name": "yakit",
-      "path": "D:/SoftWare/Yakit/Yakit/Yakit.exe",
-      "category": "流量代理/抓包工具",
-      "subcategory": "",
-      "tool_type": "exe",
-      "description": "常用利器",
-      "icon_path": "D:/SoftWare/Yakit/Yakit/uninstallerIcon.ico",
-      "color": "#000000",
-      "launch_count": 1,
-      "last_launch": "2025-07-03T09:38:45.602190",
-      "args": ""
-    },
-    {
       "name": "burpsuite2025-部分汉化",
       "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite-CN/Burp_Chs.vbs",
       "category": "流量代理/抓包工具",
@@ -368,15 +381,17 @@
   "theme": "modern_light",
   "view_mode": "grid",
   "recent_tools": [
-    "BurpSuite2023",
-    "Befree",
-    "冰蝎_v4.1.t00ls",
-    "burpsuite2025-部分汉化",
+    "Cobalt_Strike_4.7",
+    "DudeSuite.v1.2.0.5",
     "yakit",
+    "BurpSuite2023",
+    "burpsuite2025",
+    "冰蝎_v4.1.t00ls",
+    "Befree",
+    "burpsuite2025-部分汉化",
     "哥斯拉",
     "哥斯拉特战版",
     "BlueTeamToolsV2.18",
-    "burpsuite2025",
     "Jack-Proxy-V3",
     "DeepSeekSelfTool",
     "Charles",
@@ -385,9 +400,7 @@
     "BlueTeam",
     "Hash",
     "impacket-0.11.0",
-    "Reqable",
-    "Cobalt_Strike_4.7",
-    "游魂"
+    "Reqable"
   ],
   "show_status_bar": "true",
   "auto_refresh": "true",
