@@ -9,8 +9,8 @@
       "description": "渗透利器",
       "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite_pro/BurpSuite.ico",
       "color": "#000000",
-      "launch_count": 46,
-      "last_launch": "2025-07-17T10:39:49.609493",
+      "launch_count": 45,
+      "last_launch": "2025-07-08T14:24:28.428859",
       "args": ""
     },
     {
@@ -420,11 +420,11 @@
   "theme": "modern_light",
   "view_mode": "grid",
   "recent_tools": [
-    "BurpSuite2023",
     "Befree",
     "yakit",
     "Cobalt_Strike_4.7",
     "DudeSuite.v1.2.0.5",
+    "BurpSuite2023",
     "burpsuite2025",
     "冰蝎_v4.1.t00ls",
     "burpsuite2025-部分汉化",
