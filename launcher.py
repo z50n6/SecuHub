@@ -5507,6 +5507,7 @@ class SettingsDialog(QDialog):
 class WebsiteNavWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        
         self.setObjectName("websiteNavWidget")
         self.theme_manager = ThemeManager()
         self.config = Config()
@@ -5549,6 +5550,8 @@ class WebsiteNavWidget(QWidget):
         main_layout = QHBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
+       
+   
         # 左侧分类树
         self.category_tree = QTreeWidget()
         self.category_tree.setHeaderHidden(True)
@@ -5565,6 +5568,8 @@ class WebsiteNavWidget(QWidget):
                 background: #23272e; color: #00c48f; 
             }
         """)
+        self.category_tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.category_tree.customContextMenuRequested.connect(self.show_category_context_menu)
         self.category_tree.itemClicked.connect(self.on_category_clicked)
         main_layout.addWidget(self.category_tree)
         # 右侧卡片区
@@ -5594,6 +5599,7 @@ class WebsiteNavWidget(QWidget):
         scroll_content.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         scroll_content.customContextMenuRequested.connect(self.show_blank_context_menu)
 
+    
     def build_category_tree(self):
         self.category_tree.clear()
         cats = self.group_by_category()
@@ -5671,48 +5677,7 @@ class WebsiteNavWidget(QWidget):
         self.card_layout.setRowStretch(row, 1)
         self.card_layout.setColumnStretch(6, 1)
 
-    # def create_card(self, item):
-    #     card = QWidget()
-    #     card.setFixedSize(180, 80)
-    #     # 极简风格：无边框、无阴影、无多余背景，仅圆角和hover高亮
-    #     card.setStyleSheet("""
-    #         QWidget{
-    #             border-radius:14px;
-    #             background:rgba(255,255,255,0.97);
-    #             border:none;
-    #             margin:0;
-    #             transition: box-shadow 0.2s;
-    #         }
-    #         QWidget:hover{
-    #             background:#f2f6fa;
-    #             box-shadow:0 2px 8px 0 rgba(60,60,60,0.08);
-    #         }
-    #     """)
-    #     layout = QHBoxLayout(card)
-    #     layout.setContentsMargins(14, 8, 14, 8)
-    #     layout.setSpacing(10)
-    #     # icon
-    #     icon_label = QLabel()
-    #     icon_label.setFixedSize(36, 36)
-    #     icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-    #     icon_label.setStyleSheet("background:transparent;")
-    #     self.load_icon(item['icon'], icon_label)
-    #     layout.addWidget(icon_label)
-    #     # 右侧信息
-    #     info_layout = QVBoxLayout()
-    #     name = QLabel(item['name'])
-    #     name.setStyleSheet("font-size:15px;font-weight:bold;color:#222;")
-    #     remark = QLabel(item.get('remark', ''))
-    #     remark.setStyleSheet("font-size:11px;color:#888;")
-    #     remark.setWordWrap(True)
-    #     info_layout.addWidget(name)
-    #     info_layout.addWidget(remark)
-    #     info_layout.addStretch()
-    #     layout.addLayout(info_layout)
-    #     card.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-    #     card.customContextMenuRequested.connect(lambda pos, i=item: self.show_card_context_menu(card, i, pos))
-    #     card.mouseDoubleClickEvent = lambda e, url=item['url']: self.open_url(url)
-    #     return card
+   
     def create_card(self, item):
         card = QWidget()
         card.setFixedSize(180, 80)
@@ -5807,6 +5772,49 @@ class WebsiteNavWidget(QWidget):
         menu.addAction(edit_action)
         menu.addAction(delete_action)
         menu.exec(card.mapToGlobal(pos))
+    def show_category_context_menu(self, pos):
+        item = self.category_tree.itemAt(pos)
+        if not item:
+            return
+        menu = QMenu(self)
+        del_action = QAction("🗑️ 删除该分类下所有网址", self)
+        del_action.triggered.connect(lambda: self.delete_category_urls(item))
+        menu.addAction(del_action)
+        menu.exec(self.category_tree.viewport().mapToGlobal(pos))
+    def delete_category_urls(self, item):
+        # 判断一级还是二级
+        if item.parent() is None:
+            # 一级分类
+            cat = item.text(0)
+            # 删除所有以cat开头的
+            before = len(self.data)
+            self.data = [d for d in self.data if not d['category'].startswith(cat)]
+            after = len(self.data)
+            msg = f"已删除 {before - after} 条属于“{cat}”的导航"
+        else:
+            # 二级分类
+            parent_cat = item.parent().text(0)
+            sub_cat = item.text(0)
+            full_cat = f"{parent_cat}/{sub_cat}"
+            before = len(self.data)
+            self.data = [d for d in self.data if d['category'] != full_cat]
+            after = len(self.data)
+            # msg = f"已删除 {before - after} 条属于“{full_cat}”的导航"
+            # msg = f"🗑️ 已删除 {before - after} 条属于“{cat}”的导航"
+            msg = f"🗑️ 已删除 {before - after} 条属于“{full_cat}”的导航"
+        
+        self.save_data()
+        self.data = self.load_data()
+        self.build_category_tree()
+        self.category_tree.expandAll()
+        self.refresh_cards()
+        # 状态栏提示替代弹窗
+        mainwin = self.window()
+        if hasattr(mainwin, 'statusBar') and mainwin.statusBar():
+            mainwin.statusBar().showMessage(msg, 8000)
+        else:
+            from PyQt6.QtWidgets import QToolTip
+            QToolTip.showText(self.mapToGlobal(self.rect().center()), msg, self, self.rect(), 4000)
 
     def show_blank_context_menu(self, pos):
         menu = QMenu(self)
