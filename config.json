@@ -444,6 +444,7 @@
   "show_status_bar": "true",
   "auto_refresh": "true",
   "search_history": [
+    "s",
     "h",
     "ha",
     "haas",
@@ -453,5 +454,27 @@
   ],
   "python_path": "",
   "java8_path": "",
-  "java11_path": ""
+  "java11_path": "",
+  "navigation_items": [
+    {
+      "id": "safe",
+      "name": "安全工具",
+      "icon": "🛡️"
+    },
+    {
+      "id": "code",
+      "name": "编码与解码",
+      "icon": "🔧"
+    },
+    {
+      "id": "assist",
+      "name": "辅助工具",
+      "icon": "🛠️"
+    },
+    {
+      "id": "webnav",
+      "name": "网站导航",
+      "icon": "🌐"
+    }
+  ]
 }

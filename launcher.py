@@ -5521,6 +5521,10 @@ class WebsiteNavWidget(QWidget):
         if not os.path.exists(self.icon_cache_dir):
             os.makedirs(self.icon_cache_dir)
         self.init_ui()
+        from PyQt6.QtCore import QTimer
+        self.search_timer = QTimer(self)
+        self.search_timer.setSingleShot(True)
+        self.search_timer.timeout.connect(lambda: self._do_search(self.search_input.text()) if hasattr(self, 'search_input') else None)
 
     def load_data(self):
         import json
@@ -5550,8 +5554,69 @@ class WebsiteNavWidget(QWidget):
         main_layout = QHBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
-       
-   
+
+        # 先创建右侧卡片区主部件和布局
+        right_widget = QWidget()
+        right_layout = QVBoxLayout(right_widget)
+        right_layout.setContentsMargins(10, 10, 10, 10)
+        right_layout.setSpacing(0)
+
+        # 顶部搜索栏（先于滚动区添加）
+        search_bar = QWidget()
+        search_bar.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        search_bar.setStyleSheet("""
+            QWidget {
+                background: #ffffff;
+                border-bottom: 1px solid #e9ecef;
+            }
+        """)
+        search_bar_layout = QHBoxLayout(search_bar)
+        search_bar_layout.setContentsMargins(10, 8, 10, 8)
+        search_bar_layout.setSpacing(8)
+        search_icon = QLabel("🔍")
+        search_icon.setStyleSheet("font-size: 16px; color: #6c757d;")
+        search_bar_layout.addWidget(search_icon)
+        self.search_input = QLineEdit()
+        self.search_input.setPlaceholderText("搜索网站名称、描述或分类...")
+        self.search_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.search_input.setStyleSheet("""
+            QLineEdit {
+                background: #f8f9fa;
+                color: #495057;
+                border: 1px solid #e9ecef;
+                border-radius: 8px;
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            QLineEdit:focus {
+                background: #ffffff;
+                border: 2px solid #43e97b;
+            }
+            QLineEdit::placeholder {
+                color: #adb5bd;
+            }
+        """)
+        self.search_input.textChanged.connect(self.on_search_text_changed)
+        self.search_input.returnPressed.connect(self.on_search_enter_pressed)
+        self.search_input.installEventFilter(self)
+        search_bar_layout.addWidget(self.search_input)
+        self.search_stats = QLabel("")
+        self.search_stats.setStyleSheet("font-size: 12px; color: #6c757d; padding: 0 8px;")
+        search_bar_layout.addWidget(self.search_stats)
+        search_bar.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        right_layout.addWidget(search_bar, 0)
+
+        # 滚动区
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setStyleSheet("QScrollArea{border:none; background:transparent;}")
+        scroll_content = QWidget()
+        self.card_layout = QGridLayout(scroll_content)
+        self.card_layout.setSpacing(18)
+        self.card_layout.setContentsMargins(0, 0, 0, 0)
+        scroll.setWidget(scroll_content)
+        right_layout.addWidget(scroll)
+
         # 左侧分类树
         self.category_tree = QTreeWidget()
         self.category_tree.setHeaderHidden(True)
@@ -5572,21 +5637,6 @@ class WebsiteNavWidget(QWidget):
         self.category_tree.customContextMenuRequested.connect(self.show_category_context_menu)
         self.category_tree.itemClicked.connect(self.on_category_clicked)
         main_layout.addWidget(self.category_tree)
-        # 右侧卡片区
-        right_widget = QWidget()
-        right_layout = QVBoxLayout(right_widget)
-        right_layout.setContentsMargins(10, 10, 10, 10)
-        right_layout.setSpacing(0)
-        # 滚动区
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("QScrollArea{border:none; background:transparent;}")
-        scroll_content = QWidget()
-        self.card_layout = QGridLayout(scroll_content)
-        self.card_layout.setSpacing(18)
-        self.card_layout.setContentsMargins(0, 0, 0, 0)
-        scroll.setWidget(scroll_content)
-        right_layout.addWidget(scroll)
         main_layout.addWidget(right_widget)
         self.setLayout(main_layout)
         self.build_category_tree()
@@ -5599,7 +5649,62 @@ class WebsiteNavWidget(QWidget):
         scroll_content.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         scroll_content.customContextMenuRequested.connect(self.show_blank_context_menu)
 
-    
+    def eventFilter(self, obj, event):
+        from PyQt6.QtCore import QEvent, Qt
+        if obj == self.search_input and event.type() == QEvent.Type.KeyPress:
+            if event.key() == Qt.Key.Key_Escape:
+                self.search_input.clear()
+                self.on_search_text_changed("")
+                return True
+        return super().eventFilter(obj, event)
+
+    def on_search_enter_pressed(self):
+        self.search_timer.stop()
+        self._do_search(self.search_input.text())
+    def on_search_text_changed(self, text):
+        self.search_timer.start(200)  # 200ms防抖
+    def _do_search(self, text):
+        text = text.strip().lower()
+        if not text:
+            self.search_stats.setText("")
+            self.refresh_cards()
+            return
+        results = []
+        for item in self.data:
+            name = item.get('name', '').lower()
+            remark = item.get('remark', '').lower()
+            category = item.get('category', '').lower()
+            if text in name or text in remark or text in category:
+                results.append(item)
+        self.refresh_cards(items=results)
+        total = len(self.data)
+        found = len(results)
+        if found == 0:
+            self.search_stats.setText(f"未找到匹配的导航 (共 {total} 个)")
+        else:
+            self.search_stats.setText(f"找到 {found} 个导航 (共 {total} 个)")
+    # def on_search_text_changed(self, text):
+    #     text = text.strip().lower()
+    #     if not text:
+    #         # 显示当前分类全部
+    #         self.search_stats.setText("")
+    #         self.refresh_cards()
+    #         return
+    #     # 搜索逻辑：名称、描述、分类模糊匹配
+    #     results = []
+    #     for item in self.data:
+    #         name = item.get('name', '').lower()
+    #         remark = item.get('remark', '').lower()
+    #         category = item.get('category', '').lower()
+    #         if text in name or text in remark or text in category:
+    #             results.append(item)
+    #     self.refresh_cards(items=results)
+    #     total = len(self.data)
+    #     found = len(results)
+    #     if found == 0:
+    #         self.search_stats.setText(f"未找到匹配的导航 (共 {total} 个)")
+    #     else:
+    #         self.search_stats.setText(f"找到 {found} 个导航 (共 {total} 个)")
     def build_category_tree(self):
         self.category_tree.clear()
         cats = self.group_by_category()
