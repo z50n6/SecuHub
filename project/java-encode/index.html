@@ -9,17 +9,19 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- <div class="tab-bar">
-        <button id="tab-shell">反弹shell生成</button>
-        <button id="tab-java" class="active">Java_Exec_Encode</button>
-        <button id="tab-memo">备忘录</button>
-    </div> -->
     <div class="main-vertical-layout">
         <div class="card input-card">
             <div class="input-group">
                 <div class="input-row">
                     <label for="cmdType">命令类型</label>
-                    <select id="cmdType"></select>
+                    <select id="cmdType">
+                        <option value="bash">Bash</option>
+                        <option value="sh">Sh</option>
+                        <option value="powershell">PowerShell</option>
+                        <option value="python">Python</option>
+                        <option value="perl">Perl</option>
+                        <option value="cmd">CMD</option>
+                    </select>
                     <label for="encodeType" style="margin-left:18px;">编码类型</label>
                     <select id="encodeType">
                         <option value="none">无</option>
@@ -52,19 +54,5 @@
     </div>
     <div class="status-bar" id="statusBar">已连接到应用 0 字符</div>
     <script src="js/script.js"></script>
-    <script>
-    // 展开/收起说明区
-    const tip = document.getElementById('payloadTip');
-    const btn = document.getElementById('toggleTipBtn');
-    btn.addEventListener('click', function() {
-        if (tip.classList.contains('payload-tip-collapsed')) {
-            tip.classList.remove('payload-tip-collapsed');
-            btn.textContent = '收起';
-        } else {
-            tip.classList.add('payload-tip-collapsed');
-            btn.textContent = '展开';
-        }
-    });
-    </script>
 </body>
 </html> 

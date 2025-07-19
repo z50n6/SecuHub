@@ -50,70 +50,104 @@ logging.basicConfig(
     ]
 )
 
-# ========== 主题管理器 ==========
-class ThemeManager:
-    """主题管理器，自动发现和管理主题"""
-    
-    def __init__(self):
-        self.themes_dir = os.path.join(os.path.dirname(__file__), 'themes')
-        self.available_themes = self._discover_themes()
-    
-    def _discover_themes(self):
-        """自动发现可用主题"""
-        themes = {}
-        if os.path.exists(self.themes_dir):
-            for file in os.listdir(self.themes_dir):
-                if file.endswith('.qss') and not file.startswith('scrollbar_'):
-                    theme_name = file[:-4]  # 移除 .qss 扩展名
-                    themes[theme_name] = os.path.join(self.themes_dir, file)
-        return themes
-    
-    def get_theme_names(self):
-        """获取所有可用主题名称"""
-        return list(self.available_themes.keys())
-    
-    def load_theme(self, theme_name):
-        """加载指定主题的QSS内容"""
-        theme_file = self.available_themes.get(theme_name)
-        if theme_file and os.path.exists(theme_file):
-            try:
-                with open(theme_file, 'r', encoding='utf-8') as f:
-                    return f.read()
-            except Exception as e:
-                logging.error(f"加载主题 {theme_name} 失败: {e}")
-                return ""
-        return ""
-    
-    def load_scrollbar(self, theme_name):
-        """加载指定主题的滚动条样式"""
-        if theme_name == 'cyberpunk':
-            scrollbar_file = os.path.join(self.themes_dir, 'scrollbar_cyberpunk.qss')
-        else:
-            scrollbar_file = os.path.join(self.themes_dir, 'scrollbar_default.qss')
-        
-        if os.path.exists(scrollbar_file):
-            try:
-                with open(scrollbar_file, 'r', encoding='utf-8') as f:
-                    return f.read()
-            except Exception as e:
-                logging.error(f"加载滚动条样式失败: {e}")
-                return ""
-        return ""
-    
-    def get_theme_display_name(self, theme_name):
-        """获取主题的显示名称"""
-        display_names = {
-            'modern_light': '🌞 现代浅色',
-            'modern_dark': '🌙 现代深色',
-            'tranquil_green': '🌿 静谧绿',
-            'deep_ocean': '🌊 深海蓝',
-            'cyberpunk': '🤖 科技风',
-            'sunset_orange': '🌅 日落橙',
-            'midnight_purple': '🌌 午夜紫',
-            'forest_green': '🌲 森林绿',
-            'ice_blue': '❄️ 冰蓝'
-        }
-        return display_names.get(theme_name, theme_name)
+# ========== 现代浅色主题样式 ==========
+MODERN_LIGHT_THEME = """
+QMainWindow { background: #fafbfc; }
+QWidget { background: #fafbfc; color: #2c3e50; font-family: 'Microsoft YaHei', '微软雅黑', Arial; }
+QLineEdit, QTextEdit, QComboBox, QMenu, QListWidget, QTreeWidget { 
+    background: #ffffff; color: #2c3e50; border: 1px solid #e1e8ed; border-radius: 6px; 
+    padding: 8px; font-size: 13px;
+}
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus { 
+    border: 2px solid #1da1f2; background: #ffffff; 
+}
+QPushButton, QDialogButtonBox QPushButton, QMessageBox QPushButton { 
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1da1f2, stop:1 #0d8bd9); 
+    color: #fff; 
+    border-radius: 8px; 
+    padding: 8px 16px; 
+    font-weight: 600; 
+    font-size: 13px;
+    border: none;
+    min-width: 80px;
+}
+QPushButton:hover, QDialogButtonBox QPushButton:hover, QMessageBox QPushButton:hover { 
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0d8bd9, stop:1 #1da1f2); 
+}
+QPushButton:pressed, QDialogButtonBox QPushButton:pressed, QMessageBox QPushButton:pressed { 
+    background: #0c7bb8; 
+}
+QPushButton:disabled, QDialogButtonBox QPushButton:disabled, QMessageBox QPushButton:disabled {
+    background: #b0b0b0;
+    color: #f5f5f5;
+}
+QDialog, QMessageBox, QInputDialog {
+    background: #fff;
+    border-radius: 14px;
+}
+QLabel, QTextBrowser {
+    font-family: 'Microsoft YaHei', '微软雅黑', Arial;
+}
+QMenuBar { background: #ffffff; color: #2c3e50; border-bottom: 1px solid #e1e8ed; }
+QMenuBar::item:selected { background: #f7f9fa; border-radius: 4px; }
+QMenu { background: #ffffff; color: #2c3e50; border: 1px solid #e1e8ed; border-radius: 6px; padding: 4px; }
+QMenu::item:selected { background: #f7f9fa; border-radius: 4px; }
+
+/* 现代化滚动条样式 */
+QScrollBar:vertical {
+    width: 8px;
+    background: transparent;
+    margin: 0px 2px 0px 2px;
+    border-radius: 4px;
+}
+QScrollBar::handle:vertical {
+    background: #d1d5db;
+    min-height: 30px;
+    border-radius: 4px;
+    border: none;
+}
+QScrollBar::handle:vertical:hover {
+    background: #9ca3af;
+}
+QScrollBar::handle:vertical:pressed {
+    background: #6b7280;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+    background: none;
+    border: none;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar:horizontal {
+    height: 8px;
+    background: transparent;
+    margin: 2px 0px 2px 0px;
+    border-radius: 4px;
+}
+QScrollBar::handle:horizontal {
+    background: #d1d5db;
+    min-width: 30px;
+    border-radius: 4px;
+    border: none;
+}
+QScrollBar::handle:horizontal:hover {
+    background: #9ca3af;
+}
+QScrollBar::handle:horizontal:pressed {
+    background: #6b7280;
+}
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    width: 0px;
+    background: none;
+    border: none;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}
+"""
 
 # ========== 全局唯一美化弹窗 ConfirmDialog ==========
 class ConfirmDialog(QDialog):
@@ -216,7 +250,6 @@ class Config:
         logging.info("初始化配置...")
         self.settings = QSettings("SecuHub", "SecuHub")
         self.config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
-        self.theme_list = ["modern_light", "modern_dark"]
         # 新增环境变量字段
         self.python_path = ""
         self.java8_path = ""
@@ -239,7 +272,6 @@ class Config:
                 with open(self.config_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     self.tools = data.get("tools", [])
-                    self.theme = data.get("theme", "modern_light")
                     self.view_mode = data.get("view_mode", "list")
                     self.recent_tools = data.get("recent_tools", [])
                     self.show_status_bar = data.get("show_status_bar", True)
@@ -269,7 +301,6 @@ class Config:
             {"id": "webnav", "name": "网站导航", "icon": "🌐"}
         ]
         self.tools = self.settings.value("tools", [])
-        self.theme = self.settings.value("theme", "modern_light")
         self.view_mode = self.settings.value("view_mode", "list")
         self.recent_tools = self.settings.value("recent_tools", [])
         self.show_status_bar = self.settings.value("show_status_bar", True)
@@ -286,7 +317,6 @@ class Config:
         logging.info("保存配置...")
         # 保存到QSettings
         self.settings.setValue("tools", self.tools)
-        self.settings.setValue("theme", self.theme)
         self.settings.setValue("view_mode", self.view_mode)
         self.settings.setValue("recent_tools", self.recent_tools)
         self.settings.setValue("show_status_bar", self.show_status_bar)
@@ -312,7 +342,6 @@ class Config:
             # 更新字段
             data.update({
                 "tools": self.tools,
-                "theme": self.theme,
                 "view_mode": self.view_mode,
                 "recent_tools": self.recent_tools,
                 "show_status_bar": self.show_status_bar,
@@ -1500,7 +1529,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.config = Config()
         self.cache_manager = CacheManager()
-        self.theme_manager = ThemeManager()  # 添加主题管理器
+
         self._initial_load_done = False
         self.nav_buttons = {}  # 存储导航按钮
         self.init_workers()
@@ -1508,7 +1537,7 @@ class MainWindow(QMainWindow):
         self.load_data()
         logging.info("主窗口初始化完成")
         # 启动时强制modern_light并apply_theme
-        self.config.theme = "modern_light"
+
         self.apply_theme()
         # 启动时检测环境变量
         QTimer.singleShot(100, self.check_env_paths)
@@ -1665,7 +1694,7 @@ class MainWindow(QMainWindow):
         """触发配置保存"""
         config_data = {
             "tools": self.config.tools,
-            "theme": self.config.theme,
+
             "view_mode": self.config.view_mode,
             "recent_tools": self.config.recent_tools,
             "show_status_bar": self.config.show_status_bar,
@@ -1906,9 +1935,19 @@ class MainWindow(QMainWindow):
                 QTreeWidget::item {
                     height: 36px;
                     padding-left: 8px;
+                    border-radius: 6px;
+                    margin: 2px 4px;
                 }
                 QTreeWidget::item:selected {
-                    background: #23272e; color: #00c48f; border: none;
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7);
+                    color: #ffffff;
+                    border: none;
+                    font-weight: bold;
+                }
+                QTreeWidget::item:hover {
+                    background: #f0f9ff;
+                    color: #1e40af;
+                    border: none;
                 }
                 QTreeWidget::item:focus, QTreeWidget::item:!selected:focus {
                     outline: none; border: none;
@@ -2275,56 +2314,7 @@ class MainWindow(QMainWindow):
         file_menu.addAction(exit_action)
         
         # 主题菜单
-        theme_menu = menubar.addMenu("主题")
-        
-        # 现代化主题
-        modern_light_action = QAction("🌞 现代浅色", self)
-        modern_light_action.triggered.connect(partial(self.set_theme, "modern_light"))
-        theme_menu.addAction(modern_light_action)
-        
-        modern_dark_action = QAction("🌙 现代深色", self)
-        modern_dark_action.triggered.connect(partial(self.set_theme, "modern_dark"))
-        theme_menu.addAction(modern_dark_action)
-        
-        # 新增主题
-        # tranquil_green_action = QAction("🌿 静谧绿", self)
-        # tranquil_green_action.triggered.connect(partial(self.set_theme, "tranquil_green"))
-        # theme_menu.addAction(tranquil_green_action)
 
-        # deep_ocean_action = QAction("🌊 深海蓝", self)
-        # deep_ocean_action.triggered.connect(partial(self.set_theme, "deep_ocean"))
-        # theme_menu.addAction(deep_ocean_action)
-        
-        # 科技风主题
-        cyberpunk_action = QAction("🤖 科技风", self)
-        cyberpunk_action.triggered.connect(partial(self.set_theme, "cyberpunk"))
-        theme_menu.addAction(cyberpunk_action)
-        
-        # 新增主题
-        sunset_orange_action = QAction("🌅 日落橙", self)
-        sunset_orange_action.triggered.connect(partial(self.set_theme, "sunset_orange"))
-        theme_menu.addAction(sunset_orange_action)
-        
-        midnight_purple_action = QAction("🌌 午夜紫", self)
-        midnight_purple_action.triggered.connect(partial(self.set_theme, "midnight_purple"))
-        theme_menu.addAction(midnight_purple_action)
-        
-        forest_green_action = QAction("🌲 森林绿", self)
-        forest_green_action.triggered.connect(partial(self.set_theme, "forest_green"))
-        theme_menu.addAction(forest_green_action)
-        
-        ice_blue_action = QAction("❄️ 冰蓝", self)
-        ice_blue_action.triggered.connect(partial(self.set_theme, "ice_blue"))
-        theme_menu.addAction(ice_blue_action)
-        
-        theme_menu.addSeparator()
-        
-        # 主题预览功能
-        # preview_action = QAction("👁️ 主题预览", self)
-        # preview_action.triggered.connect(self.show_theme_preview)
-        # theme_menu.addAction(preview_action)
-        
-        theme_menu.addSeparator()
         
         # # 统计菜单
         # stats_menu = menubar.addMenu("统计")
@@ -2403,45 +2393,62 @@ class MainWindow(QMainWindow):
             self.status_label.setText("进入全屏模式")
     
     def show_about(self):
-        """显示关于对话框（现代化UI）"""
+        """显示关于对话框（现代化设计）"""
         dialog = QDialog(self)
         dialog.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Dialog)
         dialog.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
-        dialog.setMinimumSize(480, 600)
-
+        dialog.setFixedSize(450, 350)
+        
         # 主布局
         main_layout = QVBoxLayout(dialog)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
-
+        
         # 顶部渐变标题栏
         title_bar = QWidget()
         title_bar.setFixedHeight(60)
         title_bar.setStyleSheet("""
             QWidget {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7);
-                border-top-left-radius: 18px;
-                border-top-right-radius: 18px;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #667eea, stop:1 #764ba2);
+                border-top-left-radius: 16px;
+                border-top-right-radius: 16px;
             }
         """)
         title_layout = QHBoxLayout(title_bar)
         title_layout.setContentsMargins(20, 0, 20, 0)
-        title_icon = QLabel("💡")
-        title_icon.setStyleSheet("font-size: 26px; color: white; background: transparent;")
+        
+        # 图标和标题
+        title_icon = QLabel("🛡️")
+        title_icon.setStyleSheet("font-size: 24px; color: white; background: transparent;")
         title_layout.addWidget(title_icon)
+        
         title_text = QLabel("关于 SecuHub")
-        title_text.setStyleSheet("font-size: 20px; font-weight: bold; color: white; background: transparent; margin-left: 8px;")
+        title_text.setStyleSheet("font-size: 18px; font-weight: bold; color: white; background: transparent; margin-left: 10px;")
         title_layout.addWidget(title_text)
         title_layout.addStretch()
+        
+        # 关闭按钮
         close_btn = QPushButton("✕")
-        close_btn.setFixedSize(36, 36)
+        close_btn.setFixedSize(32, 32)
         close_btn.setStyleSheet("""
-            QPushButton { background: rgba(255,255,255,0.18); border: none; border-radius: 18px; color: white; font-size: 18px; font-weight: bold; }
-            QPushButton:hover { background: rgba(255,255,255,0.32); }
-            QPushButton:pressed { background: rgba(0,0,0,0.12); }
+            QPushButton { 
+                background: rgba(255,255,255,0.2); 
+                border: none; 
+                border-radius: 16px; 
+                color: white; 
+                font-size: 16px; 
+                font-weight: bold; 
+            }
+            QPushButton:hover { 
+                background: rgba(255,255,255,0.3); 
+            }
+            QPushButton:pressed { 
+                background: rgba(255,255,255,0.1); 
+            }
         """)
         close_btn.clicked.connect(dialog.accept)
         title_layout.addWidget(close_btn)
+        
         # 拖动支持
         dialog.offset = None
         def mousePressEvent(event):
@@ -2456,99 +2463,104 @@ class MainWindow(QMainWindow):
         title_bar.mouseMoveEvent = mouseMoveEvent
         title_bar.mouseReleaseEvent = mouseReleaseEvent
         main_layout.addWidget(title_bar)
-
+        
         # 主体内容卡片
         card = QWidget()
         card.setStyleSheet("""
             QWidget {
-                background: #fff;
-                border-bottom-left-radius: 18px;
-                border-bottom-right-radius: 18px;
+                background: #ffffff;
+                border-bottom-left-radius: 16px;
+                border-bottom-right-radius: 16px;
                 border-top-left-radius: 0px;
                 border-top-right-radius: 0px;
                 padding: 0;
             }
         """)
         card_layout = QVBoxLayout(card)
-        card_layout.setContentsMargins(32, 28, 32, 28)
-        card_layout.setSpacing(18)
-
-        # 大标题
-        big_title = QLabel("SecuHub - 智能程序启动")
-        big_title.setStyleSheet("font-size: 22px; font-weight: bold; color: #1da1f2; margin-bottom: 8px;")
-        big_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        card_layout.addWidget(big_title)
-
-        # 版本与作者
-        meta = QLabel("版本：<b>1.0</b>  &nbsp;|&nbsp;  作者：<a href='https://github.com/z50n6' style='color:#1da1f2;text-decoration:none;'>z50n6</a>")
-        meta.setOpenExternalLinks(True)
-        meta.setStyleSheet("font-size: 14px; color: #34495e; margin-bottom: 8px;")
-        meta.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        card_layout.addWidget(meta)
-
+        card_layout.setContentsMargins(25, 20, 25, 20)
+        card_layout.setSpacing(15)
+        
+        # 应用标题
+        app_title = QLabel("SecuHub")
+        app_title.setStyleSheet("font-size: 28px; font-weight: bold; color: #667eea; margin-bottom: 5px;")
+        app_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        card_layout.addWidget(app_title)
+        
+        # 副标题
+        subtitle = QLabel("智能程序启动器")
+        subtitle.setStyleSheet("font-size: 16px; color: #666; margin-bottom: 15px;")
+        subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        card_layout.addWidget(subtitle)
+        
+        # 版本和作者信息
+        meta_info = QLabel("版本 1.0 | 作者 z50n6")
+        meta_info.setStyleSheet("font-size: 13px; color: #888; margin-bottom: 10px;")
+        meta_info.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        card_layout.addWidget(meta_info)
+        
+        # GitHub链接
+        github_link = QLabel('<a href="https://github.com/z50n6" style="color: #667eea; text-decoration: none; font-size: 13px;">🌐 GitHub: github.com/z50n6</a>')
+        github_link.setOpenExternalLinks(True)
+        github_link.setStyleSheet("font-size: 13px; color: #667eea; margin-bottom: 20px;")
+        github_link.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        github_link.setCursor(Qt.CursorShape.PointingHandCursor)
+        card_layout.addWidget(github_link)
+        
         # 分割线
-        line = QWidget()
-        line.setFixedHeight(2)
-        line.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7); border-radius: 1px;")
-        card_layout.addWidget(line)
-
-        # 功能简介
-        about_text = QLabel(
-            """
-            <div style='font-size:15px;line-height:1.8;color:#34495e;'>
-            <b>主要功能：</b><br>
-            • 工具管理、分类组织、快速启动<br>
-            • CyberChef集成、辅助脚本<br>
-            • 多种工具类型支持：GUI、命令行、Java、Python、PowerShell、网页、文件夹等<br>
-            </div>
-            """
-        )
-        about_text.setStyleSheet("font-size: 15px; color: #34495e;")
-        about_text.setWordWrap(True)
-        card_layout.addWidget(about_text)
-
-        # 快捷键说明
-        shortcut_title = QLabel("<b>快捷键：</b>")
-        shortcut_title.setStyleSheet("font-size: 15px; color: #1da1f2; margin-top: 10px;")
-        card_layout.addWidget(shortcut_title)
-        shortcut_text = QLabel(
-            """
-            <div style='font-size:14px;line-height:1.7;color:#495057;'>
-            • <b>Ctrl+N</b>：添加工具<br>
-            • <b>Ctrl+F</b>：搜索<br>
-            • <b>F5</b>：刷新<br>
-            • <b>F11</b>：全屏切换<br>
-            </div>
-            """
-        )
-        shortcut_text.setStyleSheet("font-size: 14px; color: #495057;")
-        shortcut_text.setWordWrap(True)
-        card_layout.addWidget(shortcut_text)
-
+        separator = QFrame()
+        separator.setFrameShape(QFrame.Shape.HLine)
+        separator.setStyleSheet("background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 transparent, stop:0.5 #667eea, stop:1 transparent); border: none;")
+        separator.setFixedHeight(2)
+        card_layout.addWidget(separator)
+        
+        # 功能特性
+        features_title = QLabel("✨ 主要功能")
+        features_title.setStyleSheet("font-size: 16px; font-weight: bold; color: #333; margin-top: 10px;")
+        card_layout.addWidget(features_title)
+        
+        features_text = QLabel("工具管理、分类组织、快速启动 | CyberChef集成、辅助脚本")
+        features_text.setStyleSheet("font-size: 14px; color: #555; line-height: 1.6; margin-left: 10px;")
+        features_text.setWordWrap(True)
+        card_layout.addWidget(features_text)
+        
+        # 快捷键
+        shortcuts_title = QLabel("⌨️ 快捷键")
+        shortcuts_title.setStyleSheet("font-size: 16px; font-weight: bold; color: #333; margin-top: 10px;")
+        card_layout.addWidget(shortcuts_title)
+        
+        shortcuts_text = QLabel("Ctrl+N: 添加工具 | Ctrl+F: 搜索 | F5: 刷新 | F11: 全屏")
+        shortcuts_text.setStyleSheet("font-size: 14px; color: #555; line-height: 1.6; margin-left: 10px;")
+        shortcuts_text.setWordWrap(True)
+        card_layout.addWidget(shortcuts_text)
+        
         # 关闭按钮
-        btn = QPushButton("关闭")
-        btn.setMinimumSize(140, 44)
-        btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        btn.setStyleSheet("""
+        close_button = QPushButton("关闭")
+        close_button.setMinimumSize(120, 40)
+        close_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        close_button.setStyleSheet("""
             QPushButton {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1da1f2, stop:1 #0d8bd9);
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #667eea, stop:1 #764ba2);
                 color: #fff;
-                border-radius: 22px;
-                font-size: 17px;
+                border-radius: 20px;
+                font-size: 15px;
                 font-weight: bold;
                 border: none;
             }
             QPushButton:hover {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0d8bd9, stop:1 #1da1f2);
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #764ba2, stop:1 #667eea);
+            }
+            QPushButton:pressed {
+                background: #5a6fd8;
             }
         """)
-        btn.clicked.connect(dialog.accept)
+        close_button.clicked.connect(dialog.accept)
+        
         btn_layout = QHBoxLayout()
         btn_layout.addStretch()
-        btn_layout.addWidget(btn)
+        btn_layout.addWidget(close_button)
         btn_layout.addStretch()
         card_layout.addLayout(btn_layout)
-
+        
         main_layout.addWidget(card)
         dialog.exec()
     
@@ -2864,174 +2876,14 @@ class MainWindow(QMainWindow):
         self.cyberchef_webview.loadFinished.connect(self.on_cyberchef_loaded)
         self.right_layout.addWidget(self.cyberchef_webview)
     
-    def set_theme(self, theme_name):
-        self.config.theme = theme_name
-        self.config.save_config()
-        self.apply_theme()
-    
     def apply_theme(self):
-        """应用主题"""
-        theme = self.config.theme
-        qss = self.theme_manager.load_theme(theme)
-        scrollbar_qss = self.theme_manager.load_scrollbar(theme)
-        self.setStyleSheet(qss + scrollbar_qss)
+        """应用现代浅色主题"""
+        try:
+            self.setStyleSheet(MODERN_LIGHT_THEME)
+        except Exception as e:
+            logging.error(f"应用主题失败: {e}")
     
-    def show_theme_preview(self):
-        """显示主题预览对话框"""
-        dialog = QDialog(self)
-        dialog.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Dialog)
-        dialog.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
-        dialog.setMinimumSize(800, 600)
-        # 主布局
-        main_layout = QVBoxLayout(dialog)
-        main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.setSpacing(0)
-        # 标题栏
-        title_bar = QWidget()
-        title_bar.setFixedHeight(60)
-        title_bar.setStyleSheet("""
-            QWidget {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7);
-                border-top-left-radius: 18px;
-                border-top-right-radius: 18px;
-            }
-        """)
-        title_layout = QHBoxLayout(title_bar)
-        title_layout.setContentsMargins(20, 0, 20, 0)
-        title_icon = QLabel("🎨")
-        title_icon.setStyleSheet("font-size: 26px; color: white; background: transparent;")
-        title_layout.addWidget(title_icon)
-        title_text = QLabel("主题预览")
-        title_text.setStyleSheet("font-size: 20px; font-weight: bold; color: white; background: transparent; margin-left: 8px;")
-        title_layout.addWidget(title_text)
-        title_layout.addStretch()
-        close_btn = QPushButton("✕")
-        close_btn.setFixedSize(36, 36)
-        close_btn.setStyleSheet("""
-            QPushButton { background: rgba(255,255,255,0.18); border: none; border-radius: 18px; color: white; font-size: 18px; font-weight: bold; }
-            QPushButton:hover { background: rgba(255,255,255,0.32); }
-            QPushButton:pressed { background: rgba(0,0,0,0.12); }
-        """)
-        close_btn.clicked.connect(dialog.accept)
-        title_layout.addWidget(close_btn)
-        # 拖动支持
-        dialog.offset = None
-        def mousePressEvent(event):
-            if event.button() == Qt.MouseButton.LeftButton:
-                dialog.offset = event.globalPosition().toPoint() - dialog.pos()
-        def mouseMoveEvent(event):
-            if dialog.offset is not None and event.buttons() == Qt.MouseButton.LeftButton:
-                dialog.move(event.globalPosition().toPoint() - dialog.offset)
-        def mouseReleaseEvent(event):
-            dialog.offset = None
-        title_bar.mousePressEvent = mousePressEvent
-        title_bar.mouseMoveEvent = mouseMoveEvent
-        title_bar.mouseReleaseEvent = mouseReleaseEvent
-        main_layout.addWidget(title_bar)
-        # 主体内容
-        content = QWidget()
-        content.setStyleSheet("""
-            QWidget {
-                background: #fff;
-                border-bottom-left-radius: 18px;
-                border-bottom-right-radius: 18px;
-            }
-        """)
-        content_layout = QHBoxLayout(content)
-        content_layout.setContentsMargins(20, 20, 20, 20)
-        content_layout.setSpacing(20)
-        # 左侧主题列表
-        theme_list = QListWidget()
-        theme_list.setFixedWidth(200)
-        theme_list.setStyleSheet("""
-            QListWidget {
-                border: 1px solid #e1e8ed;
-                border-radius: 8px;
-                padding: 8px;
-            }
-            QListWidget::item {
-                padding: 12px;
-                border-radius: 6px;
-                margin: 2px 0;
-            }
-            QListWidget::item:selected {
-                background: #1da1f2;
-                color: white;
-            }
-            QListWidget::item:hover {
-                background: #f7f9fa;
-            }
-        """)
-        # 右侧预览区域
-        preview_area = QWidget()
-        preview_layout = QVBoxLayout(preview_area)
-        preview_layout.setContentsMargins(0, 0, 0, 0)
-        preview_layout.setSpacing(15)
-        # 预览标题
-        preview_title = QLabel("主题预览")
-        preview_title.setStyleSheet("font-size: 18px; font-weight: bold; color: #2c3e50;")
-        preview_layout.addWidget(preview_title)
-        # 预览内容区域
-        preview_content = QWidget()
-        preview_content.setStyleSheet("border: 1px solid #e1e8ed; border-radius: 8px; padding: 20px;")
-        preview_content_layout = QVBoxLayout(preview_content)
-        preview_content_layout.setSpacing(15)
-        # 模拟按钮
-        test_button = QPushButton("测试按钮")
-        test_button.setFixedSize(120, 40)
-        preview_content_layout.addWidget(test_button)
-        # 模拟输入框
-        test_input = QLineEdit()
-        test_input.setPlaceholderText("测试输入框")
-        test_input.setFixedHeight(35)
-        preview_content_layout.addWidget(test_input)
-        # 模拟下拉框
-        test_combo = QComboBox()
-        test_combo.addItems(["选项1", "选项2", "选项3"])
-        test_combo.setFixedHeight(35)
-        preview_content_layout.addWidget(test_combo)
-        # 模拟文本区域
-        test_text = QTextEdit()
-        test_text.setPlaceholderText("测试文本区域")
-        test_text.setFixedHeight(100)
-        preview_content_layout.addWidget(test_text)
-        # 应用按钮
-        apply_btn = QPushButton("应用此主题")
-        apply_btn.setFixedSize(120, 40)
-        preview_content_layout.addWidget(apply_btn)
-        preview_layout.addWidget(preview_content)
-        preview_layout.addStretch()
-        # 添加到主布局
-        content_layout.addWidget(theme_list)
-        content_layout.addWidget(preview_area)
-        main_layout.addWidget(content)
-        # 填充主题列表
-        current_theme = self.config.theme
-        for theme_name in self.theme_manager.get_theme_names():
-            display_name = self.theme_manager.get_theme_display_name(theme_name)
-            item = QListWidgetItem(display_name)
-            item.setData(Qt.ItemDataRole.UserRole, theme_name)
-            theme_list.addItem(item)
-            if theme_name == current_theme:
-                theme_list.setCurrentItem(item)
-        # 主题切换事件
-        def on_theme_selected(item):
-            theme_name = item.data(Qt.ItemDataRole.UserRole)
-            qss = self.theme_manager.load_theme(theme_name)
-            scrollbar_qss = self.theme_manager.load_scrollbar(theme_name)
-            dialog.setStyleSheet(qss + scrollbar_qss)
-        theme_list.currentItemChanged.connect(on_theme_selected)
-        # 应用主题事件
-        def apply_selected_theme():
-            current_item = theme_list.currentItem()
-            if current_item:
-                theme_name = current_item.data(Qt.ItemDataRole.UserRole)
-                self.set_theme(theme_name)
-                dialog.accept()
-        apply_btn.clicked.connect(apply_selected_theme)
-        # 初始应用当前主题样式
-        on_theme_selected(theme_list.currentItem())
-        dialog.exec()
+
     def export_config(self):
         """导出配置，包含所有工具及分类信息"""
         path, _ = QFileDialog.getSaveFileName(
@@ -3042,7 +2894,6 @@ class MainWindow(QMainWindow):
                 with open(path, "w", encoding="utf-8") as f:
                     json.dump({
                         "tools": self.config.tools,
-                        "theme": self.config.theme,
                         "view_mode": self.config.view_mode
                     }, f, ensure_ascii=False, indent=2)
                 self.status_label.setText(f"✅ 配置已成功导出到: {path}")
@@ -3059,7 +2910,6 @@ class MainWindow(QMainWindow):
                 with open(path, "r", encoding="utf-8") as f:
                     data = json.load(f)
                 self.config.tools = data.get("tools", [])
-                self.config.theme = data.get("theme", "modern_light")
                 self.config.view_mode = data.get("view_mode", "list")
                 self.config.save_config()
                 self.refresh_outline_and_tools()
@@ -5509,9 +5359,7 @@ class WebsiteNavWidget(QWidget):
         super().__init__(parent)
         
         self.setObjectName("websiteNavWidget")
-        self.theme_manager = ThemeManager()
         self.config = Config()
-        self.current_theme = self.config.theme
         self.data = self.load_data()
         self.category_tree = None
         self.card_area = None
@@ -5543,12 +5391,8 @@ class WebsiteNavWidget(QWidget):
         return cats
 
     def get_theme_card_style(self):
-        # 主题适配卡片背景色/字体色
-        theme = self.current_theme
-        if 'dark' in theme or theme == 'cyberpunk' or theme == 'midnight_purple' or theme == 'deep_ocean':
-            return "background: #23272e; color: #e0e0e0; border: 1px solid #404040;"
-        else:
-            return "background: #fff; color: #2c3e50; border: 1px solid #e1e8ed;"
+        # 现代浅色主题卡片样式
+        return "background: #fff; color: #2c3e50; border: 1px solid #e1e8ed;"
 
     def init_ui(self):
         main_layout = QHBoxLayout(self)
@@ -5628,9 +5472,19 @@ class WebsiteNavWidget(QWidget):
             QTreeWidget::item {
                 height: 36px;
                 padding-left: 8px;
+                border-radius: 6px;
+                margin: 2px 4px;
             }
             QTreeWidget::item:selected {
-                background: #23272e; color: #00c48f; 
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #43e97b, stop:1 #38f9d7);
+                color: #ffffff;
+                border: none;
+                font-weight: bold;
+            }
+            QTreeWidget::item:hover {
+                background: #f0f9ff;
+                color: #1e40af;
+                border: none;
             }
         """)
         self.category_tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
