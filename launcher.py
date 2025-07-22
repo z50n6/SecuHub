@@ -841,7 +841,7 @@ class AddToolDialog(QDialog):
         """获取工具数据"""
         type_mapping = {
             "GUI应用": "exe",
-            "命令行": "exe", 
+            "命令行": "cmd", 
             "java8图形化": "java8_gui",
             "java11图形化": "java11_gui",
             "java8": "java8",
@@ -1007,6 +1007,19 @@ class ToolLauncherWorker(QObject):
             elif tool.tool_type == "folder":
                 QDesktopServices.openUrl(QUrl.fromLocalFile(tool.path))
                 self.toolLaunched.emit(tool.name, True, "")
+            elif tool.tool_type == "cmd":
+                # 用cmd.exe /k 启动命令行工具
+                cmd = ["cmd.exe", "/k", tool.path]
+                if tool.args:
+                    cmd.extend(tool.args.split())
+                tool_dir = os.path.dirname(os.path.abspath(tool.path)) or None
+                process = subprocess.Popen(
+                    cmd,
+                    cwd=tool_dir,
+                    creationflags=subprocess.CREATE_NEW_CONSOLE
+                )
+                self.toolLaunched.emit(tool.name, True, str(process.pid))
+                return
             else:
                 tool_dir = os.path.dirname(tool.path)
                 cmd = []
@@ -1194,6 +1207,7 @@ class ToolCard(QWidget):
     """自定义工具卡片（与最近启动工具UI保持一致）"""
     _ICON_MAP = {
         "exe": "⚙️",
+        "cmd": "🖥️",  # 或其它命令行图标
         "java8_gui": "☕",
         "java11_gui": "☕",
         "java8": "👨‍💻",
@@ -2732,6 +2746,7 @@ class MainWindow(QMainWindow):
         # 设置当前值
         type_mapping_reverse = {
             "exe": "GUI应用",
+            "cmd":"命令行",
             "java8_gui": "java8图形化",
             "java11_gui": "java11图形化",
             "java8": "java8",
@@ -4285,6 +4300,7 @@ SecuHub 工具统计报告
         # 设置工具类型
         type_mapping_reverse = {
             "exe": "GUI应用",
+            "cmd":"命令行",
             "java8_gui": "java8图形化",
             "java11_gui": "java11图形化",
             "java8": "java8",
@@ -4295,9 +4311,13 @@ SecuHub 工具统计报告
             "url": "网页",
             "folder": "文件夹"
         }
-        
         tool_type = type_mapping_reverse.get(tool.tool_type, "GUI应用")
-        dialog.type_combo.setCurrentText(tool_type)
+        index = dialog.type_combo.findText(tool_type)
+        if index >= 0:
+            dialog.type_combo.setCurrentIndex(index)
+        
+        # tool_type = type_mapping_reverse.get(tool.tool_type, "GUI应用")
+        # dialog.type_combo.setCurrentText(tool_type)
         
         if dialog.exec() == QDialog.DialogCode.Accepted:
             tool_data = dialog.get_tool_data()
