@@ -7,8 +7,8 @@
       "description": "渗透利器",
       "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite_pro/BurpSuite.ico",
       "category": "流量代理/抓包工具",
-      "launch_count": 48,
-      "last_launch": "2025-07-21T12:22:06.455097",
+      "launch_count": 51,
+      "last_launch": "2025-07-24T11:10:08.854496",
       "args": ""
     },
     {
@@ -31,8 +31,8 @@
       "description": "常用利器",
       "icon_path": "D:/SoftWare/Yakit/Yakit/uninstallerIcon.ico",
       "category": "流量代理/抓包工具",
-      "launch_count": 25,
-      "last_launch": "2025-07-16T17:50:47.858391",
+      "launch_count": 26,
+      "last_launch": "2025-07-23T11:11:43.783819",
       "args": ""
     },
     {
@@ -42,8 +42,8 @@
       "description": "",
       "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-behinder.ico",
       "category": "渗透测试/WebShell",
-      "launch_count": 14,
-      "last_launch": "2025-07-19T11:28:00.733373",
+      "launch_count": 16,
+      "last_launch": "2025-07-25T11:13:44.950969",
       "args": ""
     },
     {
@@ -80,6 +80,17 @@
       "args": ""
     },
     {
+      "name": "Cobalt_Strike_4.7",
+      "path": "E:/Penetration/RedTeam/Post-Exploition/C2/Cobalt_Strike_4.7/cobaltstrike-client.jar",
+      "tool_type": "java8",
+      "description": "",
+      "icon_path": "E:/Penetration/RedTeam/Post-Exploition/C2/Cobalt_Strike_4.7/favicon.ico",
+      "category": "后渗透/C2",
+      "launch_count": 11,
+      "last_launch": "2025-07-23T11:11:53.355319",
+      "args": "-Dfile.encoding=UTF-8 -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -Duser.language=en -jar cobaltstrike-client.jar %*"
+    },
+    {
       "name": "impacket-0.11.0",
       "path": "E:/Penetration/RedTeam/Post-Exploition/Lateral_Movement/impacket-0.11.0/examples",
       "tool_type": "folder",
@@ -91,15 +102,15 @@
       "args": ""
     },
     {
-      "name": "Cobalt_Strike_4.7",
-      "path": "E:/Penetration/RedTeam/Post-Exploition/C2/Cobalt_Strike_4.7/cobaltstrike-client.jar",
-      "tool_type": "java8",
+      "name": "DudeSuite.v1.2.0.6",
+      "path": "E:/Penetration/RedTeam/ComprehensiveTools/DudeSuite.v1.2.0.6.win-x64/DudeSuite.exe",
+      "tool_type": "exe",
       "description": "",
-      "icon_path": "E:/Penetration/RedTeam/Post-Exploition/C2/Cobalt_Strike_4.7/favicon.ico",
-      "category": "后渗透/C2",
-      "launch_count": 10,
-      "last_launch": "2025-07-14T14:22:27.549102",
-      "args": "-Dfile.encoding=UTF-8 -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -Duser.language=en -jar cobaltstrike-client.jar %*"
+      "icon_path": "",
+      "category": "渗透测试/综合工具",
+      "launch_count": 9,
+      "last_launch": "2025-07-24T11:25:22.758617",
+      "args": ""
     },
     {
       "name": "Jack-Proxy-V3",
@@ -126,25 +137,14 @@
       "args": ""
     },
     {
-      "name": "DudeSuite.v1.2.0.6",
-      "path": "E:/Penetration/RedTeam/ComprehensiveTools/DudeSuite.v1.2.0.6.win-x64/DudeSuite.exe",
-      "tool_type": "exe",
-      "description": "",
-      "icon_path": "",
-      "category": "渗透测试/综合工具",
-      "launch_count": 8,
-      "last_launch": "2025-07-21T20:08:31.139316",
-      "args": ""
-    },
-    {
       "name": "Reqable",
       "path": "D:/SoftWare/Reqable/Reqable.exe",
       "tool_type": "exe",
       "description": "小黄鸟",
       "icon_path": "D:/SoftWare/Reqable/data/flutter_assets/assets/images/common/app_icon.ico",
       "category": "流量代理/抓包工具",
-      "launch_count": 6,
-      "last_launch": "2025-07-21T12:21:44.010987",
+      "launch_count": 8,
+      "last_launch": "2025-07-24T11:09:58.929811",
       "args": ""
     },
     {
@@ -159,6 +159,19 @@
       "launch_count": 6,
       "last_launch": "2025-07-21T19:00:42.802811",
       "args": "-javaagent:StarCodeSecurity.jar  -Dfile.encoding=utf-8 -jar StarCodeSecurity.jar"
+    },
+    {
+      "name": "TscanPlus",
+      "path": "E:\\Penetration\\RedTeam\\Information_Collection\\comprehensive\\TscanPlus\\TscanPlus_Win_Amd64.exe",
+      "category": "渗透测试/信息搜集",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/潮影在线免杀平台.png",
+      "color": "#000000",
+      "launch_count": 5,
+      "last_launch": "2025-07-23T18:57:56.459576",
+      "args": ""
     },
     {
       "name": "Fiddler",
@@ -231,16 +244,27 @@
       "args": ""
     },
     {
-      "name": "TscanPlus",
-      "path": "E:\\Penetration\\RedTeam\\Information_Collection\\comprehensive\\TscanPlus\\TscanPlus_Win_Amd64.exe",
-      "category": "渗透测试/信息搜集",
+      "name": "hydra",
+      "path": "E:/Penetration/RedTeam/Credential_Access/tools/thc-hydra-windows-v9.1/9.1/hydra.bat",
+      "category": "渗透测试/暴力破解",
       "subcategory": "",
-      "tool_type": "exe",
+      "tool_type": "batch",
       "description": "",
-      "icon_path": null,
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/kali-hydra.png",
       "color": "#000000",
       "launch_count": 3,
-      "last_launch": "2025-07-22T11:44:09.132216",
+      "last_launch": "2025-07-23T11:10:02.852264",
+      "args": ""
+    },
+    {
+      "name": "CobaltStrike-无影",
+      "path": "E:/Penetration/RedTeam/Post-Exploition/C2/CobaltStrike4.9.1特战版V2/cobaltstrike4.9.1_wuying/CobaltStrike4.9.1_Client（白色主题）/cobaltstrike-wuying.bat",
+      "tool_type": "batch",
+      "description": "",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-cobaltstrike.ico",
+      "category": "后渗透/C2",
+      "launch_count": 3,
+      "last_launch": "2025-07-23T11:11:57.182301",
       "args": ""
     },
     {
@@ -252,17 +276,6 @@
       "category": "辅助工具/数据库连接",
       "launch_count": 2,
       "last_launch": "2025-06-22T14:18:23.949893",
-      "args": ""
-    },
-    {
-      "name": "CobaltStrike-无影",
-      "path": "E:/Penetration/RedTeam/Post-Exploition/C2/CobaltStrike4.9.1特战版V2/cobaltstrike4.9.1_wuying/CobaltStrike4.9.1_Client（白色主题）/cobaltstrike-wuying.bat",
-      "tool_type": "batch",
-      "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-cobaltstrike.ico",
-      "category": "后渗透/C2",
-      "launch_count": 2,
-      "last_launch": "2025-07-22T11:46:24.652757",
       "args": ""
     },
     {
@@ -335,19 +348,6 @@
       "color": "#000000",
       "launch_count": 1,
       "last_launch": "2025-07-21T19:08:41.447338",
-      "args": ""
-    },
-    {
-      "name": "hydra",
-      "path": "E:/Penetration/RedTeam/Credential_Access/tools/thc-hydra-windows-v9.1/9.1/hydra.bat",
-      "category": "渗透测试/暴力破解",
-      "subcategory": "",
-      "tool_type": "batch",
-      "description": "",
-      "icon_path": "E:/Code/Python/SecuHub/data/Icon/kali-hydra.png",
-      "color": "#000000",
-      "launch_count": 1,
-      "last_launch": null,
       "args": ""
     },
     {
@@ -682,7 +682,7 @@
       "category": "漏洞利用/综合工具",
       "subcategory": "",
       "tool_type": "java8_gui",
-      "description": "",
+      "description": "shiro\\fastjson....",
       "icon_path": null,
       "color": "#000000",
       "launch_count": 0,
@@ -861,64 +861,42 @@
   ],
   "view_mode": "list",
   "recent_tools": [
+    "冰蝎_v4.1.t00ls",
+    "DudeSuite.v1.2.0.6",
+    "BurpSuite2023",
+    "Reqable",
+    "TscanPlus",
+    "hyacinth-v1.4.jar",
+    "CobaltStrike-无影",
+    "Cobalt_Strike_4.7",
+    "yakit",
+    "hydra",
     "hydra测试",
     "字典",
-    "CobaltStrike-无影",
-    "TscanPlus",
     "DudeSuite",
-    "DudeSuite.v1.2.0.6",
     "Virgol",
     "Docker-TCP-Scan",
     "DockerApiRCE.jar",
     "漏洞利用文件夹",
     "蓝队工具箱",
     "BlueTeam",
-    "加解密",
-    "hydra",
-    "python-http-server",
-    "Seay",
-    "StarCodeSecurity",
-    "BurpSuite2023",
-    "Reqable",
-    "冰蝎_v4.1.t00ls"
+    "加解密"
   ],
   "show_status_bar": true,
   "auto_refresh": true,
   "search_history": [
-    "hydra",
-    "hydar",
-    "hyd",
-    "hydra测试",
-    "ts",
-    "tscan",
-    "iw",
-    "i",
+    "du",
+    "d",
+    "dy",
+    "b",
+    "req",
     "re",
-    "sd"
+    "rea",
+    "tsc",
+    "js",
+    "转子"
   ],
   "python_path": "",
   "java8_path": "",
-  "java11_path": "E:/Penetration/Others/ProgramTools/dev/Java/Jav11/bin/java.exe",
-  "navigation_items": [
-    {
-      "id": "safe",
-      "name": "安全工具",
-      "icon": "🛡️"
-    },
-    {
-      "id": "code",
-      "name": "编码与解码",
-      "icon": "🔧"
-    },
-    {
-      "id": "assist",
-      "name": "辅助工具",
-      "icon": "🛠️"
-    },
-    {
-      "id": "webnav",
-      "name": "网站导航",
-      "icon": "🌐"
-    }
-  ]
+  "java11_path": "E:/Penetration/Others/ProgramTools/dev/Java/Jav11/bin/java.exe"
 }

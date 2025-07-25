@@ -7,6 +7,8 @@ import logging
 from datetime import datetime
 from functools import partial
 import re
+from PyQt6.QtWidgets import QSystemTrayIcon
+from PyQt6 import QtCore
 from PyQt6.QtWidgets import ( 
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QTreeWidget, QTreeWidgetItem, QLabel, QPushButton, QLineEdit,
@@ -24,16 +26,7 @@ from PyQt6.QtWebEngineCore import QWebEnginePage
 from PyQt6.QtWebChannel import QWebChannel
 
 
-# Add new imports for icon extraction
-# try:
-#     import win32gui
-#     import win32api
-#     import win32con
-#     from PIL import Image
-#     IS_WINDOWS = True
-# except ImportError:
-#     IS_WINDOWS = False
-#     logging.warning("pywin32或Pillow库未安装，无法使用EXE图标提取功能。")
+
 
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
 
@@ -403,7 +396,12 @@ class PipInstallerWorker(QObject):
     installationStarted = pyqtSignal(str)  # tool_name
     installationProgress = pyqtSignal(str, str)  # tool_name, message
     installationFinished = pyqtSignal(str, bool, str, object)  # tool_name, success, error_msg, tool_object
+    def __init__(self):
+        super().__init__()
+        self._running = True
 
+    def stop(self):
+        self._running = False
     @pyqtSlot(object, str)
     def install(self, tool, target):
         """
@@ -411,6 +409,8 @@ class PipInstallerWorker(QObject):
         :param tool: 工具对象
         :param target: 'requirements' 或模块名
         """
+        if not self._running:
+            return
         self.installationStarted.emit(tool.name)
         tool_dir = os.path.dirname(tool.path)
         
@@ -1548,6 +1548,10 @@ class MainWindow(QMainWindow):
         self.nav_buttons = {}  # 存储导航按钮
         self.init_workers()
         self.init_ui()
+        self.tray_icon = None
+        self.tray_menu = None
+        self._is_quit_via_tray = False
+        self.init_tray_icon()
         self.load_data()
         logging.info("主窗口初始化完成")
         # 启动时强制modern_light并apply_theme
@@ -1555,6 +1559,41 @@ class MainWindow(QMainWindow):
         self.apply_theme()
         # 启动时检测环境变量
         QTimer.singleShot(100, self.check_env_paths)
+
+    def init_tray_icon(self):
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logo1.ico')
+        tray_icon = QSystemTrayIcon(QIcon(icon_path), self)
+        tray_icon.setToolTip("SecuHub - 智能程序启动")
+        # 托盘菜单
+        menu = QMenu()
+        show_action = QAction("显示主界面", self)
+        show_action.triggered.connect(self.show_mainwindow_from_tray)
+        menu.addAction(show_action)
+        exit_action = QAction("退出", self)
+        exit_action.triggered.connect(self.quit_from_tray)
+        menu.addAction(exit_action)
+        tray_icon.setContextMenu(menu)
+        tray_icon.activated.connect(self.on_tray_activated)
+        tray_icon.show()
+        self.tray_icon = tray_icon
+        self.tray_menu = menu
+
+    def show_mainwindow_from_tray(self):
+        self.showNormal()
+        self.activateWindow()
+        self.raise_()
+
+    def quit_from_tray(self):
+        self._is_quit_via_tray = True
+        # self.tray_icon.hide()  # 不需要提前hide，closeEvent里会处理
+        self.close()  # 触发closeEvent，保证日志输出和资源清理
+    def on_tray_activated(self, reason):
+        if reason == QSystemTrayIcon.ActivationReason.Trigger:
+            self.show_mainwindow_from_tray()
+        elif reason == QSystemTrayIcon.ActivationReason.DoubleClick:
+            self.show_mainwindow_from_tray()
+
+  
     
     def check_env_paths(self):
         """检测环境变量配置和有效性"""
@@ -1614,15 +1653,15 @@ class MainWindow(QMainWindow):
         self.tool_launcher_worker.installationRequired.connect(self.handle_installation_required)
         self.tool_launcher_thread.start()
         
-        # --- Pip安装线程 ---
-        self.pip_installer_thread = QThread()
-        self.pip_installer_worker = PipInstallerWorker()
-        self.pip_installer_worker.moveToThread(self.pip_installer_thread)
-        self.startPipInstall.connect(self.pip_installer_worker.install)
-        self.pip_installer_worker.installationStarted.connect(self.handle_installation_started)
-        self.pip_installer_worker.installationProgress.connect(self.handle_installation_progress)
-        self.pip_installer_worker.installationFinished.connect(self.handle_installation_finished)
-        self.pip_installer_thread.start()
+        # # --- Pip安装线程 ---
+        # self.pip_installer_thread = QThread()
+        # self.pip_installer_worker = PipInstallerWorker()
+        # self.pip_installer_worker.moveToThread(self.pip_installer_thread)
+        # self.startPipInstall.connect(self.pip_installer_worker.install)
+        # self.pip_installer_worker.installationStarted.connect(self.handle_installation_started)
+        # self.pip_installer_worker.installationProgress.connect(self.handle_installation_progress)
+        # self.pip_installer_worker.installationFinished.connect(self.handle_installation_finished)
+        # self.pip_installer_thread.start()
         
         # --- 配置保存线程 ---
         self.config_saver_thread = QThread()
@@ -4123,44 +4162,103 @@ SecuHub 工具统计报告
             self.assist_content.setCurrentIndex(3)
             self.current_assist_tab = 'memo'
 
+  
+        
+   
+   
     def closeEvent(self, event):
-        """处理窗口关闭事件，安全地终止工作线程"""
-        logging.info("正在关闭应用程序，请稍候...")
-        
-        # 停止所有定时器
-        self.search_timer.stop()
-        self.config_save_timer.stop()
-        self.memory_optimize_timer.stop()
-        
-        # 停止所有工作线程
-        self.search_thread.quit()
-        self.icon_loader_thread.quit()
-        self.tool_launcher_thread.quit()
-        self.config_saver_thread.quit()
-        self.process_monitor_worker.stop_monitoring()
-        self.process_monitor_thread.quit()
-        
-        # 等待线程安全退出
-        threads_to_wait = [
-            (self.search_thread, "搜索线程"),
-            (self.icon_loader_thread, "图标加载线程"),
-            (self.tool_launcher_thread, "工具启动线程"),
-            (self.config_saver_thread, "配置保存线程"),
-            (self.pip_installer_thread, "Pip安装线程"),
-            (self.process_monitor_thread, "进程监控线程")
-        ]
-        
-        for thread, name in threads_to_wait:
-            if not thread.wait(1000):  # 等待1秒
-                logging.warning(f"{name}未能及时停止。")
-        
-        # 清空缓存
-        self.cache_manager.clear()
-        
-        super().closeEvent(event)
+        # 关闭时最小化到托盘，除非通过托盘菜单退出
+        if not self._is_quit_via_tray:
+            event.ignore()
+            self.hide()
+            if self.tray_icon:
+                self.tray_icon.showMessage(
+                    "SecuHub 最小化到托盘",
+                    "程序仍在后台运行，点击托盘图标可恢复窗口。",
+                    QSystemTrayIcon.MessageIcon.Information,
+                    3000
+                )
+        else:
+            # 真正退出时，记录日志并安全退出
+            logging.info("正在关闭应用程序，请稍候...")
+            import psutil, getpass, time
+            logging.info(f"退出时间: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+            logging.info(f"当前内存占用: {psutil.Process().memory_info().rss / 1024 / 1024:.2f} MB")
+            logging.info(f"已保存配置文件: {self.config.config_file}")
 
+            # 停止所有定时器
+            self.search_timer.stop()
+            self.config_save_timer.stop()
+            self.memory_optimize_timer.stop()
+            
+            # 让pip安装worker优雅退出
+            # self.pip_installer_worker.stop()
+
+            # 停止所有工作线程
+            self.search_thread.quit()
+            self.icon_loader_thread.quit()
+            self.tool_launcher_thread.quit()
+            self.config_saver_thread.quit()
+            self.process_monitor_worker.stop_monitoring()
+            self.process_monitor_thread.quit()
+
+            # 等待线程安全退出
+            threads_to_wait = [
+                (self.search_thread, "搜索线程"),
+                (self.icon_loader_thread, "图标加载线程"),
+                (self.tool_launcher_thread, "工具启动线程"),
+                (self.config_saver_thread, "配置保存线程"),
+                # (self.pip_installer_thread, "Pip安装线程"),
+                (self.process_monitor_thread, "进程监控线程")
+            ]
+            for thread, name in threads_to_wait:
+                if not thread.wait(1000):
+                    logging.warning(f"{name}未能及时停止。")
+
+
+            # 清空缓存
+            self.cache_manager.clear()
+
+            # 隐藏托盘图标
+            if self.tray_icon:
+                self.tray_icon.hide()
+
+            # super().closeEvent(event)
+            import sys
+            from PyQt6.QtWidgets import QApplication
+            # ...原有清理代码...
+            super().closeEvent(event)
+            QApplication.quit()  # 强制退出事件循环
+            sys.exit(0)         # 防止极端情况下还卡住
     def handle_installation_required(self, tool, target):
-        """处理Python依赖安装请求"""
+        # 如果pip安装线程已存在且在运行，先安全关闭
+        if hasattr(self, 'pip_installer_thread') and self.pip_installer_thread.isRunning():
+            self.pip_installer_worker.stop()
+            self.pip_installer_thread.quit()
+            self.pip_installer_thread.wait(1000)
+            del self.pip_installer_thread
+            del self.pip_installer_worker
+
+        # 动态创建pip安装线程和worker
+        self.pip_installer_thread = QThread()
+        self.pip_installer_worker = PipInstallerWorker()
+        self.pip_installer_worker.moveToThread(self.pip_installer_thread)
+        self.startPipInstall.connect(self.pip_installer_worker.install)
+        self.pip_installer_worker.installationStarted.connect(self.handle_installation_started)
+        self.pip_installer_worker.installationProgress.connect(self.handle_installation_progress)
+        self.pip_installer_worker.installationFinished.connect(self.handle_installation_finished)
+        self.pip_installer_thread.start()
+
+        # 安装完成后自动关闭线程
+        def cleanup(*args):
+            self.pip_installer_worker.stop()
+            self.pip_installer_thread.quit()
+            self.pip_installer_thread.wait(1000)
+            del self.pip_installer_thread
+            del self.pip_installer_worker
+        self.pip_installer_worker.installationFinished.connect(cleanup)
+
+        # 触发安装
         self.startPipInstall.emit(tool, target)
 
     def handle_installation_started(self, tool_name):
