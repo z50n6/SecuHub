@@ -19,12 +19,14 @@ from PyQt6.QtWidgets import (
     QListWidget, QListWidgetItem, QDialogButtonBox, QGridLayout, QFrame,
     QTabWidget, QLayout
 )
+
 from PyQt6.QtCore import Qt, QUrl, QTimer, QThread, pyqtSignal, QSize, QPoint, QSettings, QObject, pyqtSlot, QRect
 from PyQt6.QtGui import QFont, QColor, QIcon, QPixmap, QAction, QKeySequence, QDesktopServices
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWebEngineCore import QWebEnginePage
 from PyQt6.QtWebChannel import QWebChannel
 
+from modules.vuln_manager.main import start_vuln_manager
 
 
 
@@ -257,7 +259,8 @@ class Config:
             {"id": "safe", "name": "安全工具", "icon": "🛡️"},
             {"id": "code", "name": "编码与解码", "icon": "🔧"},
             {"id": "assist", "name": "辅助工具", "icon": "🛠️"},
-            {"id": "webnav", "name": "网站导航", "icon": "🌐"}
+            {"id": "webnav", "name": "网站导航", "icon": "🌐"},
+            {"id": "vuln_manager", "name": "漏洞库管理", "icon": "🗃️"} # 新增漏洞库管理
         ]
         # 首先尝试从JSON文件加载
         if os.path.exists(self.config_file):
@@ -291,7 +294,9 @@ class Config:
             {"id": "safe", "name": "安全工具", "icon": "🛡️"},
             {"id": "code", "name": "编码与解码", "icon": "🔧"},
             {"id": "assist", "name": "辅助工具", "icon": "🛠️"},
-            {"id": "webnav", "name": "网站导航", "icon": "🌐"}
+            {"id": "webnav", "name": "网站导航", "icon": "🌐"},
+            {"id": "vuln_manager", "name": "漏洞库管理", "icon": "🗃️"} # 新增漏洞库管理
+
         ]
         self.tools = self.settings.value("tools", [])
         self.view_mode = self.settings.value("view_mode", "list")
@@ -1542,6 +1547,11 @@ class MainWindow(QMainWindow):
         logging.info("初始化主窗口...")
         super().__init__()
         self.config = Config()
+         # 初始化漏洞库管理界面，但不立即显示
+        from modules.vuln_manager.main import start_vuln_manager
+        self.vuln_manager_widget = start_vuln_manager()
+          # 连接漏洞库管理界面的状态消息信号到主窗口的状态栏
+        self.vuln_manager_widget.status_message_signal.connect(self.show_status_message)
         self.cache_manager = CacheManager()
 
         self._initial_load_done = False
@@ -1559,6 +1569,8 @@ class MainWindow(QMainWindow):
         self.apply_theme()
         # 启动时检测环境变量
         QTimer.singleShot(100, self.check_env_paths)
+        
+
 
     def init_tray_icon(self):
         icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logo1.ico')
@@ -1839,17 +1851,7 @@ class MainWindow(QMainWindow):
         
         nav_layout.addStretch()
         
-        # # 底部信息
-        # bottom_info = QLabel("SecuHub v1.0")
-        # bottom_info.setStyleSheet("""
-        #     font-size: 11px;
-        #     color: #adb5bd;
-        #     text-align: center;
-        #     padding: 10px 0;
-        #     border-top: 1px solid #e9ecef;
-        # """)
-        # bottom_info.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        # nav_layout.addWidget(bottom_info)
+ 
         
         self.main_splitter.addWidget(nav_panel)
 
@@ -2144,6 +2146,8 @@ class MainWindow(QMainWindow):
         elif nav_id == 'webnav':
             self.right_layout.addWidget(WebsiteNavWidget())
             return
+        elif nav_id == 'vuln_manager':
+            self.right_layout.addWidget(self.vuln_manager_widget)
         else:
             # 未来可以扩展为动态加载不同类型的页面
             # 当前为未知导航项创建一个空白页
@@ -2638,6 +2642,25 @@ class MainWindow(QMainWindow):
         
         # 更新统计信息
         self.update_status_stats()
+    def show_status_message(self, message, message_type='info'):
+        icon = ""
+        if message_type == 'success':
+            icon = "✅ "
+        elif message_type == 'warning':
+            icon = "⚠️ "
+        elif message_type == 'error':
+            icon = "❌ "
+        else: # info
+            icon = "ℹ️ "
+        
+        # 直接更新 self.status_label 的文本
+        self.status_label.setText(f"{icon}{message}")
+        
+        # 使用 QTimer 在5秒后恢复默认状态栏文本
+        QTimer.singleShot(5000, self.clear_status_message)
+
+    def clear_status_message(self):
+        self.status_label.setText("ℹ️ 准备就绪")
     
     def update_status_stats(self):
         """更新状态栏统计信息"""

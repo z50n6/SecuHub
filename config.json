@@ -1,14 +1,55 @@
 {
   "tools": [
     {
-      "name": "BurpSuite2023",
-      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite_pro/BurpSuiteLoader.vbs",
+      "name": "BurpSuite v2021.12.1",
+      "path": "E:\\Penetration\\RedTeam\\TrafficProxyTools\\burpsuite\\BurpSuite v2021.12.1\\CNBurp(无CMD窗口 无注册).VBS",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
+      "tool_type": "vbs",
+      "description": "",
+      "icon_path": "E:\\Penetration\\RedTeam\\TrafficProxyTools\\burpsuite\\BurpSuite v2021.12.1\\BurpSuite\\ICO图标\\Burp-suite-Blue.ico",
+      "color": "#000000",
+      "launch_count": 104,
+      "last_launch": "2025-08-17T21:38:17.767147",
+      "args": ""
+    },
+    {
+      "name": "deadpool_1.5",
+      "path": "E:\\Penetration\\RedTeam\\TrafficProxyTools\\proxy-pool\\deadpool_1.5_windows_amd64\\start.bat",
+      "category": "流量代理/代理池",
+      "subcategory": "",
+      "tool_type": "batch",
+      "description": "代理池",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/png/deadpool.png",
+      "color": "#000000",
+      "launch_count": 102,
+      "last_launch": "2025-08-19T09:58:53.519174",
+      "args": ""
+    },
+    {
+      "name": "BurpSuite2024.10",
+      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/2024.10/EN_Burp(无CMD窗口).VBS",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
       "tool_type": "vbs",
       "description": "渗透利器",
-      "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite_pro/BurpSuite.ico",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/kali-burpsuite.png",
+      "color": "#000000",
+      "launch_count": 84,
+      "last_launch": "2025-08-26T09:30:46.875865",
+      "args": ""
+    },
+    {
+      "name": "burpsuite V2025.1",
+      "path": "E:\\Penetration\\RedTeam\\TrafficProxyTools\\burpsuite\\BurpSuite V2025.1\\CN_Burp(无CMD窗口).VBS",
       "category": "流量代理/抓包工具",
-      "launch_count": 51,
-      "last_launch": "2025-07-24T11:10:08.854496",
+      "subcategory": "",
+      "tool_type": "vbs",
+      "description": "",
+      "icon_path": "E:\\Penetration\\Others\\ThemeTools\\ICON\\Kali\\png\\kali-burpsuite-1.png",
+      "color": "#000000",
+      "launch_count": 59,
+      "last_launch": "2025-08-15T14:25:15.646798",
       "args": ""
     },
     {
@@ -20,8 +61,8 @@
       "description": "代理池",
       "icon_path": "E:/Code/Python/SecuHub/data/Icon/freeplane.png",
       "color": "#000000",
-      "launch_count": 37,
-      "last_launch": null,
+      "launch_count": 39,
+      "last_launch": "2025-08-18T09:55:33.921760",
       "args": ""
     },
     {
@@ -31,8 +72,21 @@
       "description": "常用利器",
       "icon_path": "D:/SoftWare/Yakit/Yakit/uninstallerIcon.ico",
       "category": "流量代理/抓包工具",
-      "launch_count": 26,
-      "last_launch": "2025-07-23T11:11:43.783819",
+      "launch_count": 28,
+      "last_launch": "2025-08-14T10:59:47.214450",
+      "args": ""
+    },
+    {
+      "name": "TscanPlus",
+      "path": "E:\\Penetration\\RedTeam\\Information_Collection\\comprehensive\\TscanPlus\\TscanPlus_Win_Amd64.exe",
+      "category": "渗透测试/信息搜集",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/潮影在线免杀平台.png",
+      "color": "#000000",
+      "launch_count": 23,
+      "last_launch": "2025-08-19T10:33:35.803487",
       "args": ""
     },
     {
@@ -42,30 +96,8 @@
       "description": "",
       "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-behinder.ico",
       "category": "渗透测试/WebShell",
-      "launch_count": 16,
-      "last_launch": "2025-07-25T11:13:44.950969",
-      "args": ""
-    },
-    {
-      "name": "DeepSeekSelfTool",
-      "path": "E:/Penetration/RedTeam/ComprehensiveTools/DeepSeekSelfTool/DeepSeekSelfTool.py",
-      "tool_type": "python",
-      "description": "py GUI",
-      "icon_path": null,
-      "category": "渗透测试/综合工具",
-      "launch_count": 12,
-      "last_launch": "2025-07-01T10:09:09.344457",
-      "args": ""
-    },
-    {
-      "name": "burpsuite2025",
-      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/bp2025.5/EN_Burp(无CMD窗口).VBS",
-      "tool_type": "vbs",
-      "description": "",
-      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/png/kali-burpsuite-1.png",
-      "category": "流量代理/抓包工具",
-      "launch_count": 12,
-      "last_launch": "2025-07-08T14:03:36.453305",
+      "launch_count": 20,
+      "last_launch": "2025-08-08T15:59:38.872744",
       "args": ""
     },
     {
@@ -75,8 +107,30 @@
       "description": "",
       "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-godzilla.ico",
       "category": "渗透测试/WebShell",
-      "launch_count": 11,
-      "last_launch": "2025-07-02T21:59:03.270592",
+      "launch_count": 13,
+      "last_launch": "2025-08-01T17:49:43.998329",
+      "args": ""
+    },
+    {
+      "name": "DeepSeekSelfTool",
+      "path": "E:/Penetration/RedTeam/ComprehensiveTools/DeepSeekSelfTool/DeepSeekSelfTool.py",
+      "tool_type": "python",
+      "description": "py GUI",
+      "icon_path": null,
+      "category": "渗透测试/综合工具",
+      "launch_count": 13,
+      "last_launch": "2025-08-03T21:35:32.397275",
+      "args": ""
+    },
+    {
+      "name": "Reqable",
+      "path": "D:/SoftWare/Reqable/Reqable.exe",
+      "tool_type": "exe",
+      "description": "小黄鸟",
+      "icon_path": "D:/SoftWare/Reqable/data/flutter_assets/assets/images/common/app_icon.ico",
+      "category": "流量代理/抓包工具",
+      "launch_count": 13,
+      "last_launch": "2025-08-19T10:53:37.157853",
       "args": ""
     },
     {
@@ -97,8 +151,8 @@
       "description": "",
       "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Icon/impacket.png",
       "category": "后渗透/横向移动",
-      "launch_count": 10,
-      "last_launch": "2025-06-27T15:24:56.184121",
+      "launch_count": 11,
+      "last_launch": "2025-08-04T16:58:00.764348",
       "args": ""
     },
     {
@@ -108,8 +162,8 @@
       "description": "",
       "icon_path": "",
       "category": "渗透测试/综合工具",
-      "launch_count": 9,
-      "last_launch": "2025-07-24T11:25:22.758617",
+      "launch_count": 10,
+      "last_launch": "2025-07-29T11:14:47.654066",
       "args": ""
     },
     {
@@ -121,8 +175,8 @@
       "description": "代理池",
       "icon_path": "E:/Code/Python/SecuHub/data/Icon/kali-proxychains.png",
       "color": "#000000",
-      "launch_count": 8,
-      "last_launch": null,
+      "launch_count": 10,
+      "last_launch": "2025-08-11T10:38:55.183120",
       "args": ""
     },
     {
@@ -134,17 +188,6 @@
       "category": "BlueTeam",
       "launch_count": 8,
       "last_launch": "2025-07-01T11:23:21.063624",
-      "args": ""
-    },
-    {
-      "name": "Reqable",
-      "path": "D:/SoftWare/Reqable/Reqable.exe",
-      "tool_type": "exe",
-      "description": "小黄鸟",
-      "icon_path": "D:/SoftWare/Reqable/data/flutter_assets/assets/images/common/app_icon.ico",
-      "category": "流量代理/抓包工具",
-      "launch_count": 8,
-      "last_launch": "2025-07-24T11:09:58.929811",
       "args": ""
     },
     {
@@ -161,16 +204,16 @@
       "args": "-javaagent:StarCodeSecurity.jar  -Dfile.encoding=utf-8 -jar StarCodeSecurity.jar"
     },
     {
-      "name": "TscanPlus",
-      "path": "E:\\Penetration\\RedTeam\\Information_Collection\\comprehensive\\TscanPlus\\TscanPlus_Win_Amd64.exe",
+      "name": "sslscan",
+      "path": "E:/Penetration/RedTeam/Information_Collection/others/sslscan-2.2.0/sslscan.bat",
       "category": "渗透测试/信息搜集",
       "subcategory": "",
-      "tool_type": "exe",
-      "description": "",
-      "icon_path": "E:/Code/Python/SecuHub/data/Icon/潮影在线免杀平台.png",
+      "tool_type": "batch",
+      "description": "sslscan 测试启用 SSL/TLS 的服务以发现支持的密码套件",
+      "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/ico/kali-sslscan.ico",
       "color": "#000000",
       "launch_count": 5,
-      "last_launch": "2025-07-23T18:57:56.459576",
+      "last_launch": "2025-08-25T10:56:28.771005",
       "args": ""
     },
     {
@@ -193,6 +236,19 @@
       "category": "流量代理/抓包工具",
       "launch_count": 4,
       "last_launch": "2025-07-01T09:50:47.835528",
+      "args": ""
+    },
+    {
+      "name": "jeecgExploitss.jar",
+      "path": "E:\\Penetration\\RedTeam\\Vulnerability_Exploit\\jeecg-boot\\jeecgExploitss.jar",
+      "category": "漏洞利用/框架利用",
+      "subcategory": "",
+      "tool_type": "java8_gui",
+      "description": "",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 4,
+      "last_launch": "2025-08-18T10:19:44.016471",
       "args": ""
     },
     {
@@ -268,6 +324,19 @@
       "args": ""
     },
     {
+      "name": "shiro_attack-4.7.0-SNAPSHOT-all.jar",
+      "path": "E:\\Penetration\\RedTeam\\Vulnerability_Exploit\\shiro\\shiro_attack-4.7.0-SNAPSHOT-all\\shiro_attack-4.7.0-SNAPSHOT-all.jar",
+      "category": "漏洞利用/框架利用",
+      "subcategory": "",
+      "tool_type": "java8_gui",
+      "description": "",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 3,
+      "last_launch": "2025-08-07T10:56:39.129231",
+      "args": ""
+    },
+    {
       "name": "AnotherRedisDesktopManager",
       "path": "E:/Penetration/RedTeam/AuxiliaryTools/database-connect/AnotherRedisDesktopManager/AnotherRedisDesktopManager.exe",
       "tool_type": "exe",
@@ -276,6 +345,117 @@
       "category": "辅助工具/数据库连接",
       "launch_count": 2,
       "last_launch": "2025-06-22T14:18:23.949893",
+      "args": ""
+    },
+    {
+      "name": "AntSword",
+      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/AntSword/AntSword-Loader-v4.0.3-win32-x64/AntSword.exe",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/AntSword/antSword-2.1.15/static/imgs/logo.png",
+      "category": "渗透测试/WebShell",
+      "launch_count": 2,
+      "last_launch": "2025-07-26T19:02:56.837134",
+      "args": ""
+    },
+    {
+      "name": "Virgol",
+      "path": "E:/Penetration/RedTeam/ComprehensiveTools/Virgol-Win-amd64-v2.1.0/Virgol-Win-amd64-v2.1.0.exe",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": null,
+      "category": "渗透测试/综合工具",
+      "launch_count": 2,
+      "last_launch": "2025-07-30T14:06:51.660879",
+      "args": ""
+    },
+    {
+      "name": "蓝队工具箱",
+      "path": "E:\\Penetration\\BlueTeam\\ComprehensiveTools\\蓝队应急响应工具箱\\蓝队应急响应工具箱.exe",
+      "category": "BlueTeam/综合工具",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "知攻善防实验室",
+      "icon_path": "E:/Penetration/BlueTeam/ComprehensiveTools/蓝队应急响应工具箱/_internal/bg.ico",
+      "color": "#000000",
+      "launch_count": 2,
+      "last_launch": "2025-08-01T17:49:54.164701",
+      "args": ""
+    },
+    {
+      "name": "Hash",
+      "path": "E:/Penetration/BlueTeam/AssistiveTools/fileHash/Hash.exe",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/kali-hashdeep.png",
+      "category": "BlueTeam",
+      "launch_count": 2,
+      "last_launch": "2025-08-03T20:56:10.997540",
+      "args": ""
+    },
+    {
+      "name": "火狐渗透版",
+      "path": "E:/Penetration/RedTeam/TrafficProxyTools/Firefox/firefox/firefox.exe",
+      "category": "流量代理/抓包工具",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "火狐渗透版",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/firefox-aurora.png",
+      "color": "#000000",
+      "launch_count": 2,
+      "last_launch": "2025-08-04T16:58:30.995113",
+      "args": ""
+    },
+    {
+      "name": "Fine",
+      "path": "E:/Penetration/RedTeam/Information_Collection/comprehensive/Fine/Fine.exe",
+      "category": "渗透测试/信息搜集",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 2,
+      "last_launch": "2025-08-04T16:57:31.850263",
+      "args": ""
+    },
+    {
+      "name": "信息搜集",
+      "path": "E:\\Penetration\\RedTeam\\Information_Collection",
+      "category": "渗透测试/信息搜集",
+      "subcategory": "",
+      "tool_type": "folder",
+      "description": "",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/whois-domain2.png",
+      "color": "#000000",
+      "launch_count": 2,
+      "last_launch": "2025-08-04T16:57:18.989704",
+      "args": ""
+    },
+    {
+      "name": "Jeecg_Tools-1.0-java8.jar",
+      "path": "E:\\Penetration\\RedTeam\\Vulnerability_Exploit\\jeecg-boot\\Jeecg_Tools-1.0-java8.jar",
+      "category": "漏洞利用/框架利用",
+      "subcategory": "",
+      "tool_type": "java8_gui",
+      "description": "积木报表",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 2,
+      "last_launch": "2025-08-05T14:08:06.426724",
+      "args": ""
+    },
+    {
+      "name": "OneForAll",
+      "path": "E:/Penetration/RedTeam/Information_Collection/subdomain_mining/OneForAll/start.bat",
+      "category": "渗透测试/信息搜集",
+      "subcategory": "",
+      "tool_type": "batch",
+      "description": "子域名枚举",
+      "icon_path": "E:\\Code\\Python\\SecuHub\\data\\Icon\\Oneforall.png",
+      "color": "#000000",
+      "launch_count": 2,
+      "last_launch": "2025-08-06T13:32:39.159803",
       "args": ""
     },
     {
@@ -300,28 +480,6 @@
       "color": "#000000",
       "launch_count": 1,
       "last_launch": null,
-      "args": ""
-    },
-    {
-      "name": "Hash",
-      "path": "E:/Penetration/BlueTeam/AssistiveTools/fileHash/Hash.exe",
-      "tool_type": "exe",
-      "description": "",
-      "icon_path": "E:/Code/Python/SecuHub/data/Icon/kali-hashdeep.png",
-      "category": "BlueTeam",
-      "launch_count": 1,
-      "last_launch": null,
-      "args": ""
-    },
-    {
-      "name": "burpsuite2025-部分汉化",
-      "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite-CN/Burp_Chs.vbs",
-      "tool_type": "vbs",
-      "description": "",
-      "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/burpsuite-CN/Favicon.ico",
-      "category": "流量代理/抓包工具",
-      "launch_count": 1,
-      "last_launch": "2025-07-03T10:18:13.051071",
       "args": ""
     },
     {
@@ -351,19 +509,6 @@
       "args": ""
     },
     {
-      "name": "蓝队工具箱",
-      "path": "E:\\Penetration\\BlueTeam\\ComprehensiveTools\\蓝队应急响应工具箱\\蓝队应急响应工具箱.exe",
-      "category": "BlueTeam/综合工具",
-      "subcategory": "",
-      "tool_type": "exe",
-      "description": "知攻善防实验室",
-      "icon_path": "E:/Penetration/BlueTeam/ComprehensiveTools/蓝队应急响应工具箱/_internal/bg.ico",
-      "color": "#000000",
-      "launch_count": 1,
-      "last_launch": "2025-07-21T19:28:25.292113",
-      "args": ""
-    },
-    {
       "name": "加解密",
       "path": "E:\\Penetration\\RedTeam\\encryption_and_decryption",
       "category": "辅助工具/加解密",
@@ -390,17 +535,6 @@
       "args": ""
     },
     {
-      "name": "Virgol",
-      "path": "E:/Penetration/RedTeam/ComprehensiveTools/Virgol-Win-amd64-v2.1.0/Virgol-Win-amd64-v2.1.0.exe",
-      "tool_type": "exe",
-      "description": "",
-      "icon_path": null,
-      "category": "渗透测试/综合工具",
-      "launch_count": 1,
-      "last_launch": "2025-07-21T20:08:24.354963",
-      "args": ""
-    },
-    {
       "name": "字典",
       "path": "E:/Penetration/RedTeam/Credential_Access/passwd",
       "category": "渗透测试/暴力破解",
@@ -414,23 +548,38 @@
       "args": ""
     },
     {
+      "name": "后渗透工具",
+      "path": "E:\\Penetration\\RedTeam\\Post-Exploition",
+      "category": "后渗透/其他",
+      "subcategory": "",
+      "tool_type": "folder",
+      "description": "",
+      "icon_path": "E:/Code/Python/SecuHub/data/Icon/pentest-tools.png",
+      "color": "#000000",
+      "launch_count": 1,
+      "last_launch": "2025-08-02T19:01:22.829074",
+      "args": ""
+    },
+    {
+      "name": "转子女神",
+      "path": "E:/Penetration/RedTeam/Information_Collection/JS_crawler/转子女神-信息收集工具v1.1.7/Rotor_Goddess.exe",
+      "category": "渗透测试/信息搜集",
+      "subcategory": "",
+      "tool_type": "cmd",
+      "description": "js爬取",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 1,
+      "last_launch": "2025-08-06T13:24:11.331113",
+      "args": ""
+    },
+    {
       "name": "Wireshark",
       "path": "E:/Penetration/RedTeam/TrafficProxyTools/WiresharkPortable64/WiresharkPortable64.exe",
       "tool_type": "exe",
       "description": "www",
       "icon_path": "E:/Penetration/RedTeam/TrafficProxyTools/WiresharkPortable64/App/AppInfo/appicon.ico",
       "category": "流量代理/抓包工具",
-      "launch_count": 0,
-      "last_launch": null,
-      "args": ""
-    },
-    {
-      "name": "AntSword",
-      "path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/AntSword/AntSword-Loader-v4.0.3-win32-x64/AntSword.exe",
-      "tool_type": "exe",
-      "description": "",
-      "icon_path": "E:/Penetration/RedTeam/webshell管理和生成工具/webshellmanager/AntSword/antSword-2.1.15/static/imgs/logo.png",
-      "category": "渗透测试/WebShell",
       "launch_count": 0,
       "last_launch": null,
       "args": ""
@@ -586,32 +735,6 @@
       "args": ""
     },
     {
-      "name": "后渗透工具",
-      "path": "E:\\Penetration\\RedTeam\\Post-Exploition",
-      "category": "后渗透/其他",
-      "subcategory": "",
-      "tool_type": "folder",
-      "description": "",
-      "icon_path": "E:/Code/Python/SecuHub/data/Icon/pentest-tools.png",
-      "color": "#000000",
-      "launch_count": 0,
-      "last_launch": null,
-      "args": ""
-    },
-    {
-      "name": "信息搜集",
-      "path": "E:\\Penetration\\RedTeam\\Information_Collection",
-      "category": "渗透测试/信息搜集",
-      "subcategory": "",
-      "tool_type": "folder",
-      "description": "",
-      "icon_path": "E:/Code/Python/SecuHub/data/Icon/whois-domain2.png",
-      "color": "#000000",
-      "launch_count": 0,
-      "last_launch": null,
-      "args": ""
-    },
-    {
       "name": "存储桶遍历工具",
       "path": "E:\\Penetration\\RedTeam\\Vulnerability_Exploit\\Cloud\\OSSFileBrowse-1.1\\run.bat",
       "category": "漏洞利用/云安全",
@@ -755,47 +878,8 @@
       "args": ""
     },
     {
-      "name": "Jeecg_Tools-1.0-java8.jar",
-      "path": "E:\\Penetration\\RedTeam\\Vulnerability_Exploit\\jeecg-boot\\Jeecg_Tools-1.0-java8.jar",
-      "category": "漏洞利用/框架利用",
-      "subcategory": "",
-      "tool_type": "java8_gui",
-      "description": "积木报表",
-      "icon_path": null,
-      "color": "#000000",
-      "launch_count": 0,
-      "last_launch": null,
-      "args": ""
-    },
-    {
-      "name": "jeecgExploitss.jar",
-      "path": "E:\\Penetration\\RedTeam\\Vulnerability_Exploit\\jeecg-boot\\jeecgExploitss.jar",
-      "category": "漏洞利用/框架利用",
-      "subcategory": "",
-      "tool_type": "java8_gui",
-      "description": "",
-      "icon_path": null,
-      "color": "#000000",
-      "launch_count": 0,
-      "last_launch": null,
-      "args": ""
-    },
-    {
       "name": "NacosExploitGUI_v4.0.jar",
       "path": "E:\\Penetration\\RedTeam\\Vulnerability_Exploit\\nacos\\NacosExploitGUI_v4.0.jar",
-      "category": "漏洞利用/框架利用",
-      "subcategory": "",
-      "tool_type": "java8_gui",
-      "description": "",
-      "icon_path": null,
-      "color": "#000000",
-      "launch_count": 0,
-      "last_launch": null,
-      "args": ""
-    },
-    {
-      "name": "shiro_attack-4.7.0-SNAPSHOT-all.jar",
-      "path": "E:\\Penetration\\RedTeam\\Vulnerability_Exploit\\shiro\\shiro_attack-4.7.0-SNAPSHOT-all\\shiro_attack-4.7.0-SNAPSHOT-all.jar",
       "category": "漏洞利用/框架利用",
       "subcategory": "",
       "tool_type": "java8_gui",
@@ -857,46 +941,73 @@
       "launch_count": 0,
       "last_launch": null,
       "args": ""
+    },
+    {
+      "name": "TrafficEye",
+      "path": "E:\\Penetration\\BlueTeam\\流量分析\\TrafficEye-0.0.8.92\\trafficeye.exe",
+      "category": "BlueTeam/流量分析",
+      "subcategory": "",
+      "tool_type": "exe",
+      "description": "该工具适用于 HW 蓝队对网络流量的深入分析，帮助安全研究人员、渗透测试人员及网络管理员等专业人士识别潜在的安全威胁，尤其是针对 Web 应用的攻击（如 SQL 注入、XSS、WebShell 等）。其模块化设计使用户能够根据实际需求自由选择并定制各类功能模块",
+      "icon_path": "E:/Penetration/BlueTeam/流量分析/TrafficEye-0.0.8.92/ico/l.png",
+      "color": "#000000",
+      "launch_count": 0,
+      "last_launch": null,
+      "args": ""
+    },
+    {
+      "name": "JSSS-Find3.5.4",
+      "path": "E:/Penetration/RedTeam/Information_Collection/JS_crawler/JSSS-Find3.5.4/jsss-find.bat",
+      "category": "渗透测试/信息搜集",
+      "subcategory": "",
+      "tool_type": "batch",
+      "description": "js爬取",
+      "icon_path": null,
+      "color": "#000000",
+      "launch_count": 0,
+      "last_launch": null,
+      "args": ""
     }
   ],
   "view_mode": "list",
   "recent_tools": [
-    "冰蝎_v4.1.t00ls",
-    "DudeSuite.v1.2.0.6",
-    "BurpSuite2023",
+    "BurpSuite2024.10",
+    "sslscan",
     "Reqable",
     "TscanPlus",
-    "hyacinth-v1.4.jar",
-    "CobaltStrike-无影",
-    "Cobalt_Strike_4.7",
+    "deadpool_1.5",
+    "jeecgExploitss.jar",
+    "Befree",
+    "BurpSuite v2021.12.1",
+    "burpsuite V2025.1",
+    "burpsuite V2025.2",
+    "burpsuite2025-zh-CN",
     "yakit",
-    "hydra",
-    "hydra测试",
-    "字典",
-    "DudeSuite",
-    "Virgol",
-    "Docker-TCP-Scan",
-    "DockerApiRCE.jar",
-    "漏洞利用文件夹",
-    "蓝队工具箱",
-    "BlueTeam",
-    "加解密"
+    "Jack-Proxy-V3",
+    "冰蝎_v4.1.t00ls",
+    "shiro_attack-4.7.0-SNAPSHOT-all.jar",
+    "OneForAll",
+    "转子女神",
+    "burpsuite2025",
+    "Jeecg_Tools-1.0-java8.jar",
+    "BurpSuite2023"
   ],
   "show_status_bar": true,
   "auto_refresh": true,
   "search_history": [
-    "du",
-    "d",
-    "dy",
-    "b",
-    "req",
-    "re",
-    "rea",
-    "tsc",
-    "js",
-    "转子"
+    "ssl",
+    "ss",
+    "sss",
+    "ts",
+    "t",
+    "sql",
+    "sq",
+    "s",
+    "代理",
+    "jeecg"
   ],
   "python_path": "",
   "java8_path": "",
   "java11_path": "E:/Penetration/Others/ProgramTools/dev/Java/Jav11/bin/java.exe"
+
 }
