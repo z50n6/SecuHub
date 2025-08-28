@@ -8,7 +8,7 @@ class Config:
     def __init__(self):
         logging.info("初始化配置...")
         self.settings = QSettings("SecuHub", "SecuHub")
-        self.config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
+        self.config_file = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')), 'config.json')
         # 新增环境变量字段
         self.python_path = ""
         self.java8_path = ""
@@ -24,7 +24,7 @@ class Config:
             {"id": "code", "name": "编码与解码", "icon": "🔧"},
             {"id": "assist", "name": "辅助工具", "icon": "🛠️"},
             {"id": "webnav", "name": "网站导航", "icon": "🌐"},
-            {"id": "vuln_manager", "name": "漏洞库管理", "icon": "🗃️"} # 新增漏洞库管理
+            {"id": "vuln_manager", "name": "漏洞库管理", "icon": "🔎"} # 新增漏洞库管理
         ]
         # 首先尝试从JSON文件加载
         if os.path.exists(self.config_file):
@@ -59,7 +59,7 @@ class Config:
             {"id": "code", "name": "编码与解码", "icon": "🔧"},
             {"id": "assist", "name": "辅助工具", "icon": "🛠️"},
             {"id": "webnav", "name": "网站导航", "icon": "🌐"},
-            {"id": "vuln_manager", "name": "漏洞库管理", "icon": "🗃️"} # 新增漏洞库管理
+            {"id": "vuln_manager", "name": "漏洞库管理", "icon": "🔎"} # 新增漏洞库管理
         ]
         self.tools = self.settings.value("tools", [])
         self.view_mode = self.settings.value("view_mode", "list")
