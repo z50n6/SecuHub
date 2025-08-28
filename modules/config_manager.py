@@ -2,6 +2,7 @@ import os
 import json
 import logging
 from PyQt6.QtCore import QSettings
+from collections import defaultdict
 
 class Config:
     """配置管理类"""
@@ -15,6 +16,14 @@ class Config:
         self.java11_path = ""
         self.load_config()
     
+    def get_data_dir(self):
+        """获取data目录的绝对路径"""
+        return os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data')
+
+    def get_website_data_dir(self):
+        """获取data/website目录的绝对路径"""
+        return os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'website')
+
     def load_config(self):
         """加载配置"""
         logging.info("加载配置...")
@@ -61,6 +70,7 @@ class Config:
             {"id": "webnav", "name": "网站导航", "icon": "🌐"},
             {"id": "vuln_manager", "name": "漏洞库管理", "icon": "🔎"} # 新增漏洞库管理
         ]
+    
         self.tools = self.settings.value("tools", [])
         self.view_mode = self.settings.value("view_mode", "list")
         self.recent_tools = self.settings.value("recent_tools", [])
@@ -76,6 +86,7 @@ class Config:
     def save_config(self):
         """保存配置"""
         logging.info("保存配置...")
+
         # 保存到QSettings
         self.settings.setValue("tools", self.tools)
         self.settings.setValue("view_mode", self.view_mode)

@@ -19,8 +19,8 @@
       "color": "#000000",
       "description": "代理池",
       "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/png/deadpool.png",
-      "last_launch": "2025-08-28T20:58:02.767913",
-      "launch_count": 108,
+      "last_launch": "2025-08-28T21:02:49.975071",
+      "launch_count": 109,
       "name": "deadpool_1.5",
       "path": "E:\\Penetration\\RedTeam\\TrafficProxyTools\\proxy-pool\\deadpool_1.5_windows_amd64\\start.bat",
       "subcategory": "",
@@ -1008,32 +1008,5 @@
   ],
   "python_path": "",
   "java8_path": "",
-  "java11_path": "E:/Penetration/Others/ProgramTools/dev/Java/Jav11/bin/java.exe",
-  "navigation_items": [
-    {
-      "id": "safe",
-      "name": "安全工具",
-      "icon": "🛡️"
-    },
-    {
-      "id": "code",
-      "name": "编码与解码",
-      "icon": "🔧"
-    },
-    {
-      "id": "assist",
-      "name": "辅助工具",
-      "icon": "🛠️"
-    },
-    {
-      "id": "webnav",
-      "name": "网站导航",
-      "icon": "🌐"
-    },
-    {
-      "id": "vuln_manager",
-      "name": "漏洞库管理",
-      "icon": "🔎"
-    }
-  ]
+  "java11_path": "E:/Penetration/Others/ProgramTools/dev/Java/Jav11/bin/java.exe"
 }

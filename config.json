@@ -6,8 +6,8 @@
       "color": "#000000",
       "description": "",
       "icon_path": "E:\\Penetration\\RedTeam\\TrafficProxyTools\\burpsuite\\BurpSuite v2021.12.1\\BurpSuite\\ICO图标\\Burp-suite-Blue.ico",
-      "last_launch": "2025-08-17T21:38:17.767147",
-      "launch_count": 104,
+      "last_launch": "2025-08-28T20:46:30.483819",
+      "launch_count": 111,
       "name": "BurpSuite v2021.12.1",
       "path": "E:\\Penetration\\RedTeam\\TrafficProxyTools\\burpsuite\\BurpSuite v2021.12.1\\CNBurp(无CMD窗口 无注册).VBS",
       "subcategory": "",
@@ -19,8 +19,8 @@
       "color": "#000000",
       "description": "代理池",
       "icon_path": "E:/Penetration/Others/ThemeTools/ICON/Kali/png/deadpool.png",
-      "last_launch": "2025-08-28T15:50:28.328099",
-      "launch_count": 105,
+      "last_launch": "2025-08-28T21:02:49.975071",
+      "launch_count": 109,
       "name": "deadpool_1.5",
       "path": "E:\\Penetration\\RedTeam\\TrafficProxyTools\\proxy-pool\\deadpool_1.5_windows_amd64\\start.bat",
       "subcategory": "",
@@ -32,8 +32,8 @@
       "color": "#000000",
       "description": "渗透利器",
       "icon_path": "E:/Code/Python/SecuHub/data/Icon/kali-burpsuite.png",
-      "last_launch": "2025-08-26T09:30:46.875865",
-      "launch_count": 84,
+      "last_launch": "2025-08-28T20:36:41.618316",
+      "launch_count": 87,
       "name": "BurpSuite2024.10",
       "path": "E:/Penetration/RedTeam/TrafficProxyTools/burpsuite/2024.10/EN_Burp(无CMD窗口).VBS",
       "subcategory": "",
@@ -45,8 +45,8 @@
       "color": "#000000",
       "description": "",
       "icon_path": "E:\\Penetration\\Others\\ThemeTools\\ICON\\Kali\\png\\kali-burpsuite-1.png",
-      "last_launch": "2025-08-15T14:25:15.646798",
-      "launch_count": 59,
+      "last_launch": "2025-08-28T20:39:08.714467",
+      "launch_count": 62,
       "name": "burpsuite V2025.1",
       "path": "E:\\Penetration\\RedTeam\\TrafficProxyTools\\burpsuite\\BurpSuite V2025.1\\CN_Burp(无CMD窗口).VBS",
       "subcategory": "",
@@ -58,8 +58,8 @@
       "color": "#000000",
       "description": "代理池",
       "icon_path": "E:/Code/Python/SecuHub/data/Icon/freeplane.png",
-      "last_launch": "2025-08-18T09:55:33.921760",
-      "launch_count": 39,
+      "last_launch": "2025-08-28T20:44:15.778597",
+      "launch_count": 41,
       "name": "Befree",
       "path": "E:/Penetration/RedTeam/TrafficProxyTools/proxy-pool/Befree代理池工具/start.bat",
       "subcategory": "",
@@ -70,8 +70,8 @@
       "category": "流量代理/抓包工具",
       "description": "常用利器",
       "icon_path": "D:/SoftWare/Yakit/Yakit/uninstallerIcon.ico",
-      "last_launch": "2025-08-14T10:59:47.214450",
-      "launch_count": 28,
+      "last_launch": "2025-08-28T20:30:24.375624",
+      "launch_count": 29,
       "name": "yakit",
       "path": "D:/SoftWare/Yakit/Yakit/Yakit.exe",
       "tool_type": "exe"
@@ -82,8 +82,8 @@
       "color": "#000000",
       "description": "",
       "icon_path": "E:/Code/Python/SecuHub/data/Icon/潮影在线免杀平台.png",
-      "last_launch": "2025-08-19T10:33:35.803487",
-      "launch_count": 23,
+      "last_launch": "2025-08-28T20:31:23.900293",
+      "launch_count": 24,
       "name": "TscanPlus",
       "path": "E:\\Penetration\\RedTeam\\Information_Collection\\comprehensive\\TscanPlus\\TscanPlus_Win_Amd64.exe",
       "subcategory": "",
@@ -972,17 +972,17 @@
   "view_mode": "list",
   "recent_tools": [
     "deadpool_1.5",
+    "BurpSuite v2021.12.1",
+    "Befree",
+    "burpsuite V2025.1",
     "BurpSuite2024.10",
+    "TscanPlus",
+    "yakit",
     "sslscan",
     "Reqable",
-    "TscanPlus",
     "jeecgExploitss.jar",
-    "Befree",
-    "BurpSuite v2021.12.1",
-    "burpsuite V2025.1",
     "burpsuite V2025.2",
     "burpsuite2025-zh-CN",
-    "yakit",
     "Jack-Proxy-V3",
     "冰蝎_v4.1.t00ls",
     "shiro_attack-4.7.0-SNAPSHOT-all.jar",
@@ -1008,5 +1008,32 @@
   ],
   "python_path": "",
   "java8_path": "",
-  "java11_path": "E:/Penetration/Others/ProgramTools/dev/Java/Jav11/bin/java.exe"
+  "java11_path": "E:/Penetration/Others/ProgramTools/dev/Java/Jav11/bin/java.exe",
+  "navigation_items": [
+    {
+      "id": "safe",
+      "name": "安全工具",
+      "icon": "🛡️"
+    },
+    {
+      "id": "code",
+      "name": "编码与解码",
+      "icon": "🔧"
+    },
+    {
+      "id": "assist",
+      "name": "辅助工具",
+      "icon": "🛠️"
+    },
+    {
+      "id": "webnav",
+      "name": "网站导航",
+      "icon": "🌐"
+    },
+    {
+      "id": "vuln_manager",
+      "name": "漏洞库管理",
+      "icon": "🔎"
+    }
+  ]
 }
