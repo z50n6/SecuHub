@@ -20,6 +20,29 @@ class VulnManagerUI(QWidget):
     def init_ui(self):
         self.setWindowTitle('漏洞库管理')
 
+        button_style = """
+            QPushButton {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1da1f2, stop:1 #0d8bd9); /* 蓝色渐变 */
+                color: #fff;
+                border-radius: 8px;
+                padding: 8px 16px;
+                font-weight: 600;
+                font-size: 13px;
+                border: none;
+                min-width: 80px;
+            }
+            QPushButton:hover {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0d8bd9, stop:1 #1da1f2); /* 鼠标悬停时反转渐变或略有变化 */
+            }
+            QPushButton:pressed {
+                background: #0c7bb8; /* 按下时的深蓝色 */
+            }
+            QPushButton:disabled {
+                background: #b0b0b0;
+                color: #f5f5f5;
+            }
+        """
+
         main_layout = QHBoxLayout()
 
         # Left panel for vulnerability list
@@ -41,14 +64,19 @@ class VulnManagerUI(QWidget):
         list_buttons_layout = QHBoxLayout()
         self.add_btn = QPushButton('新增漏洞')
         self.add_btn.clicked.connect(self.add_vuln)
+        self.add_btn.setStyleSheet(button_style)
         self.delete_btn = QPushButton('删除选中')
         self.delete_btn.clicked.connect(self.delete_selected_vuln)
+        self.delete_btn.setStyleSheet(button_style)
         self.load_yaml_btn = QPushButton('加载 YAML')
         self.load_yaml_btn.clicked.connect(self.load_yaml_file)
+        self.load_yaml_btn.setStyleSheet(button_style)
         self.save_yaml_btn = QPushButton('保存 YAML')
         self.save_yaml_btn.clicked.connect(self.save_yaml_file)
+        self.save_yaml_btn.setStyleSheet(button_style)
         self.save_as_yaml_btn = QPushButton('另存为 YAML')
         self.save_as_yaml_btn.clicked.connect(self.save_as_yaml_file)
+        self.save_as_yaml_btn.setStyleSheet(button_style)
         list_buttons_layout.addWidget(self.add_btn)
         list_buttons_layout.addWidget(self.delete_btn)
         list_buttons_layout.addWidget(self.load_yaml_btn)
@@ -78,13 +106,11 @@ class VulnManagerUI(QWidget):
         self.desc_label = QLabel('漏洞描述:')
         self.desc_input = QTextEdit()
         self.desc_input.setPlaceholderText('漏洞描述')
-        self.desc_input.setFixedHeight(150)
 
 
         self.sugg_label = QLabel('建议/修复:')
         self.sugg_input = QTextEdit()
         self.sugg_input.setPlaceholderText('建议/修复')
-        self.sugg_input.setFixedHeight(150)
 
         right_panel.addWidget(self.name_label)
         right_panel.addWidget(self.name_input)
@@ -101,6 +127,7 @@ class VulnManagerUI(QWidget):
         edit_details_btn_layout = QHBoxLayout()
         self.edit_btn = QPushButton('编辑')
         self.edit_btn.clicked.connect(self.edit_vuln)
+        self.edit_btn.setStyleSheet(button_style)
         edit_details_btn_layout.addWidget(self.edit_btn)
         right_panel.addLayout(edit_details_btn_layout)
         

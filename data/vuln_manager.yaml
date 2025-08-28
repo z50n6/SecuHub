@@ -232,3 +232,8 @@ vulnerabilities:
     \ \n攻击者可能利用此问题执行中间人攻击，并解密受影响的服务与客户端之间的通信。 "
   risklevel: 低危
   suggustion: '启用对TLS 1.2或1.3的支持，并禁用对TLS 1.0和TLS 1.1的支持 '
+- name: ASP.NET允许文件调试
+  harm: '可能会泄露密码、路径等敏感信息。 '
+  description: '发送DEBUG动作的请求，如果服务器返回内容为OK，那么服务器就开启了调试功能，可能会导致有关Web应用程序的敏感信息泄露，例如密码、路径等。 '
+  risklevel: 低危
+  suggustion: '编辑Web.config文件，设置&lt;compilation debug="false"/&gt; '
