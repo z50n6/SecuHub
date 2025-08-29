@@ -22,169 +22,133 @@ class VulnManagerUI(QWidget):
     def init_ui(self):
         self.setWindowTitle('漏洞库管理')
         self.setStyleSheet("""
-            QWidget { 
-                font-family: "Microsoft YaHei", 微软雅黑, Arial, sans-serif;
-                font-size: 14px;
-                color: #333; 
-                background-color: #F8F9FA; /* 整体浅灰色背景 */
-            }
-            /* 表格通用样式 */
-            QTableWidget {
-                background-color: #ffffff;
-                border: 1px solid #ECECEC; /* 浅灰色边框 */
-                border-radius: 8px;
-                gridline-color: #e0e6ed;
-                selection-background-color: #e3f0ff; /* 选中行背景 */
-                selection-color: #2F54EB; /* 选中行文字颜色为深蓝色 */
-                font-size: 13px;
-            }
-            QHeaderView::section {
-                background-color: #f0f2f5;
-                color: #333; /* 表头文字加深 */
-                padding: 6px;
-                border: 1px solid #e0e6ed;
-                border-bottom: none;
-                font-weight: bold; /* 表头文字加粗 */
-                font-size: 13px;
-            }
-            QTableWidgetItem {
-                padding: 8px;
-                white-space: pre-wrap; /* 自动换行 */
-            }
-            QTableWidget::item:hover {
-                background-color: #F0F2F7; /* 行 hover 时高亮 */
-            }
-
-            /* 右侧卡片容器样式 */
-            QFrame#RightCardContainer { /* 使用ID选择器防止样式污染 */
-                background-color: #ffffff;
-                border-radius: 8px;
-                /* PyQt不支持box-shadow，这里注释掉，如需类似效果需通过其他方式实现 */
-                /* box-shadow: 0 2px 8px rgba(0,0,0,0.05); */
-            }
-
-            /* 输入框、文本域、下拉框通用样式 */
-            QLineEdit, QTextEdit, QComboBox {
-                background-color: #ffffff;
-                border: 1px solid #e0e6ed;
-                border-radius: 4px; /* 统一为4px圆角 */
-                padding: 8px 12px;
+            QWidget {
+                font-family: "Microsoft YaHei", Arial, sans-serif;
                 font-size: 14px;
                 color: #333;
+                background-color: #F5F7FA;
             }
-            QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
-                border: 1px solid #2F54EB; /* 聚焦时深蓝色边框 */
-                /* box-shadow: 0 0 5px rgba(47, 84, 235, 0.3); */
-            }
-            QComboBox::drop-down {
+
+            /* 表格样式 */
+            QTableWidget {
+                background-color: white;
                 border: none;
-                background: transparent;
-                width: 20px;
+                border-radius: 8px;
+                gridline-color: #E8E8E8;
+                selection-background-color: #E6F4FF;
+                selection-color: #1890FF;
             }
-            QComboBox::down-arrow {
-                /* image: url(resources/arrow_down.png); */ /* 假设有一个向下箭头的图标 */
-                width: 12px;
-                height: 12px;
+
+            QHeaderView::section {
+                background-color: #F0F2F5;
+                color: #262626;
+                padding: 10px;
+                border: none;
+                font-weight: 600;
+                font-size: 13px;
+                border-bottom: 1px solid #E8E8E8;
+            }
+
+            QTableWidget::item {
+                padding: 10px;
+                border-bottom: 1px solid #F0F0F0;
+            }
+
+            QTableWidget::item:hover {
+                background-color: #F5F5F5;
+            }
+
+            /* 输入框和文本域样式 */
+            QLineEdit, QTextEdit, QComboBox {
+                background-color: white;
+                border: 1px solid #D9D9D9;
+                border-radius: 4px;
+                padding: 8px 12px;
+                selection-background-color: #1890FF;
+                selection-color: white;
+            }
+
+            QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+                border-color: #1890FF;
+                box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
             }
 
             /* 标签样式 */
-            QLabel.formLabel { /* 为表单标签定义一个类选择器 */
-                font-size: 14px; 
-                font-weight: bold; 
-                color: #555; 
-                margin-top: 5px; /* 调整间距 */
+            QLabel {
+                color: #262626;
             }
-        """
-        )
 
-        # 按钮通用样式
-        button_base_style = """
+            QLabel.formLabel {
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+
+            /* 按钮通用样式 */
             QPushButton {
-                border-radius: 4px; /* 统一为4px圆角 */
-                padding: 10px 20px;
+                background-color: #1890FF;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 8px 16px;
                 font-weight: 500;
-                font-size: 14px;
-                border: 1px solid transparent;
-                min-width: 90px;
-                transition: all 0.3s ease;
-                /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+                min-width: 80px;
             }
-            QPushButton:hover { 
-                /* transform: translateY(-2px); */ /* PyQt不支持transform */
-                /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
-                opacity: 0.9; /* 悬停时略微透明 */
+
+            QPushButton:hover {
+                background-color: #40A9FF;
             }
+
             QPushButton:pressed {
-                /* transform: translateY(1px); */
-                opacity: 0.8; 
-                /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15); */
+                background-color: #0E80FF;
             }
-            QPushButton:disabled {
-                background: #cccccc !important;
-                color: #f5f5f5 !important;
-                /* box-shadow: none; */
-            }
-        """
 
-        # 主操作按钮 (新增、加载、保存、另存为) 主色调：深蓝色
-        add_save_btn_style = button_base_style + """
-            QPushButton {
-                background: #2F54EB; /* 深蓝色 */
-                color: white;
-                border-color: #2F54EB;
+            QPushButton.delete-btn {
+                background-color: #FF4D4F;
             }
-            QPushButton:hover { 
-                background: #406FFF; /* 悬停时颜色变浅 */
-                border-color: #406FFF;
-            }
-        """
 
-        # 删除按钮 红色系
-        delete_btn_style = button_base_style + """
-            QPushButton {
-                background: #FF4D4F; /* 鲜艳红色 */
-                color: white;
-                border-color: #FF4D4F;
+            QPushButton.delete-btn:hover {
+                background-color: #FF7875;
             }
-            QPushButton:hover { 
-                background: #FF7875;
-                border-color: #FF7875;
+
+            QPushButton.edit-btn {
+                background-color: #52C41A;
             }
-        """
-        
-        # 编辑按钮 青色系
-        edit_btn_style = button_base_style + """
-            QPushButton {
-                background: #00BBD3; /* 科技感青色 */
-                color: white;
-                border-color: #00BBD3;
+
+            QPushButton.edit-btn:hover {
+                background-color: #73D13D;
             }
-            QPushButton:hover { 
-                background: #33DCEB;
-                border-color: #33DCEB;
-            }
-        """
+        """)
 
         main_layout = QVBoxLayout()
-        main_layout.setContentsMargins(15, 15, 15, 15)
+        main_layout.setContentsMargins(20, 20, 20, 20)
         main_layout.setSpacing(15)
 
         # 顶部内容区域：包含左侧列表和右侧详情
         content_layout = QHBoxLayout()
         content_layout.setContentsMargins(0, 0, 0, 0)
-        content_layout.setSpacing(15) # 左右面板之间增加间距
+        content_layout.setSpacing(20)
 
         # Left panel for vulnerability list
-        left_panel_container = QFrame() # 使用QFrame作为左侧面板的容器，方便样式控制
-        left_panel_container.setStyleSheet("background-color: #ffffff; border-radius: 8px; border: 1px solid #ECECEC;")
+        left_panel_container = QFrame()
+        left_panel_container.setStyleSheet("""
+            QFrame {
+                background-color: white;
+                border-radius: 8px;
+                border: 1px solid #E8E8E8;
+            }
+        """)
         left_panel_layout = QVBoxLayout(left_panel_container)
         left_panel_layout.setSpacing(10)
         left_panel_layout.setContentsMargins(15, 15, 15, 15)
 
-
-        # 添加“漏洞列表”标题
+        # 添加"漏洞列表"标题
         vuln_list_title = QLabel('漏洞列表')
-        vuln_list_title.setStyleSheet("font-size: 16px; font-weight: bold; color: #333; margin-bottom: 5px;")
+        vuln_list_title.setStyleSheet("""
+            font-size: 16px;
+            font-weight: bold;
+            color: #262626;
+            margin-bottom: 10px;
+        """)
         left_panel_layout.addWidget(vuln_list_title)
 
         self.vuln_table = QTableWidget()
@@ -197,30 +161,34 @@ class VulnManagerUI(QWidget):
         self.vuln_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.vuln_table.customContextMenuRequested.connect(self.show_context_menu)
         self.vuln_table.itemSelectionChanged.connect(self.display_vuln_details)
-        # Table styles are now defined in the global stylesheet at the top
         
         left_panel_layout.addWidget(self.vuln_table)
-        content_layout.addWidget(left_panel_container, 1)
+        content_layout.addWidget(left_panel_container, 2) #/* 左侧面板占据 1 份空间 */
 
 
         # Right panel for vulnerability details
-        right_panel_container = QFrame() # 使用QFrame作为右侧面板的容器，模拟卡片效果
-        right_panel_container.setObjectName("RightCardContainer") # 设置ID以便通过QSS选择器定位
-        right_panel_container.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding) # 显式设置垂直扩展策略
+        right_panel_container = QFrame()
+        right_panel_container.setStyleSheet("""
+            QFrame {
+                background-color: white;
+                border-radius: 8px;
+                border: 1px solid #E8E8E8;
+            }
+        """)
         right_panel_layout = QVBoxLayout(right_panel_container)
-        right_panel_layout.setContentsMargins(15, 15, 15, 15) # 表单内容内边距
-        right_panel_layout.setSpacing(10) # 表单项之间间距
+        right_panel_layout.setContentsMargins(20, 20, 20, 20)
+        right_panel_layout.setSpacing(15)
 
         # 表单内容布局
         details_form_layout = QFormLayout()
-        details_form_layout.setContentsMargins(0, 0, 0, 0) # 移除QFormLayout自身的内边距
+        details_form_layout.setContentsMargins(0, 0, 0, 0)
         details_form_layout.setSpacing(10)
-        details_form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft) # 标签左对齐
-        details_form_layout.setFormAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft) # 表单内容顶部左对齐
+        details_form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)
+        details_form_layout.setFormAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
 
 
         self.name_label = QLabel('漏洞名称:')
-        self.name_label.setProperty('class', 'formLabel') # 设置属性以便通过QSS类选择器定位
+        self.name_label.setProperty('class', 'formLabel')
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText('漏洞名称')
 
@@ -228,7 +196,7 @@ class VulnManagerUI(QWidget):
         self.harm_label.setProperty('class', 'formLabel')
         self.harm_input = QTextEdit()
         self.harm_input.setPlaceholderText('漏洞危害')
-        self.harm_input.setFixedHeight(70)
+        self.harm_input.setMinimumHeight(80)# /* 设置最小高度, 允许其扩展 */
 
         self.risk_label = QLabel('风险等级:')
         self.risk_label.setProperty('class', 'formLabel')
@@ -239,13 +207,13 @@ class VulnManagerUI(QWidget):
         self.desc_label.setProperty('class', 'formLabel')
         self.desc_input = QTextEdit()
         self.desc_input.setPlaceholderText('漏洞描述')
-        self.desc_input.setFixedHeight(100)
+        self.desc_input.setMinimumHeight(120) #/* 设置最小高度, 允许其扩展 */
 
         self.sugg_label = QLabel('建议/修复:')
         self.sugg_label.setProperty('class', 'formLabel')
         self.sugg_input = QTextEdit()
         self.sugg_input.setPlaceholderText('建议/修复')
-        self.sugg_input.setFixedHeight(100)
+        self.sugg_input.setMinimumHeight(120)# /* 设置最小高度, 允许其扩展 */
 
         details_form_layout.addRow(self.name_label, self.name_input)
         details_form_layout.addRow(self.harm_label, self.harm_input)
@@ -254,9 +222,9 @@ class VulnManagerUI(QWidget):
         details_form_layout.addRow(self.sugg_label, self.sugg_input)
         
         right_panel_layout.addLayout(details_form_layout)
-        right_panel_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)) # 确保表单内容垂直占满
+        right_panel_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
-        content_layout.addWidget(right_panel_container, 1) # 右侧面板占据更多空间 (例如 1:1 比例)
+        content_layout.addWidget(right_panel_container, 2)# /* 右侧面板占据 2 份空间，即 1:2 比例 */
 
         main_layout.addLayout(content_layout, 1)
 
@@ -266,21 +234,25 @@ class VulnManagerUI(QWidget):
         bottom_buttons_layout.setSpacing(10)
 
         # 左侧的按钮
-        self.add_btn = QPushButton('➕ 新增漏洞')
+        self.add_btn = QPushButton('新增漏洞')
         self.add_btn.clicked.connect(self.add_vuln)
-        self.add_btn.setStyleSheet(add_save_btn_style)
-        self.delete_btn = QPushButton('🗑️ 删除选中')
+        self.add_btn.setProperty('class', 'primary')
+
+        self.delete_btn = QPushButton('删除选中')
         self.delete_btn.clicked.connect(self.delete_selected_vuln)
-        self.delete_btn.setStyleSheet(delete_btn_style)
+        self.delete_btn.setProperty('class', 'delete-btn')
+
         self.load_yaml_btn = QPushButton('加载 YAML')
         self.load_yaml_btn.clicked.connect(self.load_yaml_file)
-        self.load_yaml_btn.setStyleSheet(add_save_btn_style)
+        self.load_yaml_btn.setProperty('class', 'primary')
+
         self.save_yaml_btn = QPushButton('保存 YAML')
         self.save_yaml_btn.clicked.connect(self.save_yaml_file)
-        self.save_yaml_btn.setStyleSheet(add_save_btn_style)
+        self.save_yaml_btn.setProperty('class', 'primary')
+
         self.save_as_yaml_btn = QPushButton('另存为 YAML')
         self.save_as_yaml_btn.clicked.connect(self.save_as_yaml_file)
-        self.save_as_yaml_btn.setStyleSheet(add_save_btn_style)
+        self.save_as_yaml_btn.setProperty('class', 'primary')
 
         bottom_buttons_layout.addWidget(self.add_btn)
         bottom_buttons_layout.addWidget(self.delete_btn)
@@ -292,7 +264,7 @@ class VulnManagerUI(QWidget):
         bottom_buttons_layout.addStretch()
         self.edit_btn = QPushButton('编辑')
         self.edit_btn.clicked.connect(self.edit_vuln)
-        self.edit_btn.setStyleSheet(edit_btn_style)
+        self.edit_btn.setProperty('class', 'edit-btn')
         bottom_buttons_layout.addWidget(self.edit_btn)
 
         main_layout.addLayout(bottom_buttons_layout)
@@ -325,12 +297,12 @@ class VulnManagerUI(QWidget):
                     background-color: %s;
                     color: white;
                     border-radius: 8px;
-                    padding: 4px 8px; /* 调整内边距，使徽章更宽一点 */
+                    padding: 4px 10px; /* 调整内边距，使徽章更宽一点 */
                     font-weight: bold;
-                    min-width: 50px; /* 确保最小宽度 */
+                    min-width: 60px; /* 确保最小宽度 */
                 }
             """ % (
-                "#FF4D4F" if vuln.get('risklevel', '') == '高危' else (
+                "#F5222D" if vuln.get('risklevel', '') == '高危' else (
                 "#FAAD14" if vuln.get('risklevel', '') == '中危' else (
                 "#52C41A" if vuln.get('risklevel', '') == '低危' else "#909399"))
             ))
@@ -338,14 +310,13 @@ class VulnManagerUI(QWidget):
 
             harm_text = vuln.get('harm', '')
             harm_item = QTableWidgetItem(harm_text)
-            harm_item.setToolTip(harm_text) # 设置tooltip
+            harm_item.setToolTip(harm_text)
             self.vuln_table.setItem(i, 3, harm_item)
 
     def display_vuln_details(self):
         selected_items = self.vuln_table.selectedItems()
         if selected_items:
             row = selected_items[0].row()
-            # 确保获取的是原始数据，因为表格中序号是新增的
             vuln = self.data_manager.get_vulnerability_by_index(row)
             if vuln:
                 self.name_input.setText(vuln.get('name', ''))
@@ -400,13 +371,6 @@ class VulnManagerUI(QWidget):
         if not selected_items:
             self.status_message_signal.emit('请选择一个漏洞进行删除。', 'warning')
             return
-
-        # reply = QMessageBox.question(self, '确认删除', '您确定要删除选中的漏洞吗？此操作不可撤销。',
-        #                              QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
-        #
-        # if reply == QMessageBox.StandardButton.No:
-        #     self.status_message_signal.emit('删除操作已取消。', 'info')
-        #     return
 
         row = selected_items[0].row()
         self.data_manager.delete_vulnerability(row)
