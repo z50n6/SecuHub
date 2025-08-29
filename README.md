@@ -1,169 +1,152 @@
-# SecuHub - 智能程序启动与编码助手 🚀
+# SecuHub 🛡️ - 智能安全工具管理平台
 
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![PyQt6](https://img.shields.io/badge/GUI-PyQt6-green)](https://www.riverbankcomputing.com/software/pyqt/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-[![Star](https://img.shields.io/github/stars/z50n6/app-launcher?style=social)](https://github.com/z50n6/app-launcher)
+[![GitHub stars](https://img.shields.io/github/stars/z50n6/app-launcher?style=social)](https://github.com/z50n6/app-launcher)
 
-> 一站式本地工具管理、分类、启动与辅助脚本平台，专为安全工程师、开发者和极客设计。
+## 🌟 项目简介
 
----
+SecuHub 是一款专为安全工程师、开发者和极客打造的智能本地工具管理平台，旨在提供极致的工具管理、启动和辅助工作体验。
 
-## 项目简介
+![image-20250829103222267](./imgs/image-20250829103222267.png)
 
-SecuHub 是一款面向安全工程师、开发者和极客的本地工具管理平台，集成了工具分类、智能启动、辅助脚本、数据统计等多种实用功能，助你高效管理和使用各类本地工具。
 
----
 
-## 项目亮点
+内嵌cyberchef
 
-- **极致美观**：现代化主题 UI
-- **无限分级**：树形大纲，支持多层级工具分类
-- **多类型兼容**：支持 EXE、命令行、Java、Python、PowerShell、网页、文件夹等
-- **智能启动**：自动设置工作目录，支持参数传递与历史记忆
-- **集成辅助**：内置 CyberChef、反弹 Shell 生成、Java 命令编码等
-- **数据统计**：可视化统计面板、最近使用历史、启动次数排行
-- **高效操作**：即时搜索、快捷键、配置导入导出、右键菜单
-- **状态栏提示**：实时显示操作提示、进度、错误信息
-- **安全与隐私**：本地运行，数据不上传云端
+![image-20250829103254375](./imgs/image-20250829103254375.png)
 
----
 
-## 功能总览
 
-| 功能模块     | 说明                                                         |
-| ------------ | ------------------------------------------------------------ |
-| 工具管理     | 添加/编辑/删除工具，支持多级分类，批量导入导出               |
-| 智能启动     | 自动识别类型，设置工作目录，参数记忆，支持命令行/脚本/网页等 |
-| 辅助功能     | CyberChef、反弹Shell生成、Java命令编码、常用脚本模板         |
-| 统计面板     | 工具总数、启动排行、最近使用、可视化图表                     |
-| 搜索与快捷键 | 全局搜索、常用操作快捷键、右键菜单                           |
-| 状态栏提示   | 实时显示操作状态、错误、进度、用户信息                       |
-| 配置管理     | 配置导入导出、手动编辑、自动备份                             |
+新增：
 
----
+> 辅助编写渗透测试报告，快速复制
 
-## 快速上手
+![image-20250829103240052](./imgs/image-20250829103240052.png)
+
+## ✨ 核心特性
+
+### 🔧 智能工具管理
+- **多层级分类**：树形大纲，支持无限层级工具组织
+- **多类型兼容**：完美支持 EXE、命令行、Java、Python、PowerShell、网页、文件夹等
+- **智能启动机制**：自动识别工作目录，支持参数传递与历史记忆
+
+### 🚀 效率提升工具
+- **CyberChef集成**：内置强大的数据处理工具
+- **反弹Shell生成**：一键生成常用反弹 shell 命令
+- **Java命令编码**：快速编码/解码 Java 命令
+- **IP提取工具**：快速从文本中提取IP地址
+
+### 📊 智能统计
+- **启动排行**：追踪工具使用频率
+- **最近使用**：快速访问最近启动的工具
+- **可视化面板**：直观展示工具使用情况
+
+## 🛠 快速开始
 
 ### 环境要求
 - **操作系统**：Windows 10/11
 - **Python**：3.8 及以上
-- **依赖库**：详见 requirements.txt
+- **依赖**：详见 `requirements.txt`
 
-### 安装与启动
+### 安装步骤
 
+1. 克隆仓库 (Clone Repository):
 ```bash
 git clone https://github.com/z50n6/app-launcher.git
 cd app-launcher
+```
+
+2. 创建虚拟环境（可选但推荐）:
+```bash
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Linux/macOS
+source venv/bin/activate
+```
+
+3. 安装依赖 (Install Dependencies):
+```bash
 pip install -r requirements.txt
+```
+
+4. 启动应用 (Launch Application):
+```bash
 python launcher.py
 ```
-或直接双击 `启动器.bat` 一键启动。
 
-> **常见问题**：如遇依赖安装失败，请检查 Python 版本及网络环境，或手动安装缺失库。
+> 💡 **提示**：也可直接双击 `启动器.bat` 一键启动。
 
----
-
-## 详细使用指南
+## 🎮 详细使用指南 
 
 ### 1. 添加工具
-- 右键主界面空白处，或菜单栏“文件”→“添加工具”
-- 填写工具名称、类型（如 exe、python、java、web）、路径、参数、分类等信息
-- 分类字段支持多级，用 `/` 分隔，如 `红队/后渗透/C2`
-- 支持批量导入导出工具配置（JSON 格式）
+- 右键主界面 → "添加工具"
+- 支持多级分类，如 `红队/后渗透/C2`
+- 支持批量导入/导出工具配置
 
-### 2. 启动工具
-- 双击工具即可启动，自动识别类型并设置工作目录
-- 支持参数传递，历史参数自动记忆
-- 可通过右键菜单快速复制命令、打开目录等
+### 2. 工具启动
+- 双击工具自动启动
+- 支持参数传递
+- 历史参数自动记忆
 
 ### 3. 辅助功能
-- 菜单栏“工具”→“CyberChef”：内置强大数据处理工具
-- “反弹Shell生成”：一键生成常用反弹 shell 命令
-- “Java命令编码”：快速编码/解码 Java 命令
+- **CyberChef**：强大的数据处理工具
+- **反弹Shell生成**：一键生成常用反弹 shell 命令
+- **Java命令编码**：快速编码/解码 Java 命令
+- **IP提取**：从文本中快速提取IP地址
 
-### 4. 统计面板
-- 菜单栏“统计”→“总工具数”、“最近启动的工具”、“启动排行”
-- 可视化图表展示工具使用频率、历史记录等
+## 🔍 常见问题 (FAQ)
 
-### 5. 配置管理
-- 菜单栏“文件”→“导入/导出配置”
-- 支持手动编辑 config.json，建议备份后操作，重启程序生效
-- 自动备份配置，防止数据丢失
-
-### 6. 快捷键
-- Ctrl+F：全局搜索
-- Ctrl+N：新建工具
-- Ctrl+S：保存配置
-- 更多快捷键详见菜单栏提示
-
-### 7. 状态栏提示
-- 底部状态栏实时显示操作状态、错误、进度、当前用户等信息
-- 便于追踪操作历史和排查问题
-
----
-
-## 🖼️ 界面预览
-
-主界面（极简美观）  
-![image-20250723111108873](./imgs/image-20250723111108873.png)
-
-统计面板（工具总数、启动排行、可视化图表）  
-![image-20250723111129607](./imgs/image-20250723111129607.png)
-
-最近启动（历史记录一目了然）  
-![image-20250723111215842](./imgs/image-20250723111215842.png)
-
-> **状态栏示例**：
-> - 操作提示："已成功添加新工具：Nmap"
-> - 进度显示："正在导入配置..."
-
----
-
-## 配置文件说明
-
-### config.json
-- 存储所有工具、分类、启动参数等信息
-- 支持手动编辑，建议使用 JSON 编辑器，避免格式错误
-- 主要字段说明：
-  - `tools`：工具列表，包含名称、类型、路径、参数、分类等
-  - `categories`：分类结构
-  - `settings`：主题、语言、界面等个性化设置
-
-### 其他数据文件
-- `data/` 目录下存放内置工具、图标、辅助功能相关数据
-- `logs/` 目录下为运行日志，便于排查问题
-
----
-
-## 常见问题
+<details>
+<summary>📌 点击展开常见问题</summary>
 
 - **Q: 可以手动编辑 config.json 吗？**  
   A: 可以，建议备份后编辑，重启程序生效。
 
-- **Q: Java 工具如何正确启动？**  
-  A: 工具类型选 `java8` 或 `java11`，参数栏填写完整命令参数，程序会自动设置工作目录。
-
-- **Q: 状态栏提示内容可以自定义吗？**  
-  A: 支持部分自定义，后续版本将开放更多自定义项。
+- **Q: 支持哪些工具类型？**  
+  A: 支持 exe、bat、cmd、python、java、powershell、web、文件夹等。
 
 - **Q: 数据是否会上传云端？**  
   A: 所有数据本地存储，绝不上传云端，保障隐私安全。
 
 - **Q: 如何自定义主题？**  
-  A: 编辑 themes 目录下的 .qss 文件，重启程序生效。
+  A: 编辑 `themes` 目录下的 `.qss` 文件，重启程序生效。
+  </details>
 
-- **Q: 支持哪些工具类型？**  
-  A: 支持 exe、bat、cmd、python、java、powershell、web、文件夹等。
 
----
+
+## 📦 项目结构
+
+```
+SecuHub/
+├── config.json         # 工具配置文件
+├── launcher.py         # 主启动脚本
+├── requirements.txt    # 依赖列表
+├── modules/            # 核心模块
+│   ├── config_manager.py
+│   ├── tool_card.py
+│   └── ...
+├── project/            # 内置项目
+│   ├── CyberChef/
+│   ├── reverse-shell/
+│   └── ...
+└── themes/             # 主题样式文件
+```
 
 ## 🙏 致谢
 
+感谢以下项目和工具的支持：
 - [PyQt6](https://www.riverbankcomputing.com/software/pyqt/)
 - [CyberChef](https://github.com/gchq/CyberChef)
 - [revshells.com](https://www.revshells.com/)
 
 ---
 
-> 欢迎 Star、Fork、提 Issue 交流改进！  
-> **你的支持是我持续优化的最大动力！**
+> 🌟 **你的 Star 是我持续优化的最大动力！** 
+> 欢迎提出 Issues、提交 Pull Requests 或分享使用体验！
+
+## 📝 许可证
+
+本项目采用 MIT 许可证 - 详见 [LICENSE](./LICENSE) 文件。
