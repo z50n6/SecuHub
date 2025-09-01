@@ -23,7 +23,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QUrl, QTimer, QThread, pyqtSignal, QSize, QPoint, QSettings, QObject, pyqtSlot, QRect
 from PyQt6.QtGui import QFont, QColor, QIcon, QPixmap, QAction, QKeySequence, QDesktopServices
 from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWebEngineCore import QWebEnginePage
+from PyQt6.QtWebEngineCore import QWebEnginePage, QWebEngineSettings
 from PyQt6.QtWebChannel import QWebChannel
 
 from modules.vuln_manager.main import start_vuln_manager
@@ -935,6 +935,14 @@ class MainWindow(QMainWindow):
             self.btn_memo.setStyleSheet(tab_btn_style)
             self.assist_tab_bar.addWidget(self.btn_memo)
             self.assist_tabs.append(self.btn_memo)
+            # 地图API测试工具Tab按钮
+            self.btn_map_api = QPushButton("地图API测试")
+            self.btn_map_api.setCheckable(True)
+            self.btn_map_api.setChecked(False)
+            self.btn_map_api.clicked.connect(lambda: self.switch_assist_tab('map_api'))
+            self.btn_map_api.setStyleSheet(tab_btn_style)
+            self.assist_tab_bar.addWidget(self.btn_map_api)
+            self.assist_tabs.append(self.btn_map_api)
             self.assist_tab_bar.addStretch()
             assist_layout.addLayout(self.assist_tab_bar)
             self.assist_content = QStackedWidget()
@@ -971,6 +979,41 @@ class MainWindow(QMainWindow):
             # 命令查询Tab内容页
             self.memo_widget = MemoTabWidget()
             self.assist_content.addWidget(self.memo_widget)
+            
+            # 地图API测试工具WebView
+            self.map_api_webview = QWebEngineView()
+            
+            # 配置WebView的网络访问权限
+            settings = self.map_api_webview.page().settings()
+            settings.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
+            settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
+            settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptEnabled, True)
+            
+            # 添加加载状态日志
+            def on_load_finished(success):
+                logging.info(f"Map API Key WebView load finished: {success}")
+                if not success:
+                    logging.error("Map API Key WebView failed to load")
+                    QMessageBox.warning(self, "加载错误", "地图API测试工具页面加载失败")
+            
+            self.map_api_webview.page().loadFinished.connect(on_load_finished)
+            
+            # 详细的文件路径和URL日志
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            map_api_path = os.path.join(current_dir, "project", "map-api-key", "Map_Api_Key.html")
+            logging.info(f"Current directory: {current_dir}")
+            logging.info(f"Attempting to load Map API Key HTML from: {map_api_path}")
+            logging.info(f"Map API Key HTML file exists: {os.path.exists(map_api_path)}")
+            logging.info(f"Map API Key HTML file absolute path: {os.path.abspath(map_api_path)}")
+            
+            if os.path.exists(map_api_path):
+                url = QUrl.fromLocalFile(map_api_path)
+                logging.info(f"Loading Map API Key URL: {url.toString()}")
+                self.map_api_webview.setUrl(url)
+            else:
+                logging.warning(f"Map API Key HTML file not found: {map_api_path}")
+                self.map_api_webview.setUrl(QUrl("about:blank"))
+            self.assist_content.addWidget(self.map_api_webview)
             assist_layout.addWidget(self.assist_content)
             self.right_layout.addWidget(assist_container)
             self.current_assist_tab = 'java_encode'
@@ -3017,6 +3060,10 @@ SecuHub 工具统计报告
             self.btn_memo.setChecked(True)
             self.assist_content.setCurrentIndex(3)
             self.current_assist_tab = 'memo'
+        elif tab_name == 'map_api':
+            self.btn_map_api.setChecked(True)
+            self.assist_content.setCurrentIndex(4)
+            self.current_assist_tab = 'map_api'
 
   
         
@@ -3401,6 +3448,14 @@ SecuHub 工具统计报告
             print(f"[DEBUG] SettingsDialog弹窗关闭，result={result}")
         except Exception as e:
             print(f"[ERROR] 打开SettingsDialog弹窗异常: {e}")
+
+    def open_map_api_key_tool(self):
+        """打开地图API测试工具"""
+        html_path = os.path.join(os.path.dirname(__file__), 'project', 'map-api-key', 'map_api_key.html')
+        if os.path.exists(html_path):
+            QDesktopServices.openUrl(QUrl.fromLocalFile(html_path))
+        else:
+            QMessageBox.warning(self, "错误", f"未找到地图API测试工具 HTML 文件: {html_path}")
 
 class AddDownloadCommandDialog(QDialog):
     """添加/编辑文件下载命令对话框"""

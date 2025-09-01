@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地图API测试工具</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .btn-test-all {
+            background-color: #2ecc71;
+        }
+        .btn-test-all:hover {
+            background-color: #27ae60;
+        }
+        .result-area {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            min-height: 100px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .loading {
+            background-color: #d4edff;
+            color: #3498db;
+            animation: pulse 1.5s infinite;
+        }
+        .error {
+            background-color: #fdecea;
+            color: #e74c3c;
+        }
+        .success {
+            background-color: #e8f5e9;
+            color: #2ecc71;
+        }
+        .error-detail {
+            background: #fff8f8;
+            border-left: 4px solid #ff5252;
+            padding: 10px;
+            margin-top: 10px;
+            line-height: 0.5;
+        }
+        .error-detail h4 {
+            margin: 0 0 8px 0;
+            color: #e74c3c;
+        }
+        .error-detail p {
+            margin: 5px 0;
+        }
+        .error-detail strong {
+            display: inline-block;
+            min-width: 70px;
+        }
+        .progress-bar {
+            height: 5px;
+            background-color: #eee;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #3498db;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>地图API测试工具</h1>
+        
+        <div class="form-group">
+            <label for="apiType">选择地图平台</label>
+            <select id="apiType">
+                <option value="amap_web">高德地图WEB API</option>
+                <option value="amap_js">高德地图JS API</option>
+                <option value="amap_truck">高德地图物流API</option>
+                <option value="amap_mini">高德地图小程序API</option>
+                <option value="baidu_web">百度地图WEB API</option>
+                <option value="baidu_ios">百度地图WEB API IOS</option>
+                <option value="tencent_web">腾讯地图WEB API</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="apiKey">输入API Key</label>
+            <input type="text" id="apiKey" placeholder="请输入地图API Key">
+        </div>
+
+        <button id="testBtn" class="btn">测试API</button>
+        <button id="testAllBtn" class="btn btn-test-all">全部测试 (自动识别)</button>
+
+        <div id="progressContainer" style="display: none;">
+            <div class="progress-bar">
+                <div id="progressBar" class="progress"></div>
+            </div>
+            <div id="progressText" style="text-align: center; margin-top: 5px;"></div>
+        </div>
+
+        <div id="statusArea" class="status" style="display: none;"></div>
+
+        <div class="result-area">
+            <pre id="resultContent">测试结果将显示在这里...</pre>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiTypeSelect = document.getElementById('apiType');
+            const apiKeyInput = document.getElementById('apiKey');
+            const testBtn = document.getElementById('testBtn');
+            const testAllBtn = document.getElementById('testAllBtn');
+            const resultContent = document.getElementById('resultContent');
+            const statusArea = document.getElementById('statusArea');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+
+            // API配置 - 修改腾讯地图URL使用JSONP
+            const apiConfigs = {
+                'amap_web': {
+                    name: '高德地图WEB API',
+                    url: 'https://restapi.amap.com/v3/direction/walking?origin=116.434307,39.90909&destination=116.434446,39.90816&key=KEY'
+                },
+                'amap_js': {
+                    name: '高德地图JS API',
+                    url: 'https://restapi.amap.com/v3/geocode/regeo?key=KEY&s=rsv3&location=116.434446,39.90816&callback=jsonp_258885_&platform=JS'
+                },
+                'amap_truck': {
+                    name: '高德地图物流API',
+                    url: 'https://restapi.amap.com/v4/direction/truck?width=2.5&strategy=5&size=2&weight=10&axis=2&origin=116.481008%2C39.989625&destination=116.414217%2C40.061741&height=1.6&load=0.9&key=KEY'
+                },
+                'amap_mini': {
+                    name: '高德地图小程序API',
+                    url: 'https://restapi.amap.com/v3/geocode/regeo?key=KEY&location=117.19674%2C39.14784&extensions=all&s=rsx&platform=WXJS&appname=c589cf63f592ac13bcab35f8cd18f495&sdkversion=1.2.0&logversion=2.0'
+                },
+                'baidu_web': {
+                    name: '百度地图WEB API',
+                    url: 'https://api.map.baidu.com/place/v2/detail?uid=435d7aea036e54355abbbcc8&output=json&scope=2&ak=KEY&callback=baiduMapCallback_1754657625337'
+                },
+                'baidu_ios': {
+                    name: '百度地图WEB API IOS',
+                    url: 'https://api.map.baidu.com/place/v2/search?query=ATM机&tag=银行&region=北京&output=json&ak=KEY=iPhone7%2C2&mcode=com.didapinche.taxi&os=12.5.6'
+                },
+                'tencent_web': {
+                    name: '腾讯地图WEB API',
+                    url: 'https://apis.map.qq.com/ws/place/v1/search?keyword=酒店&boundary=nearby(39.908491,116.374328,1000)&key=KEY&output=jsonp&callback=jsonpCallback'
+                }
+            };
+
+            // 错误码映射表
+            const ERROR_CODES = {
+                'amap': {
+                    '10001': '无效的用户密钥(INVALID_USER_KEY)',
+                    '10002': '服务不可用',
+                    '10003': '每日请求量超限'
+                },
+                'baidu': {
+                    '10001': 'AK不存在或非法',
+                    '10002': '无请求权限',
+                    '10003': 'KEY过期'
+                },
+                'tencent': {
+                    '10001': '请求KEY错误',
+                    '10002': '无API权限',
+                    '10003': '请求超限'
+                }
+            };
+
+            // 测试单个API
+            testBtn.addEventListener('click', function() {
+                const apiType = apiTypeSelect.value;
+                if (apiType === 'all') {
+                    testAllApis();
+                    return;
+                }
+                
+                const apiConfig = apiConfigs[apiType];
+                const key = apiKeyInput.value.trim();
+
+                if (!key) {
+                    showStatus('请输入API Key', 'error');
+                    return;
+                }
+
+                clearPreviousResults();
+                testSingleApi(apiConfig, key);
+            });
+
+            // 测试全部API
+            testAllBtn.addEventListener('click', function() {
+                clearPreviousResults();
+                testAllApis();
+            });
+
+            function clearPreviousResults() {
+                resultContent.innerHTML = '';
+                statusArea.style.display = 'none';
+            }
+
+            function testAllApis() {
+                const key = apiKeyInput.value.trim();
+                if (!key) {
+                    showStatus('请输入API Key', 'error');
+                    return;
+                }
+
+                showStatus('开始自动识别AK类型...', 'loading');
+                progressContainer.style.display = 'block';
+                progressBar.style.width = '0%';
+                
+                const apiKeys = Object.keys(apiConfigs);
+                let currentIndex = 0;
+                let successApi = null;
+
+                function testNextApi() {
+                    if (currentIndex >= apiKeys.length) {
+                        if (!successApi) {
+                            showStatus('所有API测试均失败', 'error');
+                            showErrorDetail({
+                                message: '所有API测试均失败',
+                                solution: '请检查API Key是否正确且未过期，或确认该Key适用于哪个地图平台'
+                            });
+                        }
+                        progressContainer.style.display = 'none';
+                        return;
+                    }
+
+                    const apiKey = apiKeys[currentIndex];
+                    const apiConfig = apiConfigs[apiKey];
+                    
+                    const progress = Math.round((currentIndex / apiKeys.length) * 100);
+                    progressBar.style.width = progress + '%';
+                    progressText.textContent = `正在测试 ${apiConfig.name} (${currentIndex + 1}/${apiKeys.length})`;
+                    
+                    testSingleApi(apiConfig, key, false, (success, data) => {
+                        if (success) {
+                            successApi = apiConfig;
+                            showStatus(`识别成功: ${apiConfig.name}`, 'success');
+                            showResult(`${apiConfig.name}: 请求成功\n${JSON.stringify(data, null, 2)}`);
+                            progressContainer.style.display = 'none';
+                            return;
+                        }
+                        
+                        currentIndex++;
+                        setTimeout(testNextApi, 300);
+                    });
+                }
+
+                testNextApi();
+            }
+
+            function testSingleApi(apiConfig, key, showSuccess = true, callback) {
+                showStatus(`测试中: ${apiConfig.name}`, 'loading');
+                
+                const url = apiConfig.url.replace('KEY', key);
+                const isJsonp = url.includes('callback=');
+                
+                let timeoutId;
+                const timeoutPromise = new Promise((_, reject) => {
+                    timeoutId = setTimeout(() => {
+                        reject(new Error('请求超时 (3秒)'));
+                    }, 3000);
+                });
+
+                const fetchPromise = new Promise((resolve, reject) => {
+                    if (isJsonp) {
+                        // 增强的JSONP处理
+                        const callbackName = 'jsonp_' + Math.random().toString(36).substr(2);
+                        const jsonpUrl = url.replace(/(callback=)[^&]+/, '$1' + callbackName);
+                        
+                        window[callbackName] = function(data) {
+                            clearTimeout(timeoutId);
+                            delete window[callbackName];
+                            script.remove();
+                            
+                            // 腾讯地图特殊处理
+                            if (apiConfig.url.includes('qq.com')) {
+                                if (data && data.status !== undefined) {
+                                    resolve(data);
+                                } else {
+                                    reject(new Error('腾讯地图API返回数据格式异常'));
+                                }
+                            } else {
+                                resolve(data);
+                            }
+                        };
+                        
+                        const script = document.createElement('script');
+                        script.src = jsonpUrl;
+                        script.onerror = function() {
+                            clearTimeout(timeoutId);
+                            reject(new Error('JSONP请求失败'));
+                        };
+                        
+                        document.body.appendChild(script);
+                    } else {
+                        // 普通fetch请求
+                        fetch(url)
+                            .then(response => {
+                                clearTimeout(timeoutId);
+                                if (!response.ok) {
+                                    throw new Error(`HTTP错误! 状态码: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => resolve(data))
+                            .catch(error => reject(error));
+                    }
+                });
+
+                Promise.race([fetchPromise, timeoutPromise])
+                    .then(data => {
+                        if (isErrorResponse(data, apiConfig)) {
+                            const errorMsg = parseErrorMessage(data, apiConfig);
+                            if (showSuccess) {
+                                showStatus(`请求失败: ${errorMsg}`, 'error');
+                            }
+                            showErrorDetail({
+                                apiName: apiConfig.name,
+                                status: data.status || data.error_code || '无',
+                                message: data.info || data.message || '无明确错误信息',
+                                solution: getSolution(apiConfig, data)
+                            });
+                            if (callback) callback(false);
+                        } else {
+                            if (showSuccess) {
+                                showStatus('请求成功', 'success');
+                            }
+                            showResult(`${apiConfig.name}: 请求成功\n${JSON.stringify(data, null, 2)}`);
+                            if (callback) callback(true, data);
+                        }
+                    })
+                    .catch(error => {
+                        if (showSuccess) {
+                            showStatus(`请求失败 - ${error.message}`, 'error');
+                        }
+                        showErrorDetail({
+                            apiName: apiConfig.name,
+                            message: error.message,
+                            solution: error.message.includes('JSONP') ? 
+                                '请确认API支持JSONP调用' : 
+                                '请检查网络连接或API服务状态'
+                        });
+                        if (callback) callback(false);
+                    });
+            }
+
+            function isErrorResponse(data, apiConfig) {
+                if (!data) return true;
+                
+                if (apiConfig.url.includes('amap.com')) {
+                    return data.status === "0" || data.infocode !== "10000";
+                }
+                if (apiConfig.url.includes('baidu.com')) {
+                    return data.error_code || data.status !== 0;
+                }
+                if (apiConfig.url.includes('qq.com')) {
+                    return data.status !== 0 || data.message !== "Success";
+                }
+                return false;
+            }
+
+            function parseErrorMessage(data, apiConfig) {
+                let platform = '';
+                if (apiConfig.url.includes('amap.com')) platform = 'amap';
+                if (apiConfig.url.includes('baidu.com')) platform = 'baidu';
+                if (apiConfig.url.includes('qq.com')) platform = 'tencent';
+
+                const code = data.infocode || data.error_code || data.status;
+                return ERROR_CODES[platform]?.[code] || data.info || data.message || '未知错误';
+            }
+
+            function getSolution(apiConfig, data) {
+                let platform = '';
+                if (apiConfig.url.includes('amap.com')) platform = '高德地图';
+                if (apiConfig.url.includes('baidu.com')) platform = '百度地图';
+                if (apiConfig.url.includes('qq.com')) platform = '腾讯地图';
+
+                const code = data.infocode || data.error_code || data.status;
+                
+                if (code === '10001') {
+                    return `请检查${platform} API Key是否正确且未过期`;
+                } else if (code === '10002') {
+                    return `请确认该${platform} API Key具有所需权限`;
+                } else if (code === '10003') {
+                    return `该${platform} API Key已达到每日请求限额`;
+                }
+                return '请检查API文档或联系平台技术支持';
+            }
+
+            function showStatus(text, type) {
+                statusArea.style.display = 'block';
+                statusArea.textContent = text;
+                statusArea.className = 'status ' + type;
+            }
+
+            function showResult(text) {
+                const pre = document.createElement('pre');
+                pre.textContent = text;
+                resultContent.innerHTML = '';
+                resultContent.appendChild(pre);
+            }
+
+            function showErrorDetail(detail) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-detail';
+                errorDiv.innerHTML = `
+                    <h4>错误详情 (${detail.apiName || '未知API'})</h4>
+                    <p><strong>状态码:</strong> ${detail.status}</p>
+                    <p><strong>错误信息:</strong> ${detail.message}</p>
+                    <p><strong>解决方案:</strong> ${detail.solution}</p>
+                `;
+                resultContent.innerHTML = '';
+                resultContent.appendChild(errorDiv);
+            }
+        });
+    </script>
+</body>
+</html>
